@@ -111,8 +111,8 @@ class App(QApplication):
     def getColor(self, member):
         """Get the given primary role color for a `Member`, returns a `Discord.Color` instance"""
         if hasattr(member, "roles"):
-            clr = member.roles[0].color
-            return "rgb({clr.r},{clr.g},{clr.b}".format(clr=clr)
+            clr = member.color
+            return "rgb({clr.r},{clr.g},{clr.b})".format(clr=clr)
 
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""
