@@ -71,8 +71,6 @@ class App(QApplication):
 
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
-        if message.author == self.client.user:
-            return
         if isinstance(message.channel, discord.PrivateChannel):
             if not message.channel.name:
                 message.channel.name = ",".join(map(lambda m: m.name, message.channel.recipients))
@@ -111,9 +109,8 @@ class App(QApplication):
     def getColor(self, member):
         """Get the given primary role color for a `Member`, returns a `Discord.Color` instance"""
         if hasattr(member, "roles"):
-            return member.roles[0].color
-        else:
-            return "#000"
+            clr = member.roles[0].color
+            return "rgb({clr.r},{clr.g},{clr.b}".format(clr=clr)
 
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""
