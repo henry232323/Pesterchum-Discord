@@ -1,8 +1,5 @@
 import discord
-import logging
-import asyncio
 
-import os
 
 class DiscordClient(discord.Client):
     def __init__(self, app=None, **kwargs):
@@ -10,7 +7,7 @@ class DiscordClient(discord.Client):
         self.app = app
 
     async def on_ready(self):
-        #Login info
+        # Login info
         print('Logged in as')
         print(self.user.name)
         print(self.user.id)
@@ -19,6 +16,3 @@ class DiscordClient(discord.Client):
         
     async def on_message(self, message):
         await self.app.on_message(message)
-                                    
-    
-    

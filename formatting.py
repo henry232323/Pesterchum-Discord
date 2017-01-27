@@ -46,20 +46,15 @@ def fmt_disp_msg(app, msg, user=None):
     '''Format a message for display'''
     if not user:
         user = app.nick
-    #If beginning PM, use BEGIN message
+    # If beginning PM, use BEGIN message
     if "PESTERCHUM:BEGIN" in msg:
         fmt = fmt_begin_msg(app, user, app.nick)
         app.pm_begin(fmt, user)
         msg = None
-    #If other user disconnects, use CEASE message
-    elif "PESTERCHUM:CEASE" in msg:
-        fmt = fmt_cease_msg(app, user, app.nick)
-        app.pm_cease(fmt, user)
-        msg = None
-    #If /me message, use fmt_me_msg
+    # If /me message, use fmt_me_msg
     elif msg.startswith("/me"):
         msg = fmt_me_msg(app, msg, user, time=True)
-    #Otherwise convert <c> to <span> and format normally with initials etc
+    # Otherwise convert <c> to <span> and format normally with initials etc
     else:
         msg = color_to_span(msg)
         time = getTime(app)

@@ -38,8 +38,6 @@ class PrivateMessageWidget(QWidget):
         if msg:
             self.app.send_msg(msg, self.user)
             self.userInput.setText("")
-            fmt = fmt_disp_msg(self.app, msg, user=self.app.client.user)
-            self.display_text(fmt)
 
     def display_text(self, msg):
         '''Insert msg into the display box'''
@@ -405,8 +403,6 @@ class MemoMessageWidget(QWidget):
         if msg:
             self.app.send_msg(msg, self.memo)
             self.userInput.setText("")
-            fmt = fmt_disp_msg(self.app, msg, user=self.app.client.user)
-            self.display_text(fmt)
 
     def add_names(self):
         for user in self.names:
