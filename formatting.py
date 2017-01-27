@@ -157,7 +157,7 @@ def fmt_memo_join(app, user, time, memo, part=False, opened=False):
     if part:
         type = "ceased responding to memo."
     elif opened:
-        type = "opened memo on board OOWOO."
+        type = "opened memo on board {}.".format(memo.name)
     else:
         type = "responded to memo."
     if time[0] == "i":
