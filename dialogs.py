@@ -484,7 +484,6 @@ class MemoTabWindow(QWidget):
 
     def getWidget(self, server):
         try:
-            print(list(map(lambda x: x.name, self.channels)))
             idx = self.channels.index(server)
             return self.tabWidget.widget(idx)
         except IndexError as e:
