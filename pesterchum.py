@@ -41,6 +41,8 @@ class App(QApplication):
             self.openAuth()
             save_auth((self.user, self.passwd, self.token,))
 
+        self.runbot()
+
         self.gui = Gui(self.loop, self)
 
         if "debug" in sys.argv:
@@ -118,6 +120,8 @@ class App(QApplication):
 
     def openAuth(self):
         self.user, self.passwd, self.token = AuthDialog(self, self).auth
+
+    def runbot(self):
         if self.user and self.passwd and not self.token:
             asyncio.ensure_future(self.client.start(self.user, self.passwd))
         elif self.token and not (self.user or self.token):

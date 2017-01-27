@@ -147,9 +147,10 @@ def fmt_memo_msg(app, msg, user):
         msg=msg)
 
 def fmt_disp_memo(app, message, user, prefix=""):
-    msg = "<b>{msg}<b><br />".format(
+    msg = "<b><span color={color}>{msg}</span><b><br />".format(
         prefix=prefix,
-        msg=color_to_span(message))
+        msg=color_to_span(message),
+        color=app.getColor(user))
     return msg
 
 def fmt_memo_join(app, user, time, memo, part=False, opened=False):
