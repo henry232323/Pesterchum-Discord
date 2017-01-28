@@ -74,6 +74,8 @@ class App(QApplication):
 
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
+        if message.content.startswith("_") and message.content.endswith("_"):
+            message.content = "/me " + message.content[1:-1]
         if isinstance(message.channel, discord.PrivateChannel):
             if not message.channel.name:
                 message.channel.name = ",".join(map(lambda m: m.name, message.channel.recipients))
@@ -119,6 +121,13 @@ class App(QApplication):
 
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""
+        message = message.strip()
+        if message.startswith("/me"):
+            message = "_" + message[3:] + "_"
+        if message.startswith("/tts "):
+            message = message[4:]
+            asyncio.ensure_future(self.client.send_message(channel, message, tts=True))
+            return
         asyncio.ensure_future(self.client.send_message(channel, message))
 
     def openAuth(self):
