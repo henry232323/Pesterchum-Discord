@@ -531,7 +531,8 @@ class AuthDialog(QDialog):
         self.setWindowTitle('Add Chum')
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
         self.acceptButton.clicked.connect(self.accepted)
-        self.closeButton.clicked.connect(self.app.exit)
+        self.closeButton.clicked.connect(self.rejected)
+        self.auth = None
         self.exec_()
 
     def accepted(self):
@@ -548,3 +549,8 @@ class AuthDialog(QDialog):
         else:
             self.close()
 
+    def rejected(self):
+        if hasattr(self.app, "gui")
+            self.close()
+        else:
+            self.app.exit()
