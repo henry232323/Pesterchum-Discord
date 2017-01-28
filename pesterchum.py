@@ -34,7 +34,7 @@ class App(QApplication):
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
-        self.client = DiscordClient(app=self, loop=self.loop)
+        self.client = DiscordClient(app=self, loop=self.loop, bot=False)
 
         self.user, self.passwd, self.token = UserAuth
 
@@ -117,7 +117,6 @@ class App(QApplication):
         elif type is QColor:
             return QColor(clr.r, clr.g, clr.b)
 
-
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""
         asyncio.ensure_future(self.client.send_message(channel, message))
@@ -126,12 +125,11 @@ class App(QApplication):
         self.user, self.passwd, self.token = AuthDialog(self, self).auth
 
     def runbot(self):
-        if self.user and self.passwd and not self.token:
+        if (self.user and self.passwd) and not self.token:
             asyncio.ensure_future(self.client.start(self.user, self.passwd))
-        elif self.token and not (self.user or self.token):
+        elif self.token and not (self.user or self.passwd):
             asyncio.ensure_future(self.client.start(self.token))
         else:
-            print("You broke it?")
             self.exit(code=1)
 
         if hasattr(self, "gui"):
