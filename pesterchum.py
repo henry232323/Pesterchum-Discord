@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from quamash import QEventLoop
+from PyQt5.QtGui import QColor
 
 import asyncio
 import sys
@@ -108,11 +109,14 @@ class App(QApplication):
                 self.gui = Gui(self.loop, self)
                 self.gui.initialize()
 
-    def getColor(self, member):
+    def getColor(self, member, type=str):
         """Get the given primary role color for a `Member`, returns a `Discord.Color` instance"""
-        if hasattr(member, "roles"):
-            clr = member.color
+        clr = member.color
+        if type is str:
             return "rgb({clr.r},{clr.g},{clr.b})".format(clr=clr)
+        elif type is QColor:
+            return QColor(clr.r, clr.g, clr.b)
+
 
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""

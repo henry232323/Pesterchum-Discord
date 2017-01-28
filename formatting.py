@@ -86,7 +86,7 @@ def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
             break
     init += char
     if suffix:
-        init =+ suffix
+        init += suffix
     if prefix:
         init = prefix + init
     if b:

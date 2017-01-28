@@ -397,10 +397,13 @@ class MemoMessageWidget(QWidget):
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
 
+        if not self.memo.permissions_for(self.memo.server.me).send_messages:
+            self.userInput.setReadOnly(True)
+
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
         msg = self.userInput.text()
-        if msg:
+        if msg.strip():
             self.app.send_msg(msg, self.memo)
             self.userInput.setText("")
 
@@ -460,14 +463,15 @@ class MemoTabWindow(QWidget):
         self.app = app
         uic.loadUi(app.theme["ui_path"] + "/MemoTabWindow.ui", self)
         self.memo = memo
-        self.channels = list(filter(lambda x: x.type is discord.ChannelType.text, self.memo.channels))
+        self.channels = list(filter(lambda x: x.type is discord.ChannelType.text and x.permissions_for(x.server.me).read_messages, self.memo.channels))
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
         self.setWindowTitle("Memos")
         self.setWindowIcon(QIcon(self.app.theme["path"] + "/memo.png"))
         for channel in self.channels:
-            #if channel.type is discord.ChannelType.text:
             self.add_memo(channel)
+
+        self.add_user_items()
 
         self.show()
 
@@ -501,6 +505,18 @@ class MemoTabWindow(QWidget):
         a = self.tabWidget.addTab(windw, icon, memo.name)
         tab = self.tabWidget.widget(a)
         return tab
+
+    def add_user_items(self):
+        try:
+            for member in self.memo.members:
+                nam = QListWidgetItem(member.name)
+                nam.setForeground(self.app.getColor(member, type=QColor))
+                if member.top_role.permissions.administrator:
+                    nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
+                for x in range(self.tabWidget.count()):
+                    self.tabWidget.widget(x).memoUsers.addItem(nam)
+        except Exception as e:
+            print(e)
 
 
 class AuthDialog(QDialog):
