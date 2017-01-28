@@ -431,11 +431,10 @@ class MemoMessageWidget(QWidget):
             self.send()
 
     def openMemoMenu(self, position):
-        if indexes:
-            menu = QMenu()
-            menu.addAction(self.addFriendContext)
-            menu.addAction(self.blockContext)
-            menu.exec_(self.chumsTree.viewport().mapToGlobal(position))
+        menu = QMenu()
+        menu.addAction(self.addFriendContext)
+        menu.addAction(self.blockContext)
+        menu.exec_(self.chumsTree.viewport().mapToGlobal(position))
 
     def block_selected(self):
         selected = self.memoUsers.selected()
@@ -550,7 +549,7 @@ class AuthDialog(QDialog):
             self.close()
 
     def rejected(self):
-        if hasattr(self.app, "gui")
+        if hasattr(self.app, "gui"):
             self.close()
         else:
             self.app.exit()
