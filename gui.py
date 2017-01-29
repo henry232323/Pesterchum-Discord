@@ -155,10 +155,7 @@ class Gui(QMainWindow):
         self.openQuirkWindow = QuirksWindow(self.app)
 
     def openOptions(self):
-        try:
-            self.optionsWindow = OptionsWindow(self.app, self)
-        except Exception as e:
-            print(e)
+        self.optionsWindow = OptionsWindow(self.app, self)
 
     def make_setMood(self, button):
         '''Makes set mood button for each button, each button deselects all others and sets user mood'''

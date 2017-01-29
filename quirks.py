@@ -23,7 +23,8 @@ class Quirks(object):
             self.allquirks[self.id] = list()
         self.quirks = self.allquirks[self.id]
 
-    def create_rnd(self, quirk):
+    @staticmethod
+    def create_rnd(quirk):
         def random(match):
             return choice(quirk)
         return random
