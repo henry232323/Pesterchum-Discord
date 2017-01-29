@@ -15,6 +15,7 @@ from themes import themes, getThemes
 from quirks import Quirks
 from options import Options
 from config import Config
+from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import *
 
@@ -32,6 +33,7 @@ class App(QApplication):
         self.theme_name = self.theme["name"]
         self.options = Options
         self.config = Config
+        self.moods = Moods
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
@@ -102,6 +104,9 @@ class App(QApplication):
         if "debug" in sys.argv:
             self.cli()
         self.gui.initialize()
+
+    def change_mood(self, mood):
+        pass
 
     def change_theme(self, theme):
         if theme != self.theme_name:

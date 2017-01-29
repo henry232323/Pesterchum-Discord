@@ -18,6 +18,7 @@ class Gui(QMainWindow):
         self.tabWindow = None
         self.quirkWindow = None
         self.memosWindow = None
+        self.mood_buttons = dict()
 
     def initialize(self):
         self.widget = uic.loadUi("themes/pesterchum2.5/ui/Main.ui", self)
@@ -100,6 +101,15 @@ class Gui(QMainWindow):
         self.chumsTree.setExpandsOnDoubleClick(True)
         self.chumsTree.setItemsExpandable(True)
 
+        for num in range(23):
+            name = "moodButton{}".format(num)
+            if hasattr(self, name):
+                button = getattr(self, name)
+                self.mood_buttons[num] = button
+                mood_name = self.app.moods.getName(num)
+                button.setIcon(QIcon(os.path.join(self.theme["path"], mood_name + ".png")))
+                button.clicked.connect(self.make_setMood(button))
+
         self.show()
 
     # Methods for moving window
@@ -149,6 +159,21 @@ class Gui(QMainWindow):
             self.optionsWindow = OptionsWindow(self.app, self)
         except Exception as e:
             print(e)
+
+    def make_setMood(self, button):
+        '''Makes set mood button for each button, each button deselects all others and sets user mood'''
+        def setMood():
+            if not button.isChecked():
+                button.setChecked(True)
+                return
+            for num, moodButton in self.mood_buttons.items():
+                if button == moodButton:
+                    mood_name = self.app.moods.getName(num)
+                    self.nameButton.setIcon(QIcon(os.path.join(self.theme["path"], mood_name + ".png")))
+                    self.app.change_mood(mood_name)
+                else:
+                    moodButton.setChecked(False)
+        return setMood
 
     class FriendsModel(QStandardItemModel):
         def __init__(self, app, parent=None):

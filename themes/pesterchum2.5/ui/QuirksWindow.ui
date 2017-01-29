@@ -29,7 +29,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QTreeView" name="quirksList"/>
+       <widget class="QListWidget" name="quirksList"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -68,14 +68,14 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="editButton">
+       <widget class="QPushButton" name="editQuirkButton">
         <property name="text">
          <string>EDIT</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="removeButton">
+       <widget class="QPushButton" name="removeQuirkButton">
         <property name="text">
          <string>REMOVE</string>
         </property>
