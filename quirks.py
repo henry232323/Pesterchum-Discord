@@ -6,6 +6,7 @@ from random import choice
 
 from pyquirks import quirk_funcs
 
+qfuncs = dict(inspect.getmembers(quirk_funcs, inspect.isfunction))
 
 class Quirks(object):
     def __init__(self, app):
@@ -24,7 +25,6 @@ class Quirks(object):
     def process_quirks(self, message):
         try:
             fmt = message
-            funcs = dict(inspect.getmembers(quirk_funcs, inspect.isfunction))
             for type, quirk in self.quirks:
                 if type == "prefix":
                     fmt = quirk + fmt
@@ -34,7 +34,6 @@ class Quirks(object):
                     fmt = fmt.replace(quirk[0], quirk[1])
                 elif type == "regex":
                     # quirk[0] = eval(quirk[1], funcs)
-                    # re.sub(r"\\([0-9]+)",r"\\g<\1>",uinput)
                     fmt = re.sub(quirk[0], quirk[1], message)
                     print(quirk, message)
                     print(fmt)
@@ -47,3 +46,6 @@ class Quirks(object):
     def save_quirks(self):
         with open("cfg/quirks.json", 'w') as qf:
             qf.write(json.dumps(self.allquirks))
+
+    def append(self, item):
+        self.quirks.append(item)

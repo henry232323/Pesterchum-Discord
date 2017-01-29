@@ -2,7 +2,7 @@ import os
 
 themes = dict()
 
-def getThemes():
+def getThemes(themes):
     '''
     Can be called any time to refresh themes, creates a theme
     for every folder in the themes directory, sets the css file to
@@ -11,7 +11,6 @@ def getThemes():
     All uis located in the ui folder
     More support for themes to come
     '''
-    global themes
     themedir = os.listdir("themes")
     for theme in themedir:
         if os.path.isdir("themes/"+theme):
@@ -30,4 +29,4 @@ def getThemes():
             themes[theme]["ui_path"] = uipath
             themes[theme]["ui_dir"] = os.listdir(uipath)
 
-getThemes()
+getThemes(themes)

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QStackedWidget" name="stackedWidget">
+  <widget class="QStackedWidget" name="stackWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QWidget" name="verticalLayoutWidget">
@@ -47,35 +47,35 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_5">
+       <widget class="QRadioButton" name="prefixRadio">
         <property name="text">
          <string>Prefix</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_4">
+       <widget class="QRadioButton" name="suffixRadio">
         <property name="text">
          <string>Suffix</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_3">
+       <widget class="QRadioButton" name="replaceRadio">
         <property name="text">
          <string>Simple Replace</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_2">
+       <widget class="QRadioButton" name="regexRadio">
         <property name="text">
          <string>Regexp Replace</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QRadioButton" name="randomRadio">
         <property name="text">
          <string>Random Replace</string>
         </property>
@@ -97,21 +97,21 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="backButton">
           <property name="text">
            <string>Back</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="nextButton">
           <property name="text">
            <string>Next</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="cancelButton">
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -173,21 +173,21 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="backButton_2">
           <property name="text">
            <string>Back</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="nextButton_2">
           <property name="text">
            <string>Next</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="cancelButton_2">
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -249,21 +249,21 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QPushButton" name="pushButton_14">
+         <widget class="QPushButton" name="backButton_3">
           <property name="text">
            <string>Back</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_15">
+         <widget class="QPushButton" name="nextButton_3">
           <property name="text">
            <string>Next</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_16">
+         <widget class="QPushButton" name="cancelButton_3">
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -339,21 +339,21 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="QPushButton" name="pushButton_17">
+         <widget class="QPushButton" name="backButton_4">
           <property name="text">
            <string>Back</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_18">
+         <widget class="QPushButton" name="nextButton_6">
           <property name="text">
            <string>Next</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_19">
+         <widget class="QPushButton" name="cancelButton_4">
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -395,7 +395,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget">
+       <widget class="QListWidget" name="regexFuncs">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -446,7 +446,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="regexpLineEdit"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_13">
@@ -456,7 +456,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="regexpReplaceLineEdit"/>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_11">
@@ -478,21 +478,21 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="backButton_5">
         <property name="text">
          <string>Back</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="QPushButton" name="nextButton_5">
         <property name="text">
          <string>Next</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="cancelButton_5">
         <property name="text">
          <string>Cancel</string>
         </property>
@@ -532,7 +532,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget_2">
+       <widget class="QListWidget" name="randRegexFuncs">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -592,22 +592,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget_3"/>
+       <widget class="QListWidget" name="randomList"/>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_4"/>
+       <widget class="QLineEdit" name="addRandomLineEdit"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QPushButton" name="pushButton_24">
+         <widget class="QPushButton" name="addRandomButton">
           <property name="text">
            <string>ADD</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_25">
+         <widget class="QPushButton" name="removeRandomButton">
           <property name="text">
            <string>REMOVE</string>
           </property>
@@ -641,21 +641,21 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QPushButton" name="pushButton_21">
+       <widget class="QPushButton" name="backButton_6">
         <property name="text">
          <string>Back</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_22">
+       <widget class="QPushButton" name="nextButton_4">
         <property name="text">
          <string>Next</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_23">
+       <widget class="QPushButton" name="cancelButton_6">
         <property name="text">
          <string>Cancel</string>
         </property>

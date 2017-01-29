@@ -4,10 +4,11 @@ from PyQt5.QtCore import Qt
 from PyQt5 import uic
 
 import discord
+import re
 
 from messages import *
 from formatting import fmt_memo_msg, rgb
-
+from quirks import qfuncs
 
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, container, parent, user):
@@ -527,7 +528,7 @@ class AuthDialog(QDialog):
         self.parent = parent
         self.app = app
         uic.loadUi(self.app.theme["ui_path"] + "/AuthDialog.ui", self)
-        self.setWindowTitle('Add Chum')
+        self.setWindowTitle('Auth')
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
         self.acceptButton.clicked.connect(self.accepted)
         self.closeButton.clicked.connect(self.rejected)
@@ -569,27 +570,45 @@ class QuirksWindow(QWidget):
             uic.loadUi(self.app.theme["ui_path"] + "/QuirksWindow.ui", self)
             self.addQuirkButton.clicked.connect(self.openQuirk)
             self.editQuirkButton.clicked.connect(self.editQuirk)
-            self.removeQuirk.clicked.connect(self.removeQuirk)
+            self.removeQuirkButton.clicked.connect(self.removeQuirk)
             self.cancelButton.clicked.connect(self.closeWin)
             self.okButton.clicked.connect(self.save)
             self.testButton.clicked.connect(self.testQuirks)
+            for type, quirk in self.app.quirks.quirks:
+                self.quirksList.addItem("{}:{}".format(type, quirk))
+
+            self.setWindowTitle('Quirks')
+            self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+
+            self.show()
         except Exception as e:
             print(e)
 
     def openQuirk(self):
-        AddQuirkWindow(self.app, self)
+        try:
+            AddQuirkWindow(self.app, self)
+        except Exception as e:
+            print(e)
 
     def editQuirk(self):
         pass
 
     def removeQuirk(self):
-        pass
+        try:
+            items = self.quirksList.selectedItems()
+            for item in items:
+                row = self.quirksList.indexFromItem(item).row()
+                self.app.quirks.quirks.pop(row)
+                self.quirksList.takeItem(row)
+
+        except Exception as e:
+            print(e)
 
     def closeWin(self):
-        pass
+        self.close()
 
     def save(self):
-        pass
+        self.close()
 
     def testQuirks(self):
         pass
@@ -601,3 +620,100 @@ class AddQuirkWindow(QWidget):
         self.app = app
         self.parent = parent
         uic.loadUi(self.app.theme["ui_path"] + "/AddQuirkWindow.ui", self)
+
+        self.buttons = ('prefix', 'suffix', 'replace', 'regex', 'random')
+        self.setWindowTitle('Quirks')
+        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+
+        enableNext = lambda: self.nextButton.setEnabled(True)
+        self.nextButton.setEnabled(False)
+        self.prefixRadio.clicked.connect(enableNext)
+        self.suffixRadio.clicked.connect(enableNext)
+        self.replaceRadio.clicked.connect(enableNext)
+        self.regexRadio.clicked.connect(enableNext)
+        self.randomRadio.clicked.connect(enableNext)
+
+        self.nextButton.clicked.connect(self.next)
+        self.nextButton_2.clicked.connect(self.next)
+        self.nextButton_3.clicked.connect(self.next)
+        self.nextButton_4.clicked.connect(self.next)
+        self.nextButton_5.clicked.connect(self.next)
+        self.nextButton_6.clicked.connect(self.next)
+
+        self.backButton.clicked.connect(self.back)
+        self.backButton_2.clicked.connect(self.back)
+        self.backButton_3.clicked.connect(self.back)
+        self.backButton_4.clicked.connect(self.back)
+        self.backButton_5.clicked.connect(self.back)
+        self.backButton_6.clicked.connect(self.back)
+
+        self.cancelButton.clicked.connect(self.close)
+        self.cancelButton_2.clicked.connect(self.close)
+        self.cancelButton_3.clicked.connect(self.close)
+        self.cancelButton_4.clicked.connect(self.close)
+        self.cancelButton_5.clicked.connect(self.close)
+        self.cancelButton_6.clicked.connect(self.close)
+
+        self.addRandomButton.clicked.connect(self.addRandom)
+        self.removeRandomButton.clicked.connect(self.removeRandom)
+
+        self.randomRegex = list()
+
+        self.show()
+
+
+    def back(self):
+        self.stackWidget.setCurrentIndex(0)
+
+    def next(self):
+        try:
+            index = self.stackWidget.currentIndex()
+            if index == 0:
+                if self.prefixRadio.isChecked():
+                    self.stackWidget.setCurrentIndex(1)
+                elif self.suffixRadio.isChecked():
+                    self.stackWidget.setCurrentIndex(2)
+                elif self.replaceRadio.isChecked():
+                    self.stackWidget.setCurrentIndex(3)
+                elif self.regexRadio.isChecked():
+                    self.stackWidget.setCurrentIndex(4)
+                    for func in qfuncs.values():
+                        self.regexFuncs.addItem(func)
+                elif self.randomRadio.isChecked():
+                    self.stackWidget.setCurrentIndex(5)
+                    for func in qfuncs.values():
+                        self.randRegexFuncs.addItem(func)
+            elif index == 1:
+                value = self.prefixLineEdit.text()
+                self.app.quirks.append(("prefix", value,))
+            elif index == 2:
+                value = self.suffixLineEdit.text()
+                self.app.quirks.append(("suffix", value,))
+            elif index == 3:
+                value = (self.replaceReplaceLineEdit.text(), self.replaceWithLineEdit.text())
+                self.app.quirks.append(("replace", value,))
+            elif index == 4:
+                replace = self.regexpReplaceLineEdit.text()
+                value = (self.regexpLineEdit.text(), re.sub(r"\\([0-9]+)",r"\\g<\1>",replace))
+                self.app.quirks.append(("replace", value,))
+            elif index == 5:
+                value = (self.randomRegexpLineEdit.text(), (*self.randomRegex))
+                self.app.quirks.append(("random", value,))
+            if index != 0:
+                self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
+                self.close()
+        except Exception as e:
+            print(e)
+
+    def addRandom(self):
+        nq = self.addRandomLineEdit.text()
+        fn = re.sub(r"\\([0-9]+)", r"\\g<\1>", nq)
+        self.randomList.addItem(fn)
+        self.randomRegex.append(fn)
+        self.addRandomLineEdit.setText("")
+
+    def removeRandom(self):
+        items = self.randomList.selectedItems()
+        for item in items:
+            self.randomRegex.remove(item.text())
+            self.randomList.takeItem(self.randomList.indexFromItem(item).row())
