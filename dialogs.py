@@ -4,11 +4,10 @@ from PyQt5.QtCore import Qt
 from PyQt5 import uic
 
 import discord
-import re
+from importlib import reload
 
 from messages import *
-from formatting import fmt_memo_msg, rgb
-from quirks import qfuncs
+import quirks
 
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, container, parent, user):
@@ -656,6 +655,8 @@ class AddQuirkWindow(QWidget):
 
         self.addRandomButton.clicked.connect(self.addRandom)
         self.removeRandomButton.clicked.connect(self.removeRandom)
+        self.reloadFuncs.clicked.connect(self.reload_functions)
+        self.randReloadFuncs.clicked.connect(self.rand_reload_functions)
 
         self.randomRegex = list()
 
@@ -677,12 +678,10 @@ class AddQuirkWindow(QWidget):
                     self.stackWidget.setCurrentIndex(3)
                 elif self.regexRadio.isChecked():
                     self.stackWidget.setCurrentIndex(4)
-                    for func in qfuncs.values():
-                        self.regexFuncs.addItem(func.__name__ + "()")
+                    self.addFuncs()
                 elif self.randomRadio.isChecked():
                     self.stackWidget.setCurrentIndex(5)
-                    for func in qfuncs.values():
-                        self.randRegexFuncs.addItem(func.__name__ + "()")
+                    self.randAddFuncs()
             elif index == 1:
                 value = self.prefixLineEdit.text()
                 self.app.quirks.append(("prefix", value,))
@@ -716,3 +715,21 @@ class AddQuirkWindow(QWidget):
         for item in items:
             self.randomRegex.remove(item.text())
             self.randomList.takeItem(self.randomList.indexFromItem(item).row())
+
+    def randAddFuncs(self):
+        for func in quirks.qfuncs.values():
+            self.randRegexFuncs.addItem(func.__name__ + "()")
+
+    def addFuncs(self):
+        for func in quirks.qfuncs.values():
+            self.regexFuncs.addItem(func.__name__ + "()")
+
+    def reload_functions(self):
+        self.regexFuncs.reset()
+        reload(quirks)
+        self.addFuncs()
+
+    def rand_reload_functions(self):
+        self.randRegexFuncs.reset()
+        reload(quirks)
+        self.addFuncs()

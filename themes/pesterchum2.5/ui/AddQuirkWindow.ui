@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>AddQuirk</class>
+ <widget class="QWidget" name="AddQuirk">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -405,7 +405,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="reloadFuncs">
         <property name="text">
          <string>RELOAD FUNCTIONS</string>
         </property>
@@ -542,7 +542,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_20">
+       <widget class="QPushButton" name="randReloadFuncs">
         <property name="text">
          <string>RELOAD FUNCTIONS</string>
         </property>
