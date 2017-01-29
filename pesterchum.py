@@ -12,6 +12,7 @@ from gui import Gui
 from dialogs import AuthDialog
 from client import DiscordClient
 from themes import themes, getThemes
+from quirks import Quirks
 from options import Options
 from config import Config
 from auth import UserAuth, save_auth
@@ -45,9 +46,6 @@ class App(QApplication):
         self.runbot()
 
         self.gui = Gui(self.loop, self)
-
-        if "debug" in sys.argv:
-            self.cli()
 
         loop.run_forever()
 
@@ -99,6 +97,10 @@ class App(QApplication):
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
         self.nick = self.client.user.name
+        self.quirks = Quirks(self)
+        sys.argv.append('debug')
+        if "debug" in sys.argv:
+            self.cli()
         self.gui.initialize()
 
     def change_theme(self, theme):
@@ -122,13 +124,14 @@ class App(QApplication):
     def send_msg(self, message, channel):
         """Send message `message` to the User, Private Channel, or Channel `channel`"""
         message = message.strip()
+        tts = False
         if message.startswith("/me"):
             message = "_" + message[3:] + "_"
         if message.startswith("/tts "):
             message = message[4:]
-            asyncio.ensure_future(self.client.send_message(channel, message, tts=True))
-            return
-        asyncio.ensure_future(self.client.send_message(channel, message))
+            tts = True
+        message = self.quirks.process_quirks(message)
+        asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
     def openAuth(self):
         self.user, self.passwd, self.token = AuthDialog(self, self).auth
@@ -150,6 +153,7 @@ class App(QApplication):
         Save configurations and sys.exit
         """
         save_auth((self.user, self.passwd, self.token,))
+        self.quirks.save_quirks()
         sys.exit(code)
 
 

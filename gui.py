@@ -16,6 +16,7 @@ class Gui(QMainWindow):
         self.loop = loop
         self.theme = self.app.theme
         self.tabWindow = None
+        self.quirkWindow = None
         self.memosWindow = None
 
     def initialize(self):
@@ -33,6 +34,11 @@ class Gui(QMainWindow):
         self.clientMenu = self.menubar.addMenu("CLIENT")
         self.profileMenu = self.menubar.addMenu("PROFILE")
         self.helpMenu = self.menubar.addMenu("HELP")
+
+        # Create QUIRKS button in 'PROFILE' menu
+        self.quirkAction = QAction("QUIRKS", self)
+        self.quirkAction.triggered.connect(self.openQuirkWindow)
+        self.profileMenu.addAction(self.quirkAction)
 
         # Create SWITCH button in 'PROFILE' menu
         self.authAction = QAction("SWITCH", self)
@@ -134,6 +140,9 @@ class Gui(QMainWindow):
 
     def openMemosWindow(self):
         self.memosWindow = MemosWindow(self.app, self)
+
+    def openQuirkWindow(self):
+        self.openQuirkWindow = QuirksWindow(self.app)
 
     def openOptions(self):
         try:
