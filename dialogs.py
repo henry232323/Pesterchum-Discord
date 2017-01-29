@@ -697,12 +697,10 @@ class AddQuirkWindow(QWidget):
                 value = (self.regexpLineEdit.text(), replace)
                 self.app.quirks.append(("regex", value,))
             elif index == 5:
-                value = (self.randomRegexpLineEdit.text(), (*self.randomRegex))
+                value = (self.randomRegexpLineEdit.text(), tuple(self.randomRegex))
                 self.app.quirks.append(("random", value,))
             if index != 0:
                 self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
-                print(self.buttons)
-                print(index)
                 self.close()
         except Exception as e:
             print(e)
