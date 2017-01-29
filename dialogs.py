@@ -621,7 +621,7 @@ class AddQuirkWindow(QWidget):
         self.parent = parent
         uic.loadUi(self.app.theme["ui_path"] + "/AddQuirkWindow.ui", self)
 
-        self.buttons = ('prefix', 'suffix', 'replace', 'regex', 'random')
+        self.buttons = ('opts', 'prefix', 'suffix', 'replace', 'regex', 'random')
         self.setWindowTitle('Quirks')
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
 
@@ -678,11 +678,11 @@ class AddQuirkWindow(QWidget):
                 elif self.regexRadio.isChecked():
                     self.stackWidget.setCurrentIndex(4)
                     for func in qfuncs.values():
-                        self.regexFuncs.addItem(func)
+                        self.regexFuncs.addItem(func.__name__ + "()")
                 elif self.randomRadio.isChecked():
                     self.stackWidget.setCurrentIndex(5)
                     for func in qfuncs.values():
-                        self.randRegexFuncs.addItem(func)
+                        self.randRegexFuncs.addItem(func.__name__ + "()")
             elif index == 1:
                 value = self.prefixLineEdit.text()
                 self.app.quirks.append(("prefix", value,))
@@ -694,22 +694,23 @@ class AddQuirkWindow(QWidget):
                 self.app.quirks.append(("replace", value,))
             elif index == 4:
                 replace = self.regexpReplaceLineEdit.text()
-                value = (self.regexpLineEdit.text(), re.sub(r"\\([0-9]+)",r"\\g<\1>",replace))
-                self.app.quirks.append(("replace", value,))
+                value = (self.regexpLineEdit.text(), replace)
+                self.app.quirks.append(("regex", value,))
             elif index == 5:
                 value = (self.randomRegexpLineEdit.text(), (*self.randomRegex))
                 self.app.quirks.append(("random", value,))
             if index != 0:
                 self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
+                print(self.buttons)
+                print(index)
                 self.close()
         except Exception as e:
             print(e)
 
     def addRandom(self):
         nq = self.addRandomLineEdit.text()
-        fn = re.sub(r"\\([0-9]+)", r"\\g<\1>", nq)
-        self.randomList.addItem(fn)
-        self.randomRegex.append(fn)
+        self.randomList.addItem(nq)
+        self.randomRegex.append(nq)
         self.addRandomLineEdit.setText("")
 
     def removeRandom(self):

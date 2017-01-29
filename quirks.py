@@ -12,6 +12,7 @@ class Quirks(object):
     def __init__(self, app):
         self.app = app
         self.id = self.app.client.user.id
+        self.qfuncs = qfuncs
         if not os.path.exists("cfg/quirks.json"):
             with open("cfg/quirks.json", 'w') as qf:
                 qf.write(json.dumps({self.id:list()}))
@@ -33,10 +34,7 @@ class Quirks(object):
                 elif type == "replace":
                     fmt = fmt.replace(quirk[0], quirk[1])
                 elif type == "regex":
-                    # quirk[0] = eval(quirk[1], funcs)
                     fmt = re.sub(quirk[0], quirk[1], message)
-                    print(quirk, message)
-                    print(fmt)
                 elif type == "random":
                     fmt = re.sub(quirk[0], choice(quirk[1]), message)
             return fmt
