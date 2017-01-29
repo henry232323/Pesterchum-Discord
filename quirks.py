@@ -48,6 +48,11 @@ class Quirks(object):
 
                 elif type == "random":
                     fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), message)
+                    for name, func in self.qfuncs.items():
+                        if name in quirk[1]:
+                            def callfunc(match):
+                                return func(match.group(0)[len(name)+1:-1])
+                            fmt = re.sub(r"({}\(.*?\))".format(name), callfunc, fmt)
             return fmt
         except Exception as e:
             print(e)
