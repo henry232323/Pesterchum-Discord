@@ -39,7 +39,7 @@ class Quirks(object):
                 elif type == "replace":
                     fmt = fmt.replace(quirk[0], quirk[1])
                 elif type == "regex":
-                    fmt = re.sub(quirk[0], quirk[1], message)
+                    fmt = re.sub(quirk[0], quirk[1], fmt)
                     for name, func in self.qfuncs.items():
                         if name in quirk[1]:
                             def callfunc(match):
@@ -47,7 +47,7 @@ class Quirks(object):
                             fmt = re.sub(r"({}\(.*?\))".format(name), callfunc, fmt)
 
                 elif type == "random":
-                    fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), message)
+                    fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), fmt)
                     for name, func in self.qfuncs.items():
                         if name in quirk[1]:
                             def callfunc(match):
