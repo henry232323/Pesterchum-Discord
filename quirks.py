@@ -23,6 +23,11 @@ class Quirks(object):
             self.allquirks[self.id] = list()
         self.quirks = self.allquirks[self.id]
 
+    def create_rnd(self, quirk):
+        def random(match):
+            return choice(quirk)
+        return random
+
     def process_quirks(self, message):
         try:
             fmt = message
@@ -36,7 +41,7 @@ class Quirks(object):
                 elif type == "regex":
                     fmt = re.sub(quirk[0], quirk[1], message)
                 elif type == "random":
-                    fmt = re.sub(quirk[0], choice(quirk[1]), message)
+                    fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), message)
             return fmt
         except Exception as e:
             print(e)
