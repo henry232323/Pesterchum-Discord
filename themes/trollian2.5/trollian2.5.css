@@ -364,3 +364,20 @@
 	padding: 5px 0px 5px 0px;
 	width: 10px;
 }
+.QuirksWindow .QPushButton, .AddQuirkWindow .QPushButton{
+	background-color: #FF0000;
+	font-family: Arial;font-weight: bold;
+}
+.QuirksWindow, .AddQuirkWindow{
+	background-color: #FF0000;
+	font-family: Arial;font-weight: bold;
+	
+}
+.QuirksWindow .QListWidget,.AddQuirkWindow .QListWidget{
+	background-color: black;
+	color:#666;
+	border-color: #FFA4A4;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Arial;font-weight: bold;
+}
