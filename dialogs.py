@@ -559,3 +559,45 @@ class AuthDialog(QDialog):
             self.close()
         else:
             self.app.exit()
+
+
+class QuirksWindow(QWidget):
+    def __init__(self, app):
+        try:
+            super(__class__, self).__init__()
+            self.app = app
+            uic.loadUi(self.app.theme["ui_path"] + "/QuirksWindow.ui", self)
+            self.addQuirkButton.clicked.connect(self.openQuirk)
+            self.editQuirkButton.clicked.connect(self.editQuirk)
+            self.removeQuirk.clicked.connect(self.removeQuirk)
+            self.cancelButton.clicked.connect(self.closeWin)
+            self.okButton.clicked.connect(self.save)
+            self.testButton.clicked.connect(self.testQuirks)
+        except Exception as e:
+            print(e)
+
+    def openQuirk(self):
+        AddQuirkWindow(self.app, self)
+
+    def editQuirk(self):
+        pass
+
+    def removeQuirk(self):
+        pass
+
+    def closeWin(self):
+        pass
+
+    def save(self):
+        pass
+
+    def testQuirks(self):
+        pass
+
+
+class AddQuirkWindow(QWidget):
+    def __init__(self, app, parent):
+        super(__class__, self).__init__()
+        self.app = app
+        self.parent = parent
+        uic.loadUi(self.app.theme["ui_path"] + "/AddQuirkWindow.ui", self)
