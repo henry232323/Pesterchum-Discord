@@ -98,13 +98,6 @@ class App(QApplication):
 
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
-
-        # Login info
-        print('Logged in as')
-        print(self.user.name)
-        print(self.user.id)
-        print('------')
-
         self.nick = self.client.user.name
         self.quirks = Quirks(self)
         sys.argv.append('debug')
