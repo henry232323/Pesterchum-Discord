@@ -693,10 +693,16 @@ class AddQuirkWindow(QWidget):
                 self.app.quirks.append(("replace", value,))
             elif index == 4:
                 replace = self.regexpReplaceLineEdit.text()
-                value = (self.regexpLineEdit.text(), replace)
+                fm = self.regexpLineEdit.text()
+                if not ("(" in fm and ")" in fm):
+                    fm = "({})".format(fm)
+                value = (fm, replace)
                 self.app.quirks.append(("regex", value,))
             elif index == 5:
-                value = (self.randomRegexpLineEdit.text(), tuple(self.randomRegex))
+                fm = self.randomRegexpLineEdit.text()
+                if not ("(" in fm and ")" in fm):
+                    fm = "({})".format(fm)
+                value = (fm, tuple(self.randomRegex))
                 self.app.quirks.append(("random", value,))
             if index != 0:
                 self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
