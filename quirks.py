@@ -2,17 +2,15 @@ import json
 import re
 import os
 import inspect
+from importlib import reload
 from random import choice
 
-from pyquirks import quirk_funcs
-
-qfuncs = dict(inspect.getmembers(quirk_funcs, inspect.isfunction))
+import pyquirks
 
 class Quirks(object):
     def __init__(self, app):
         self.app = app
         self.id = self.app.client.user.id
-        self.qfuncs = qfuncs
         if not os.path.exists("cfg/quirks.json"):
             with open("cfg/quirks.json", 'w') as qf:
                 qf.write(json.dumps({self.id:list()}))
@@ -22,6 +20,7 @@ class Quirks(object):
         if self.id not in self.allquirks.keys():
             self.allquirks[self.id] = list()
         self.quirks = self.allquirks[self.id]
+        self.qfuncs = dict(inspect.getmembers(pyquirks.quirk_funcs, inspect.isfunction))
 
     @staticmethod
     def create_rnd(quirk):
@@ -41,6 +40,12 @@ class Quirks(object):
                     fmt = fmt.replace(quirk[0], quirk[1])
                 elif type == "regex":
                     fmt = re.sub(quirk[0], quirk[1], message)
+                    for name, func in self.qfuncs.items():
+                        if name in quirk[1]:
+                            def callfunc(match):
+                                return func(match.group(0)[len(name)+1:-1])
+                            fmt = re.sub(r"({}\(.*?\))".format(name), callfunc, fmt)
+
                 elif type == "random":
                     fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), message)
             return fmt
@@ -53,3 +58,7 @@ class Quirks(object):
 
     def append(self, item):
         self.quirks.append(item)
+
+    def reload(self):
+        reload(pyquirks)
+        self.qfuncs = dict(inspect.getmembers(pyquirks.quirk_funcs, inspect.isfunction))

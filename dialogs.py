@@ -717,19 +717,19 @@ class AddQuirkWindow(QWidget):
             self.randomList.takeItem(self.randomList.indexFromItem(item).row())
 
     def randAddFuncs(self):
-        for func in quirks.qfuncs.values():
+        for func in self.app.quirks.qfuncs.values():
             self.randRegexFuncs.addItem(func.__name__ + "()")
 
     def addFuncs(self):
-        for func in quirks.qfuncs.values():
+        for func in self.app.quirks.qfuncs.values():
             self.regexFuncs.addItem(func.__name__ + "()")
 
     def reload_functions(self):
         self.regexFuncs.reset()
-        reload(quirks)
+        self.app.quirks.reload()
         self.addFuncs()
 
     def rand_reload_functions(self):
         self.randRegexFuncs.reset()
-        reload(quirks)
+        self.app.quirks.reload()
         self.addFuncs()
