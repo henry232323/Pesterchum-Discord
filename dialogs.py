@@ -519,7 +519,7 @@ class MemoTabWindow(QWidget):
 
 
 class AuthDialog(QDialog):
-    def __init__(self, app, parent):
+    def __init__(self, app, parent, f=False):
         """
         Dialog opened when the Add [Chum] button is pressed, adds to chumsTree widget
         """
@@ -531,6 +531,9 @@ class AuthDialog(QDialog):
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
         self.acceptButton.clicked.connect(self.accepted)
         self.closeButton.clicked.connect(self.rejected)
+        if f:
+            self.errorLabel.setText("""Invalid login / token! Failed to login.
+(Once you edit credentials the client will close)""")
         self.auth = None
         self.exec_()
 

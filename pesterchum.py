@@ -37,7 +37,7 @@ class App(QApplication):
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
-        self.client = DiscordClient(app=self, loop=self.loop, bot=False)
+        self.client = DiscordClient(app=self, loop=self.loop)
 
         self.user, self.passwd, self.token = UserAuth
 
@@ -45,7 +45,7 @@ class App(QApplication):
             self.openAuth()
             save_auth((self.user, self.passwd, self.token,))
 
-        self.runbot()
+        asyncio.ensure_future(self.runbot())
 
         self.gui = Gui(self.loop, self)
 
@@ -138,19 +138,24 @@ class App(QApplication):
         message = self.quirks.process_quirks(message)
         asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
-    def openAuth(self):
-        self.user, self.passwd, self.token = AuthDialog(self, self).auth
-
-    def runbot(self):
-        if (self.user and self.passwd) and not self.token:
-            asyncio.ensure_future(self.client.start(self.user, self.passwd))
-        elif self.token and not (self.user or self.passwd):
-            asyncio.ensure_future(self.client.start(self.token))
-        else:
-            self.exit(code=1)
-
+    def openAuth(self, f=False):
+        self.user, self.passwd, self.token = AuthDialog(self, self, f=f).auth
         if hasattr(self, "gui"):
             self.exit()
+
+    async def runbot(self):
+        try:
+            if (self.user and self.passwd) and not self.token:
+                await self.client.start(self.user, self.passwd, bot=False)
+                return
+            elif self.token and not (self.user or self.passwd):
+                await self.client.start(self.token, bot=False)
+                return
+            self.exit()
+        except discord.LoginFailure:
+            self.openAuth(f=True)
+            save_auth((self.user, self.passwd, self.token))
+
 
     def exit(self, code=0):
         """
