@@ -4,6 +4,8 @@ from PyQt5.QtGui import QColor
 
 import asyncio
 import sys
+import subprocess
+import requests
 from inspect import isawaitable
 
 import discord
@@ -19,11 +21,15 @@ from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import *
 
-__version__ = "v1.0.0"
+__version__ = "v1.0.2"
 
 if Options["interface"]["auto_update"]:
-    from updater import update
-    update(__version__)
+    response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
+    current_version = response["tag_name"]
+    if current_version > __version__:
+        download_url = response["assets"][0]["browser_download_url"]
+        subprocess.call("start updater.exe {}".format(download_url), shell=True)
+        sys.exit()
 
 class App(QApplication):
     def __init__(self):
