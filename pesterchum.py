@@ -19,6 +19,11 @@ from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import *
 
+__version__ = "v1.0.0"
+
+if Options["interface"]["auto_update"]:
+    from updater import update
+    update(__version__)
 
 class App(QApplication):
     def __init__(self):

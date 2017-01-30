@@ -22,7 +22,8 @@ default_options = {
         "minimize":0,
         "close":1,
         "blink_taskbar_on_pesters":False,
-        "blink_taskbar_on_memos":False
+        "blink_taskbar_on_memos":False,
+        "auto_update":False,
         },
     "theme":{
         "theme":"pesterchum2.5"
