@@ -1,5 +1,6 @@
 import json, os
 import base64
+
 default_auth = (None, None, None)
 
 authpath = "cfg/auth.json"
