@@ -112,7 +112,6 @@ class App(QApplication):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
         self.nick = self.client.user.name
         self.quirks = Quirks(self)
-        sys.argv.append('debug')
         if "debug" in sys.argv:
             self.cli()
         self.gui.initialize()

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QDesktopServices, \
     QStandardItemModel, QStandardItem
-from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant
+from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant, QUrl
 from PyQt5 import uic
 
 import asyncio
@@ -75,6 +75,16 @@ class Gui(QMainWindow):
         self.friendsUsers = dict()
         self.friendsModel = self.FriendsModel(self.app)
 
+        # Create HELP button in 'HELP' menu
+        self.openHelpAction = QAction("HELP", self)
+        self.openHelpAction.triggered.connect(self.openHelp)
+        self.helpMenu.addAction(self.openHelpAction)
+
+        # Create REPORT BUG button in 'HELP' menu
+        self.openBugAction = QAction("REPORT BUG", self)
+        self.openBugAction.triggered.connect(self.openBug)
+        self.helpMenu.addAction(self.openBugAction)
+
         # Create a QStandardItem for each friend, friendsModel will auto update
         for channel in self.app.client.private_channels:
             if channel.type == channel.type.group:
@@ -147,6 +157,12 @@ class Gui(QMainWindow):
         for name, item in self.friendsItems.items():
             index = self.friendsModel.indexFromItem(item)
             self.chumsTree.setRowHidden(index.row(), self.friendsModel.parent(index), False)
+
+    def openHelp(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/henry232323/Pesterchum-Discord"))
+
+    def openBug(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/henry232323/Pesterchum-Discord/issues"))
 
     def openMemosWindow(self):
         self.memosWindow = MemosWindow(self.app, self)
