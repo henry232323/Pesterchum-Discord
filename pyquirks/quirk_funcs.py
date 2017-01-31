@@ -12,5 +12,9 @@ def upper(str):
     return str.upper()
 
 
-def scramblerep(text):
+def scramble(text):
     return "".join(sample(text, len(text)))
+
+
+def capitalize(str):
+    return str.capitalize()
