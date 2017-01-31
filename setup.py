@@ -13,7 +13,7 @@ build_exe_options = {
     "includes": ["PyQt5", "os", "json", "asyncio", "types", "discord", "aiohttp"],
     "excludes": ["tkinter", "_tkinter", '_gtkagg', '_tkagg', 'bsddb', 'curses',
                  'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'tcl',
-                 'unittest', 'idlelib'],
+                 'unittest', 'idlelib', 'certifi'],
     "include_files": include_files,
     }
 

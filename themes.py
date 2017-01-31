@@ -2,6 +2,7 @@ import os
 
 themes = dict()
 
+
 def getThemes(themes):
     '''
     Can be called any time to refresh themes, creates a theme
