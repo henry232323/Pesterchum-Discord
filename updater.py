@@ -32,7 +32,24 @@ def get_update(url):
     zip_ref.extractall("temp")
     zip_ref.close()
 
-    shutil.copy("temp/python35.zip", "./python35.zip")
+    to_copy = ["python35.zip", "resources", "themes"]
+    for cfile in to_copy:
+        fn = "temp/{}".format(cfile)
+        if os.path.isfile(fn):
+            shutil.copy(fn, "./{}".format(cfile))
+        else:
+            for root, dirs, files in os.walk(fn):
+                rp = root[5:]
+                for dir in dirs:
+                    dp = "{}/{}".format(rp, dir)
+                    if not os.path.exists(dp):
+                        os.makedirs(dp)
+                for file in files:
+                    try:
+                        shutil.copy("{}/{}".format(root, file), "{}/{}".format(rp, file))
+                    except PermissionError as e:
+                        print(e)
+
     def onerror(func, path, exc_info):
         if not os.access(path, os.W_OK):
             # Is the error an access error ?

@@ -3,7 +3,7 @@ import requests
 import sys
 from options import Options
 
-__version__ = "v1.0.3"
+__version__ = "v1.0.4"
 
 if Options["interface"]["auto_update"]:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
