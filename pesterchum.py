@@ -1,13 +1,24 @@
+import subprocess
+import requests
+import sys
+from options import Options
+
+__version__ = "v1.0.3"
+
+if Options["interface"]["auto_update"]:
+    response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
+    current_version = response["tag_name"]
+    if current_version > __version__:
+        download_url = response["assets"][0]["browser_download_url"]
+        subprocess.Popen("start updater.exe {}".format(download_url), shell=True)
+        sys.exit()
+
 from PyQt5.QtWidgets import *
 from quamash import QEventLoop
 from PyQt5.QtGui import QColor
 
 import asyncio
-import sys
-import subprocess
-import requests
 from inspect import isawaitable
-
 import discord
 
 from gui import Gui
@@ -15,21 +26,11 @@ from dialogs import AuthDialog
 from client import DiscordClient
 from themes import themes, getThemes
 from quirks import Quirks
-from options import Options
 from config import Config
 from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import *
 
-__version__ = "v1.0.2"
-
-if Options["interface"]["auto_update"]:
-    response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
-    current_version = response["tag_name"]
-    if current_version > __version__:
-        download_url = response["assets"][0]["browser_download_url"]
-        subprocess.call("start updater.exe {}".format(download_url), shell=True)
-        sys.exit()
 
 class App(QApplication):
     def __init__(self):

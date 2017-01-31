@@ -2,13 +2,15 @@ import sys, os, shutil
 import zipfile
 import requests
 import subprocess
+from stat import S_IWUSR
+
 
 def get_update(url):
-    sys.stdout.write("Downloading update from {}".format(url))
+    print("Downloading update from {}".format(url))
 
     if not os.path.exists("temp"):
         os.mkdir("temp")
-    cachepath = "temp/master.zip".format()
+    cachepath = "temp/master.zip"
     with open(cachepath, "wb") as f:
         print("Downloading %s" % cachepath)
         response = requests.get(url, stream=True)
@@ -30,26 +32,20 @@ def get_update(url):
     zip_ref.extractall("temp")
     zip_ref.close()
 
-    def del_rw(*args):pass
+    shutil.copy("temp/python35.zip", "./python35.zip")
+    def onerror(func, path, exc_info):
+        if not os.access(path, os.W_OK):
+            # Is the error an access error ?
+            os.chmod(path, S_IWUSR)
+            func(path)
 
-    cp = "temp"
-    for root, dirs, files in os.walk(cp):
-        rp = root[len(cp) + 1:]
-        for dir in dirs:
-            dp = "{}/{}".format(rp, dir)
-            if not os.path.exists(dp):
-                os.makedirs(dp)
-
-        for file in files:
-            if file == "updater.py":
-                continue
-            try:
-                shutil.copy(root + "/" + file, "{}/{}".format(rp, file))
-            except PermissionError as e:
-                pass
-
-    shutil.rmtree("temp", onerror=del_rw)
-    subprocess.call("start pesterchum.exe", shell=True)
+    shutil.rmtree("temp", onerror=onerror)
+    subprocess.Popen("start pesterchum.exe", shell=True)
     sys.exit()
 
-get_update(sys.argv[-1])
+try:
+    get_update(sys.argv[-1])
+except IndexError:
+    response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
+    current_version = response["tag_name"]
+    download_url = response["assets"][0]["browser_download_url"]
