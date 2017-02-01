@@ -20,3 +20,11 @@ Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) f
 
 Add custom quirk commands by going to the pyquirks folder and removing quirk_funcs.pyc and replacing it with your own quirk_funcs.py
 (if you want parts from the original just grab the [source](https://github.com/henry232323/Pesterchum-Discord/blob/master/pyquirks/quirk_funcs.py))
+
+#Preview
+
+###Pesterchum2.5
+[PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.JPG)
+
+###Trollian
+[TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.JPG)
