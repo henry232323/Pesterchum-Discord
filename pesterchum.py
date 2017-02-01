@@ -167,7 +167,6 @@ class App(QApplication):
             self.openAuth(f=True)
             save_auth((self.user, self.passwd, self.token))
 
-
     def exit(self, code=0):
         """
         Called when exiting the client

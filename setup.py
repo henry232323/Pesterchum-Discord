@@ -2,18 +2,15 @@ import sys
 from cx_Freeze import setup, Executable
 import os
 
-os.environ['TCL_LIBRARY'] = "C:\\Users\\Henry\\AppData\\Local\\Programs\\Python\\Python35-32\\tcl\\tcl8.6"
-os.environ['TK_LIBRARY'] = "C:\\Users\\Henry\\AppData\\Local\\Programs\\Python\\Python35-32\\tcl\\tk8.6"
-
 sys.argv.append("build")
 
-include_files = ["resources", "themes"]
+include_files = ["resources", "themes", "README.md", "LICENSE"]
 
 build_exe_options = {
-    "includes": ["PyQt5", "os", "json", "asyncio", "types", "discord", "aiohttp"],
+    "includes": ["PyQt5", "os", "json", "asyncio", "types", "discord", "aiohttp", "requests"],
     "excludes": ["tkinter", "_tkinter", '_gtkagg', '_tkagg', 'bsddb', 'curses',
                  'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'tcl',
-                 'unittest', 'idlelib', 'certifi'],
+                 'unittest', 'idlelib', 'certifi', 'nacl', "_lzma", "_hashlib", "_bz2"],
     "include_files": include_files,
     }
 
