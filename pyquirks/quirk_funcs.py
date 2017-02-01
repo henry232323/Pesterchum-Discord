@@ -1,5 +1,6 @@
 from random import sample
 
+
 def lower(str):
     return str.lower()
 

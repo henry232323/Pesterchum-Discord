@@ -17,9 +17,9 @@ from PyQt5.QtWidgets import *
 from quamash import QEventLoop
 from PyQt5.QtGui import QColor
 
+import discord
 import asyncio
 from inspect import isawaitable
-import discord
 
 from gui import Gui
 from dialogs import AuthDialog
