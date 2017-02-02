@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys, os, shutil
 import zipfile
 import requests

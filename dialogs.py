@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor
 from PyQt5.QtCore import Qt
@@ -8,6 +9,7 @@ from importlib import reload
 
 from messages import *
 import quirks
+
 
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, container, parent, user):

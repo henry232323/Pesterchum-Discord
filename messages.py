@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from formatting import *
 
 def process_send_msg(app, msg, user=None):

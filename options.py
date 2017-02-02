@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json, os
 
 default_options = {

@@ -1,6 +1,5 @@
 import sys
 from cx_Freeze import setup, Executable
-import os
 
 sys.argv.append("build")
 
@@ -19,8 +18,8 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 setup(
-    name = "Pesterchum-Discord",
-    version = "v1.0.4",
+    name="Pesterchum-Discord",
+    version="v1.0.4",
     description="A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client.",
     options={"build_exe": build_exe_options},
     executables=[Executable("pesterchum.py", base=base, icon="resources/pc_chummy.ico"),
