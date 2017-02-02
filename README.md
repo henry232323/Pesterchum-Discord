@@ -2,6 +2,9 @@
 
 A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client
 
+#Install
+Unzip the file and run Pesterchum.exe, the GUI wont launch until connected. If there is an update, updater.exe will launch in a console
+
 #Tokens
 The Discord API has officially deprecated user logins, (email / password) best choice is to use tokens. All accounts
 have tokens, to find yours:
