@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import re, os
 from datetime import datetime
 

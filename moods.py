@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class Moods(object):
     moods = ["chummy", "rancorous", "offline", "pleasant", "distraught",
              "pranky", "smooth", "ecstatic", "relaxed", "discontent",

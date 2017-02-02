@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 import re
 import os
@@ -22,12 +23,6 @@ class Quirks(object):
         self.quirks = self.allquirks[self.id]
         self.qfuncs = dict(inspect.getmembers(pyquirks.quirk_funcs, inspect.isfunction))
 
-    @staticmethod
-    def create_rnd(quirk):
-        def random(match):
-            return choice(quirk)
-        return random
-
     def process_quirks(self, message):
         try:
             fmt = message
@@ -45,9 +40,10 @@ class Quirks(object):
                             def callfunc(match):
                                 return func(match.group(0)[len(name)+1:-1])
                             fmt = re.sub(r"({}\(.*?\))".format(name), callfunc, fmt)
-
                 elif type == "random":
-                    fmt = re.sub(quirk[0], self.create_rnd(quirk[1]), fmt)
+                    def random(match):
+                        return re.sub(quirk[0], choice(quirk[1]), match.group(0))
+                    fmt = re.sub(quirk[0], random, fmt)
                     for name, func in self.qfuncs.items():
                         if name in quirk[1]:
                             def callfunc(match):

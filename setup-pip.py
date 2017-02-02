@@ -1,7 +1,5 @@
 import sys
-from cx_Freeze import setup, Executable
-
-sys.argv.append("build")
+from setuptools import setup
 
 include_files = ["resources", "themes", "README.md", "LICENSE"]
 
@@ -21,7 +19,9 @@ setup(
     name="Pesterchum-Discord",
     version="v1.0.4",
     description="A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client.",
-    options={"build_exe": build_exe_options},
-    executables=[Executable("pesterchum.py", base=base, icon="resources/pc_chummy.ico"),
-                 Executable("updater.py", base=None)]
+    author="henry232323",
+    author_email="henry@rhodochrosite.xyz",
+    packages=["pyquirks"],
+    url="https://github.com/henry232323/Pesterchum-Discord",
+    license="GPL3",
         )
