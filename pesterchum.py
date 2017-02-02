@@ -11,7 +11,7 @@ if Options["interface"]["auto_update"]:
     current_version = response["tag_name"]
     if current_version > __version__:
         download_url = response["assets"][0]["browser_download_url"]
-        subprocess.Popen("start updater.exe {}".format(download_url), shell=True)
+        subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
 
 from PyQt5.QtWidgets import *
