@@ -81,10 +81,12 @@ def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
     or without a suffix using a Chumhandle. A suffix being a me style
     ending. i.e. /me's [GD'S]
     '''
-    if not getattr(user, "nick", False):
-        user.nick = user.name
-    init = user.nick[0].upper()
-    for char in user.nick:
+    try:
+        nick = user.nick
+    except AttributeError:
+        nick = user.name
+    init = nick[0].upper()
+    for char in nick:
         if char.isupper():
             break
     init += char.upper()
