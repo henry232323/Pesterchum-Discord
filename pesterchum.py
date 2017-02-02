@@ -132,7 +132,10 @@ class App(QApplication):
 
     def getColor(self, member, type=str):
         """Get the given primary role color for a `Member`, returns a `Discord.Color` instance"""
-        clr = member.color
+        try:
+            clr = member.color
+        except AttributeError:
+            clr = discord.Color.default()
         if type is str:
             return "rgb({clr.r},{clr.g},{clr.b})".format(clr=clr)
         elif type is QColor:
