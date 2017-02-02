@@ -61,9 +61,10 @@ def get_update(url):
     subprocess.Popen("start pesterchum.exe", shell=True)
     sys.exit()
 
-try:
+if len(sys.argv) > 1:
     get_update(sys.argv[-1])
-except IndexError:
+else:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
     current_version = response["tag_name"]
     download_url = response["assets"][0]["browser_download_url"]
+    get_update(download_url)
