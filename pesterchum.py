@@ -91,7 +91,7 @@ class App(QApplication):
             message.content = "/me " + message.content[1:-1]
         if isinstance(message.channel, discord.PrivateChannel):
             if not message.channel.name:
-                message.channel.name = ",".join(map(lambda m: m.name, message.channel.recipients))
+                message.channel.name = ",".join(map(lambda m: m.display_name, message.channel.recipients))
             if message.channel.type is discord.ChannelType.group:
                 tab = self.gui.start_privmsg(message.channel)
             else:

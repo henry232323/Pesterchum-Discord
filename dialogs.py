@@ -27,7 +27,7 @@ class PrivateMessageWidget(QWidget):
         self.user = user
         self.app = app
         self.container = container
-        self.userLabel.setText(user.name.join(["::", "::"]))
+        self.userLabel.setText(user.display_name.join(["::", "::"]))
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
@@ -99,7 +99,7 @@ class TabWindow(QWidget):
         if user.id not in self.ids:
             windw = PrivateMessageWidget(self.app, self.tabWidget, self, user)
             icon = QIcon("resources/pc_chummy.png")
-            a = self.tabWidget.addTab(windw, icon, user.name)
+            a = self.tabWidget.addTab(windw, icon, user.display_name)
             tab = self.tabWidget.widget(a)
             self.users.append(user)
             self.ids.append(user.id)
@@ -414,7 +414,7 @@ class MemoMessageWidget(QWidget):
             self.add_user_item(user)
 
     def add_user_item(self, user):
-        nam = user.name
+        nam = user.display_name
         self.memoUsers.addItem(nam)
         itm = self.memoUsers.item(self.memoUsers.count() - 1)
         clr = user.color
@@ -510,7 +510,7 @@ class MemoTabWindow(QWidget):
     def add_user_items(self):
         try:
             for member in self.memo.members:
-                nam = QListWidgetItem(member.name)
+                nam = QListWidgetItem(member.display_name)
                 nam.setForeground(self.app.getColor(member, type=QColor))
                 if member.top_role.permissions.administrator:
                     nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))

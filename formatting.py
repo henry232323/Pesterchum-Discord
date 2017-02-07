@@ -14,7 +14,7 @@ def color_to_span(msg):
 
 def fmt_begin_msg(app, fromuser, touser):
     '''Format a PM begin message'''
-    msg = "/me began pestering {touser} {toInit} at {time}".format(touser=touser.name, toInit=getInitials(app, touser,
+    msg = "/me began pestering {touser} {toInit} at {time}".format(touser=touser.display_name, toInit=getInitials(app, touser,
                                                                    c=True), time=getTime(app))
     return fmt_me_msg(app, msg, fromuser)
 
@@ -39,7 +39,7 @@ def fmt_me_msg(app, msg, user, time=False):
     predicate = msg[3+len(suffix):].strip()
     timefmt = '<span style="color:black;">[{}]</style>'.format(getTime(app)) if time else ""
     fmt = '<b>{timefmt}<span style="color:#646464;"> -- {user}{suffix} {init} {predicate}--</span></b><br />'
-    msg = fmt.format(user=user.name, init=init,
+    msg = fmt.format(user=user.display_name, init=init,
                      timefmt=timefmt if app.options["conversations"]["time_stamps"] else "", predicate=predicate, suffix=suffix)
     return msg
 
@@ -81,10 +81,7 @@ def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
     or without a suffix using a Chumhandle. A suffix being a me style
     ending. i.e. /me's [GD'S]
     '''
-    try:
-        nick = user.nick
-    except AttributeError:
-        nick = user.name
+    nick = user.display_name
     init = nick[0].upper()
     for char in nick:
         if char.isupper():

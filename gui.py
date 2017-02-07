@@ -5,6 +5,8 @@ from PyQt5.QtGui import QIcon, QDesktopServices, \
 from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant, QUrl
 from PyQt5 import uic
 
+from random import randint
+
 from dialogs import *
 
 
@@ -20,7 +22,7 @@ class Gui(QMainWindow):
         self.mood_buttons = dict()
 
     def initialize(self):
-        self.widget = uic.loadUi("themes/pesterchum2.5/ui/Main.ui", self)
+        uic.loadUi(self.theme["ui_path"] + "/Main.ui", self)
 
         self.nameButton.setText(self.app.client.user.name)
 
@@ -88,11 +90,11 @@ class Gui(QMainWindow):
         for channel in self.app.client.private_channels:
             if channel.type == channel.type.group:
                 if not channel.name:
-                    friend = ",".join(map(lambda c: c.name, channel.recipients))
+                    friend = ",".join(map(lambda c: c.display_name, channel.recipients))
                 else:
                     friend = channel.name
             else:
-                friend = channel.user.name
+                friend = channel.user.display_name
             self.friendsUsers[friend] = channel.user
 
             treeitem = QStandardItem(friend)
@@ -118,6 +120,8 @@ class Gui(QMainWindow):
                 mood_name = self.app.moods.getName(num)
                 button.setIcon(QIcon(os.path.join(self.theme["path"], mood_name + ".png")))
                 button.clicked.connect(self.make_setMood(button))
+
+        self.colorButton.setStyleSheet('background-color: rgb({},{},{});'.format(randint(0,255), randint(0,255), randint(0,255)))
 
         self.show()
 
