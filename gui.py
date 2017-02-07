@@ -112,6 +112,8 @@ class Gui(QMainWindow):
         self.chumsTree.setExpandsOnDoubleClick(True)
         self.chumsTree.setItemsExpandable(True)
 
+        self.pesterButton.clicked.connect(self.privmsg_pester)
+
         for num in range(23):
             name = "moodButton{}".format(num)
             if hasattr(self, name):
@@ -137,6 +139,15 @@ class Gui(QMainWindow):
         x_w = self.offset.x()
         y_w = self.offset.y()
         self.move(x - x_w, y - y_w)
+
+    def privmsg_pester(self):
+        '''Opens selected user in tree when PESTER! button pressed, same as double click'''
+        selected = self.chumsTree.selectedIndexes()
+        if selected:
+            idx = selected[0]
+            user = self.friendsModel.data(idx)
+            self.tabWindow.raise_()
+            self.tabWindow.activateWindow()
 
     def start_privmsg(self, user):
         """
