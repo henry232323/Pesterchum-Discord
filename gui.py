@@ -146,6 +146,7 @@ class Gui(QMainWindow):
         if selected:
             idx = selected[0]
             user = self.friendsModel.data(idx)
+            self.start_privmsg(self.friendsUsers[user])
             self.tabWindow.raise_()
             self.tabWindow.activateWindow()
 
