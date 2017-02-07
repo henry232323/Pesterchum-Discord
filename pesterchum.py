@@ -23,7 +23,7 @@ import asyncio
 from inspect import isawaitable
 
 from gui import Gui
-from dialogs import AuthDialog
+from dialogs import AuthDialog, ConnectingDialog
 from client import DiscordClient
 from themes import themes, getThemes
 from quirks import Quirks
@@ -40,6 +40,8 @@ class App(QApplication):
         loop = QEventLoop(self)
         self.loop = loop
         asyncio.set_event_loop(loop)
+
+        asyncio.ensure_future(self.connecting())
 
         self.themes = themes
         self.theme = themes["pesterchum2.5"]
@@ -85,6 +87,10 @@ class App(QApplication):
 
         asyncio.ensure_future(run_exe())
 
+    async def connecting(self):
+        self.connectingDialog = ConnectingDialog(self, self)
+        self.connectingDialog.exec_()
+
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
         if message.content.startswith("_") and message.content.endswith("_"):
@@ -111,6 +117,7 @@ class App(QApplication):
 
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
+        self.connectingDialog.close()
         self.nick = self.client.user.name
         self.quirks = Quirks(self)
         if "debug" in sys.argv:

@@ -99,7 +99,7 @@ class Gui(QMainWindow):
 
             treeitem = QStandardItem(friend)
             treeitem.setText(friend)
-            treeitem.setIcon(QIcon(self.theme["path"] + "/offline.png"))
+            treeitem.setIcon(QIcon(self.theme["path"] + "/chummy.png"))
             self.friendsModel.appendRow(treeitem)
             self.friendsItems[friend] = treeitem
 
