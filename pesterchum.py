@@ -68,7 +68,7 @@ class App(QApplication):
 
     def cli(self):
         """
-        Runs a CLI-style eval loop, if eval(input) is awaitable (`inspect.isawaitable`)
+        Runs a REPL style loop, if eval(input) is awaitable (`inspect.isawaitable`)
         will await, runs in an executor
         """
 

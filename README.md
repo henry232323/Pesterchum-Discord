@@ -27,7 +27,7 @@ Add custom quirk commands by going to the pyquirks folder and removing quirk_fun
 #Preview
 
 ###Pesterchum2.5
-[PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.JPG)
+![PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.JPG)
 
 ###Trollian
-[TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.JPG)
+![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.JPG)
