@@ -5,14 +5,14 @@ themes = dict()
 
 
 def getThemes(themes):
-    '''
+    """
     Can be called any time to refresh themes, creates a theme
     for every folder in the themes directory, sets the css file to
-    foldername.css
+    `foldername`.css
     The folder name defines the Theme name
     All uis located in the ui folder
     More support for themes to come
-    '''
+    """
     themedir = os.listdir("themes")
     for theme in themedir:
         if os.path.isdir("themes/"+theme):

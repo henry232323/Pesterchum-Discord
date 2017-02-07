@@ -90,7 +90,7 @@ class Gui(QMainWindow):
         for channel in self.app.client.private_channels:
             if channel.type == channel.type.group:
                 if not channel.name:
-                    friend = ",".join(map(lambda c: c.display_name, channel.recipients))
+                    friend = ", ".join(map(lambda c: c.display_name, channel.recipients))
                 else:
                     friend = channel.name
             else:
