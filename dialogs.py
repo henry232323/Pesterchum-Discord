@@ -5,10 +5,9 @@ from PyQt5.QtCore import Qt
 from PyQt5 import uic
 
 import discord
-from importlib import reload
+from sys import exit as sysexit
 
 from messages import *
-import quirks
 
 
 class PrivateMessageWidget(QWidget):
@@ -744,3 +743,19 @@ class AddQuirkWindow(QWidget):
         self.randRegexFuncs.reset()
         self.app.quirks.reload()
         self.addFuncs()
+
+
+class ConnectingDialog(QDialog):
+    def __init__(self, app, parent):
+        super(__class__, self).__init__()
+        uic.loadUi(app.theme["ui_path"] + "/ConnectingDialog.ui", self)
+        self.app = app
+        self.parent = parent
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.connectingExitButton.clicked.connect(sysexit)
+        self.setWindowTitle('Connecting')
+        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.app.gui.connectingDialog = self
+        width = self.frameGeometry().width()
+        height = self.frameGeometry().height()
+        self.setFixedSize(width, height)
