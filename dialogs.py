@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5 import uic
 
 import discord
