@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>328</width>
-    <height>178</height>
+    <height>189</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>-1</x>
      <y>-1</y>
      <width>331</width>
-     <height>167</height>
+     <height>190</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -73,6 +73,13 @@
        <widget class="QLineEdit" name="tokenEdit"/>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="botCheck">
+      <property name="text">
+       <string>Bot Account</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="errorLabel">

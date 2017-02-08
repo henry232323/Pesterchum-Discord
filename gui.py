@@ -95,7 +95,7 @@ class Gui(QMainWindow):
                     friend = channel.name
             else:
                 friend = channel.user.display_name
-            self.friendsUsers[friend] = channel.user
+            self.friendsUsers[friend] = channel
 
             treeitem = QStandardItem(friend)
             treeitem.setText(friend)
