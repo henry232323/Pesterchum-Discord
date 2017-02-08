@@ -2,7 +2,7 @@
 import json, os
 import base64
 
-default_auth = (None, None, None)
+default_auth = (None, None, None, False)
 
 authpath = "cfg/auth.json"
 
@@ -18,7 +18,10 @@ else:
         try:
             UserAuth = json.loads(base64.b64decode(tx).decode())
         except (UnicodeDecodeError, json.decoder.JSONDecodeError):
-            UserAuth = (None, None, None)
+            UserAuth = (None, None, None, False)
+
+if len(UserAuth) < len(default_auth):
+    UserAuth = default_auth
 
 def save_auth(auth):
     with open(authpath, 'wb+') as af:

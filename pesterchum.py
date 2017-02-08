@@ -41,8 +41,6 @@ class App(QApplication):
         self.loop = loop
         asyncio.set_event_loop(loop)
 
-        asyncio.ensure_future(self.connecting())
-
         self.themes = themes
         self.theme = themes["pesterchum2.5"]
         self.theme_name = self.theme["name"]
@@ -54,11 +52,13 @@ class App(QApplication):
         self.nick = None
         self.client = DiscordClient(app=self, loop=self.loop)
 
-        self.user, self.passwd, self.token = UserAuth
+        self.user, self.passwd, self.token, self.botAccount = UserAuth
 
         if not UserAuth[0] and not UserAuth[1] and not UserAuth[2]:
             self.openAuth()
-            save_auth((self.user, self.passwd, self.token,))
+            save_auth((self.user, self.passwd, self.token, self.botAccount,))
+
+        asyncio.ensure_future(self.connecting())
 
         asyncio.ensure_future(self.runbot())
 
@@ -161,7 +161,7 @@ class App(QApplication):
         asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
     def openAuth(self, f=False):
-        self.user, self.passwd, self.token = AuthDialog(self, self, f=f).auth
+        self.user, self.passwd, self.token, self.botAccount = AuthDialog(self, self, f=f).auth
         if hasattr(self, "gui"):
             self.exit()
 
@@ -169,21 +169,20 @@ class App(QApplication):
         try:
             if (self.user and self.passwd) and not self.token:
                 await self.client.start(self.user, self.passwd, bot=False)
-                return
             elif self.token and not (self.user or self.passwd):
-                await self.client.start(self.token, bot=False)
+                await self.client.start(self.token, bot=self.botAccount)
                 return
             self.exit()
         except discord.LoginFailure:
             self.openAuth(f=True)
-            save_auth((self.user, self.passwd, self.token))
+            save_auth((self.user, self.passwd, self.token, self.botAccount,))
 
     def exit(self, code=0):
         """
         Called when exiting the client
         Save configurations and sys.exit
         """
-        save_auth((self.user, self.passwd, self.token,))
+        save_auth((self.user, self.passwd, self.token, self.botAccount,))
         self.quirks.save_quirks()
         sys.exit(code)
 

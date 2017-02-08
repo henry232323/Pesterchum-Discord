@@ -5,13 +5,14 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5 import uic
 
 import discord
+from asyncio import ensure_future
 from sys import exit as sysexit
 
 from messages import *
 
 
 class PrivateMessageWidget(QWidget):
-    def __init__(self, app, container, parent, user):
+    def __init__(self, app, user, name):
         """
         The widget within each tab of TabWindow, a display
         for new private messages and user input
@@ -21,17 +22,27 @@ class PrivateMessageWidget(QWidget):
         :param user: `discord.User` associated Discord User object
         """
         super(__class__, self).__init__()
-        self.parent = parent
         uic.loadUi(app.theme["ui_path"] + "/PrivateMessageWidget.ui", self)
         self.user = user
         self.app = app
-        self.container = container
-        self.userLabel.setText(user.display_name.join(["::", "::"]))
+
+        # setattr(user, "display_name", friend)
+        self.userLabel.setText(name.join(["::", "::"]))
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
+
         if not isinstance(user, discord.PrivateChannel):
-            self.display_text(fmt_begin_msg(app, self.app.client.user, user))
+            self.display_text(fmt_begin_msg(app, self.app.client.user, user.user))
+
+        ensure_future(self.get_logs())
+
+    async def get_logs(self):
+        async for message in self.app.client.logs_from(self.user, 100, reverse=True):
+            fmt = fmt_disp_msg(self.app, message.content, user=message.author)
+            if fmt:
+                self.display_text(fmt)
+
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
@@ -96,9 +107,17 @@ class TabWindow(QWidget):
         :param user: The `discord.User` to message
         """
         if user.id not in self.ids:
-            windw = PrivateMessageWidget(self.app, self.tabWidget, self, user)
+            if user.type == user.type.group:
+                if not user.name:
+                    name = ", ".join(map(lambda c: c.display_name, user.recipients))
+                else:
+                    name = user.name
+            else:
+                name = user.user.display_name
+
+            windw = PrivateMessageWidget(self.app, user, name)
             icon = QIcon("resources/pc_chummy.png")
-            a = self.tabWidget.addTab(windw, icon, user.display_name)
+            a = self.tabWidget.addTab(windw, icon, name)
             tab = self.tabWidget.widget(a)
             self.users.append(user)
             self.ids.append(user.id)
@@ -401,6 +420,14 @@ class MemoMessageWidget(QWidget):
         if not self.memo.permissions_for(self.memo.server.me).send_messages:
             self.userInput.setReadOnly(True)
 
+        ensure_future(self.get_logs())
+
+    async def get_logs(self):
+        async for message in self.app.client.logs_from(self.memo, 100, reverse=True):
+            fmt = fmt_disp_msg(self.app, message.content, user=message.author)
+            if fmt:
+                self.display_text(fmt)
+
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
         msg = self.userInput.text()
@@ -537,18 +564,22 @@ class AuthDialog(QDialog):
         email = self.emailEdit.text()
         passwd = self.passEdit.text()
         token = self.tokenEdit.text()
+        bot = self.botCheck.isChecked()
         if not email:
             email = None
         if not passwd:
             passwd = None
         if not token:
             token = None
-        self.auth = (email,passwd,token)
+        self.auth = (email, passwd, token, bot)
         if (email or passwd) and token:
             self.errorLabel.setText("You must have either a email/pass OR a token (for bot accounts)")
 
         if not (email and passwd) and not token:
             self.errorLabel.setText("You must have BOTH an email and password OR a token")
+
+        if (email or passwd) and bot:
+            self.errorLabel.setText("You cant login with an email/pass to a bot account")
 
         else:
             self.close()
@@ -737,7 +768,7 @@ class ConnectingDialog(QDialog):
         self.connectingExitButton.clicked.connect(sysexit)
         self.setWindowTitle('Connecting')
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
-        self.app.gui.connectingDialog = self
+        self.app.connectingDialog = self
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
