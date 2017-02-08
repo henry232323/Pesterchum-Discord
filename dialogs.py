@@ -311,10 +311,10 @@ class MemosWindow(QWidget):
         self.ctr = 0
         self.servers = dict()
         self.open = dict()
-
         for server in self.app.client.servers:
             self.servers[server.name] = server
             self.add_channel(server.name, len(server.members))
+        self.memosTableWidget.sortItems(0)
 
         self.show()
 
@@ -411,6 +411,7 @@ class MemoMessageWidget(QWidget):
     def add_names(self):
         for user in self.names:
             self.add_user_item(user)
+        self.memoUsers.sort(0)
 
     def add_user_item(self, user):
         nam = user.display_name
@@ -464,6 +465,7 @@ class MemoTabWindow(QWidget):
         uic.loadUi(app.theme["ui_path"] + "/MemoTabWindow.ui", self)
         self.memo = memo
         self.channels = list(filter(lambda x: x.type is discord.ChannelType.text and x.permissions_for(x.server.me).read_messages, self.memo.channels))
+        self.channels.sort(key=lambda server: server.name)
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
         self.setWindowTitle("Memos")
@@ -477,11 +479,8 @@ class MemoTabWindow(QWidget):
 
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
-        try:
-            del self.parent.open[self.memo.name]
-            event.accept()
-        except Exception as e:
-            print(e)
+        del self.parent.open[self.memo]
+        event.accept()
 
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)
@@ -492,7 +491,6 @@ class MemoTabWindow(QWidget):
             return self.tabWidget.widget(idx)
         except IndexError as e:
             print(e)
-            return None
 
     def add_memo(self, memo):
         '''
@@ -507,16 +505,13 @@ class MemoTabWindow(QWidget):
         return tab
 
     def add_user_items(self):
-        try:
-            for member in self.memo.members:
-                nam = QListWidgetItem(member.display_name)
-                nam.setForeground(self.app.getColor(member, type=QColor))
-                if member.top_role.permissions.administrator:
-                    nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
-                for x in range(self.tabWidget.count()):
-                    self.tabWidget.widget(x).memoUsers.addItem(nam)
-        except Exception as e:
-            print(e)
+        for member in self.memo.members:
+            nam = QListWidgetItem(member.display_name)
+            nam.setForeground(self.app.getColor(member, type=QColor))
+            if member.top_role.permissions.administrator:
+                nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
+            for x in range(self.tabWidget.count()):
+                self.tabWidget.widget(x).memoUsers.addItem(nam)
 
 
 class AuthDialog(QDialog):
@@ -567,45 +562,35 @@ class AuthDialog(QDialog):
 
 class QuirksWindow(QWidget):
     def __init__(self, app):
-        try:
-            super(__class__, self).__init__()
-            self.app = app
-            uic.loadUi(self.app.theme["ui_path"] + "/QuirksWindow.ui", self)
-            self.addQuirkButton.clicked.connect(self.openQuirk)
-            self.editQuirkButton.clicked.connect(self.editQuirk)
-            self.removeQuirkButton.clicked.connect(self.removeQuirk)
-            self.cancelButton.clicked.connect(self.closeWin)
-            self.okButton.clicked.connect(self.save)
-            self.testButton.clicked.connect(self.testQuirks)
-            for type, quirk in self.app.quirks.quirks:
-                self.quirksList.addItem("{}:{}".format(type, quirk))
+        super(__class__, self).__init__()
+        self.app = app
+        uic.loadUi(self.app.theme["ui_path"] + "/QuirksWindow.ui", self)
+        self.addQuirkButton.clicked.connect(self.openQuirk)
+        self.editQuirkButton.clicked.connect(self.editQuirk)
+        self.removeQuirkButton.clicked.connect(self.removeQuirk)
+        self.cancelButton.clicked.connect(self.closeWin)
+        self.okButton.clicked.connect(self.save)
+        self.testButton.clicked.connect(self.testQuirks)
+        for type, quirk in self.app.quirks.quirks:
+            self.quirksList.addItem("{}:{}".format(type, quirk))
 
-            self.setWindowTitle('Quirks')
-            self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowTitle('Quirks')
+        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
 
-            self.show()
-        except Exception as e:
-            print(e)
+        self.show()
 
     def openQuirk(self):
-        try:
-            AddQuirkWindow(self.app, self)
-        except Exception as e:
-            print(e)
+        AddQuirkWindow(self.app, self)
 
     def editQuirk(self):
         pass
 
     def removeQuirk(self):
-        try:
-            items = self.quirksList.selectedItems()
-            for item in items:
-                row = self.quirksList.indexFromItem(item).row()
-                self.app.quirks.quirks.pop(row)
-                self.quirksList.takeItem(row)
-
-        except Exception as e:
-            print(e)
+        items = self.quirksList.selectedItems()
+        for item in items:
+            row = self.quirksList.indexFromItem(item).row()
+            self.app.quirks.quirks.pop(row)
+            self.quirksList.takeItem(row)
 
     def closeWin(self):
         self.close()
@@ -671,48 +656,45 @@ class AddQuirkWindow(QWidget):
         self.stackWidget.setCurrentIndex(0)
 
     def next(self):
-        try:
-            index = self.stackWidget.currentIndex()
-            if index == 0:
-                if self.prefixRadio.isChecked():
-                    self.stackWidget.setCurrentIndex(1)
-                elif self.suffixRadio.isChecked():
-                    self.stackWidget.setCurrentIndex(2)
-                elif self.replaceRadio.isChecked():
-                    self.stackWidget.setCurrentIndex(3)
-                elif self.regexRadio.isChecked():
-                    self.stackWidget.setCurrentIndex(4)
-                    self.addFuncs()
-                elif self.randomRadio.isChecked():
-                    self.stackWidget.setCurrentIndex(5)
-                    self.randAddFuncs()
-            elif index == 1:
-                value = self.prefixLineEdit.text()
-                self.app.quirks.append(("prefix", value,))
-            elif index == 2:
-                value = self.suffixLineEdit.text()
-                self.app.quirks.append(("suffix", value,))
-            elif index == 3:
-                value = (self.replaceReplaceLineEdit.text(), self.replaceWithLineEdit.text())
-                self.app.quirks.append(("replace", value,))
-            elif index == 4:
-                replace = self.regexpReplaceLineEdit.text()
-                fm = self.regexpLineEdit.text()
-                if not ("(" in fm and ")" in fm):
-                    fm = "({})".format(fm)
-                value = (fm, replace)
-                self.app.quirks.append(("regex", value,))
-            elif index == 5:
-                fm = self.randomRegexpLineEdit.text()
-                if not ("(" in fm and ")" in fm):
-                    fm = "({})".format(fm)
-                value = (fm, tuple(self.randomRegex))
-                self.app.quirks.append(("random", value,))
-            if index != 0:
-                self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
-                self.close()
-        except Exception as e:
-            print(e)
+        index = self.stackWidget.currentIndex()
+        if index == 0:
+            if self.prefixRadio.isChecked():
+                self.stackWidget.setCurrentIndex(1)
+            elif self.suffixRadio.isChecked():
+                self.stackWidget.setCurrentIndex(2)
+            elif self.replaceRadio.isChecked():
+                self.stackWidget.setCurrentIndex(3)
+            elif self.regexRadio.isChecked():
+                self.stackWidget.setCurrentIndex(4)
+                self.addFuncs()
+            elif self.randomRadio.isChecked():
+                self.stackWidget.setCurrentIndex(5)
+                self.randAddFuncs()
+        elif index == 1:
+            value = self.prefixLineEdit.text()
+            self.app.quirks.append(("prefix", value,))
+        elif index == 2:
+            value = self.suffixLineEdit.text()
+            self.app.quirks.append(("suffix", value,))
+        elif index == 3:
+            value = (self.replaceReplaceLineEdit.text(), self.replaceWithLineEdit.text())
+            self.app.quirks.append(("replace", value,))
+        elif index == 4:
+            replace = self.regexpReplaceLineEdit.text()
+            fm = self.regexpLineEdit.text()
+            if not ("(" in fm and ")" in fm):
+                fm = "({})".format(fm)
+            value = (fm, replace)
+            self.app.quirks.append(("regex", value,))
+        elif index == 5:
+            fm = self.randomRegexpLineEdit.text()
+            if not ("(" in fm and ")" in fm):
+                fm = "({})".format(fm)
+            value = (fm, tuple(self.randomRegex))
+            self.app.quirks.append(("random", value,))
+        if index != 0:
+            self.parent.quirksList.addItem("{}:{}".format(self.buttons[index], value))
+            self.close()
 
     def addRandom(self):
         nq = self.addRandomLineEdit.text()
@@ -759,3 +741,16 @@ class ConnectingDialog(QDialog):
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
+
+    # Methods for moving window
+    @pyqtSlot()
+    def mousePressEvent(self, event):
+        self.offset = event.pos()
+
+    @pyqtSlot()
+    def mouseMoveEvent(self, event):
+        x = event.globalX()
+        y = event.globalY()
+        x_w = self.offset.x()
+        y_w = self.offset.y()
+        self.move(x - x_w, y - y_w)
