@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon, QDesktopServices, \
 from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant, QUrl
 from PyQt5 import uic
 
-from random import randint
+from random import randint, choice
 
 from dialogs import *
 
@@ -99,7 +99,7 @@ class Gui(QMainWindow):
 
             treeitem = QStandardItem(friend)
             treeitem.setText(friend)
-            treeitem.setIcon(QIcon(self.theme["path"] + "/chummy.png"))
+            treeitem.setIcon(QIcon(self.theme["path"] + "/{}.png".format(choice(self.app.moods.moods))))
             self.friendsModel.appendRow(treeitem)
             self.friendsItems[friend] = treeitem
 
@@ -120,7 +120,7 @@ class Gui(QMainWindow):
                 button = getattr(self, name)
                 self.mood_buttons[num] = button
                 mood_name = self.app.moods.getName(num)
-                button.setIcon(QIcon(os.path.join(self.theme["path"], mood_name + ".png")))
+                button.setIcon(QIcon(os.path.join(self.theme["path"], "{}.png".format(mood_name))))
                 button.clicked.connect(self.make_setMood(button))
 
         self.colorButton.setStyleSheet('background-color: rgb({},{},{});'.format(randint(0,255), randint(0,255), randint(0,255)))
@@ -167,11 +167,6 @@ class Gui(QMainWindow):
         self.start_privmsg(self.friendsUsers[user])
         self.tabWindow.raise_()
         self.tabWindow.activateWindow()
-
-    def drawTree(self):
-        for name, item in self.friendsItems.items():
-            index = self.friendsModel.indexFromItem(item)
-            self.chumsTree.setRowHidden(index.row(), self.friendsModel.parent(index), False)
 
     def openHelp(self):
         QDesktopServices.openUrl(QUrl("https://github.com/henry232323/Pesterchum-Discord"))

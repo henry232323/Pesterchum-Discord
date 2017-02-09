@@ -72,20 +72,20 @@ class App(QApplication):
         will await, runs in an executor
         """
 
-        async def run_exe():
-            while True:
-                try:
-                    line = await self.loop.run_in_executor(None, input, ">>> ")
-                    evl = eval(line)
-                    if isawaitable(evl):
-                        r = await evl
-                        print(r)
-                    else:
-                        print(evl)
-                except Exception as e:
-                    print(e)
+        asyncio.ensure_future(self.run_exe())
 
-        asyncio.ensure_future(run_exe())
+    async def run_exe(self):
+        while True:
+            try:
+                line = await self.loop.run_in_executor(None, input, ">>> ")
+                evl = eval(line)
+                if isawaitable(evl):
+                    r = await evl
+                    print(r)
+                else:
+                    print(evl)
+            except Exception as e:
+                print(e)
 
     async def connecting(self):
         self.connectingDialog = ConnectingDialog(self, self)
