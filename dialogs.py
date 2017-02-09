@@ -43,7 +43,6 @@ class PrivateMessageWidget(QWidget):
             if fmt:
                 self.display_text(fmt)
 
-
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
         msg = self.userInput.text()
@@ -80,6 +79,7 @@ class TabWindow(QWidget):
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
         self.tabWidget.setTabsClosable(True)
+        self.tabWidget.setTabsExpanding(True)
         self.tabWidget.tabCloseRequested.connect(self.closeTab)
         self.setWindowTitle("Private Message")
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
@@ -495,6 +495,7 @@ class MemoTabWindow(QWidget):
         self.channels.sort(key=lambda server: server.name)
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
+        self.tabWidget.setTabsExpanding(True)
         self.setWindowTitle("Memos")
         self.setWindowIcon(QIcon(self.app.theme["path"] + "/memo.png"))
         for channel in self.channels:

@@ -170,7 +170,7 @@
 	font:bold;
 	font-size:12px;
 	min-height:25px;
-    min-width: .25ex;
+    min-width: 8ex;
 }
 .QTabBar::tab::selected{
 	border:0px;
