@@ -4,7 +4,7 @@ import base64
 
 default_auth = (None, None, None, False)
 
-authpath = "cfg/auth.json"
+authpath = "cfg/auth"
 
 if not os.path.exists("cfg"):
     os.mkdir("cfg")
