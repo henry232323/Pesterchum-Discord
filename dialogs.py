@@ -367,7 +367,10 @@ class MemosWindow(QWidget):
             return None
 
     def openMemo(self, index):
-        server = self.servers[self.memosTableWidget.itemFromIndex(index).text()]
+        if index.column():
+            index = index.sibling(index.row(), 0)
+        item = self.memosTableWidget.itemFromIndex(index)
+        server = self.servers[item.text()]
         tab = MemoTabWindow(self.app, self, server)
         self.open[server] = tab
         return tab.memo
@@ -495,7 +498,6 @@ class MemoTabWindow(QWidget):
         self.channels.sort(key=lambda server: server.name)
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
-        self.tabWidget.setTabsExpanding(True)
         self.setWindowTitle("Memos")
         self.setWindowIcon(QIcon(self.app.theme["path"] + "/memo.png"))
         for channel in self.channels:
