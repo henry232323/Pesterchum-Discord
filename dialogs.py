@@ -426,10 +426,11 @@ class MemoMessageWidget(QWidget):
         ensure_future(self.get_logs())
 
     async def get_logs(self):
+        ms = ""
         async for message in self.app.client.logs_from(self.memo, 100, reverse=True):
             fmt = fmt_disp_msg(self.app, message.content, user=message.author)
-            if fmt:
-                self.display_text(fmt)
+            ms += fmt
+        self.display_text(ms)
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
