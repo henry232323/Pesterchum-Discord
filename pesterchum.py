@@ -4,7 +4,7 @@ import requests
 import sys
 from options import Options
 
-__version__ = "v1.0.6"
+__version__ = "v1.0.7"
 
 if Options["interface"]["auto_update"]:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
@@ -15,7 +15,7 @@ if Options["interface"]["auto_update"]:
         sys.exit()
 
 from PyQt5.QtWidgets import *
-from quamash import QEventLoop
+from quamash import QEventLoop, QThreadExecutor
 from PyQt5.QtGui import QColor
 
 import discord
@@ -30,7 +30,7 @@ from quirks import Quirks
 from config import Config
 from moods import Moods
 from auth import UserAuth, save_auth
-from formatting import *
+from formatting import fmt_disp_msg
 
 
 class App(QApplication):
@@ -77,7 +77,8 @@ class App(QApplication):
     async def run_exe(self):
         while True:
             try:
-                line = await self.loop.run_in_executor(None, input, ">>> ")
+                with QThreadExecutor(1) as exec:
+                    line = await self.loop.run_in_executor(exec, input, ">>> ")
                 evl = eval(line)
                 if isawaitable(evl):
                     r = await evl
