@@ -395,10 +395,10 @@ class MemosWindow(QWidget):
 
 class MemoMessageWidget(QWidget):
     def __init__(self, app, container, parent, memo):
-        '''
+        """
         The widget within each tab of TabWindow, a display
         for new private messages and user input
-        '''
+        """
         super(__class__, self).__init__()
         self.parent = parent
         self.names = []
