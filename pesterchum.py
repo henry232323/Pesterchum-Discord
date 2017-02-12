@@ -159,6 +159,8 @@ class App(QApplication):
         if message.startswith("/tts "):
             message = message[4:]
             tts = True
+        if message.startswith("/ooc"):
+            message = "((" + message[4:] + "))"
         message = self.quirks.process_quirks(message)
         asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
