@@ -138,7 +138,8 @@ class App(QApplication):
                 self.gui = Gui(self.loop, self)
                 self.gui.initialize()
 
-    def getColor(self, member, type=str):
+    @staticmethod
+    def getColor(member, type=str):
         """Get the given primary role color for a `Member`, returns a `Discord.Color` instance"""
         try:
             clr = member.color

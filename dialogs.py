@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5 import uic
 
@@ -439,18 +439,6 @@ class MemoMessageWidget(QWidget):
             self.app.send_msg(msg, self.memo)
             self.userInput.setText("")
 
-    def add_names(self):
-        for user in self.names:
-            self.add_user_item(user)
-        self.memoUsers.sort(0)
-
-    def add_user_item(self, user):
-        nam = user.display_name
-        self.memoUsers.addItem(nam)
-        itm = self.memoUsers.item(self.memoUsers.count() - 1)
-        clr = user.color
-        itm.setForeground(QColor(clr.r, clr.g, clr.b))
-
     def display_text(self, msg):
         '''Insert msg into the display box'''
         cursor = self.userOutput.textCursor()
@@ -536,13 +524,20 @@ class MemoTabWindow(QWidget):
         return tab
 
     def add_user_items(self):
-        for member in self.memo.members:
-            nam = QListWidgetItem(member.display_name)
-            nam.setForeground(self.app.getColor(member, type=QColor))
-            if member.top_role.permissions.administrator:
-                nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
-            for x in range(self.tabWidget.count()):
-                self.tabWidget.widget(x).memoUsers.addItem(nam)
+        try:
+            for member in self.memo.members:
+                nam = QListWidgetItem(member.display_name)
+                clra = member.color
+                clr = QBrush()
+                clr.setColor(QColor(clra.r, clra.g, clra.b))
+                nam.setForeground(clr)
+                if member.top_role.permissions.administrator:
+                    nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
+                widget = self.tabWidget.widget(0)
+                widget.memoUsers.addItem(nam)
+            widget.memoUsers.sortItems()
+        except Exception as e:
+            print(e)
 
 
 class AuthDialog(QDialog):
