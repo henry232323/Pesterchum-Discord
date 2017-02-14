@@ -545,13 +545,14 @@ class MemoTabWindow(QWidget):
 
 
 class AuthDialog(QDialog):
-    def __init__(self, app, parent, f=False):
+    def __init__(self, app, parent, f=False, i=True):
         """
         Dialog opened when the Add [Chum] button is pressed, adds to chumsTree widget
         """
         super(__class__, self).__init__()
         self.parent = parent
         self.app = app
+        self.i = i
         uic.loadUi(self.app.theme["ui_path"] + "/AuthDialog.ui", self)
         self.setWindowTitle('Auth')
         self.setWindowIcon(QIcon("resources/pc_chummy.png"))
@@ -592,6 +593,13 @@ class AuthDialog(QDialog):
             self.close()
         else:
             self.app.exit()
+
+    def closeEvent(self, event):
+        if self.i:
+            event.accept()
+            self.app.exit()
+        else:
+            event.accept()
 
 
 class QuirksWindow(QWidget):

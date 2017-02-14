@@ -31,6 +31,7 @@ from config import Config
 from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
+from emojis import Emojis
 
 
 class App(QApplication):
@@ -47,6 +48,7 @@ class App(QApplication):
         self.options = Options
         self.config = Config
         self.moods = Moods
+        self.emojis = Emojis
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
@@ -164,8 +166,8 @@ class App(QApplication):
         message = self.quirks.process_quirks(message)
         asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
-    def openAuth(self, f=False):
-        self.user, self.passwd, self.token, self.botAccount = AuthDialog(self, self, f=f).auth
+    def openAuth(self, f=False, i=True):
+        self.user, self.passwd, self.token, self.botAccount = AuthDialog(self, self, f=f, i=i).auth
         if hasattr(self, "gui"):
             self.exit()
 

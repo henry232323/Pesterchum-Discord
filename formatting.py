@@ -47,11 +47,6 @@ def fmt_disp_msg(app, msg, user=None):
     '''Format a message for display'''
     if not user:
         user = app.nick
-    # If beginning PM, use BEGIN message
-    if "PESTERCHUM:BEGIN" in msg:
-        fmt = fmt_begin_msg(app, user, app.nick)
-        app.pm_begin(fmt, user)
-        msg = None
     # If /me message, use fmt_me_msg
     elif msg.startswith("/me"):
         msg = fmt_me_msg(app, msg, user, time=True)
@@ -63,6 +58,7 @@ def fmt_disp_msg(app, msg, user=None):
         color = app.getColor(user)
         fmt = '<b><span style="color:black;">{time} <span style="color:{color};">{init}: {msg}</span></span></b><br />'
         msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init, msg=msg.strip(), color=color)
+        msg = app.emojis.process_emojis(msg)
     return msg
 
 def fmt_img(src):
