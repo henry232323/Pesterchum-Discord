@@ -44,7 +44,7 @@ class Gui(QMainWindow):
 
         # Create SWITCH button in 'PROFILE' menu
         self.authAction = QAction("SWITCH", self)
-        self.authAction.triggered.connect(self.app.openAuth)
+        self.authAction.triggered.connect(lambda: self.app.openAuth(i=False))
         self.profileMenu.addAction(self.authAction)
 
         # Create OPTIONS button in 'CLIENT' menu
