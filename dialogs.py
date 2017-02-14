@@ -830,6 +830,9 @@ class InteractiveConsole(QWidget):
 
     async def run(self, msg):
         msg = msg.replace("\\n", "\n")
+        app = self.app
+        client = self.app.client
+        gui = self.app.gui
         executor = exec
         if msg.count('\n') == 0:
             # single statement, potentially 'eval'
