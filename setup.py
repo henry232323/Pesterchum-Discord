@@ -24,5 +24,5 @@ setup(
     description="A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client.",
     options={"build_exe": build_exe_options},
     executables=[Executable("pesterchum.py", base=base, icon="resources/pc_chummy.ico"),
-                 Executable("updater.py", base="resources/sburb.ico")]
+                 Executable("updater.py", base=None, icon="resources/sburb.ico")]
         )
