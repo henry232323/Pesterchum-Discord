@@ -7,6 +7,10 @@ from PyQt5 import uic
 import discord
 from asyncio import ensure_future
 from sys import exit as sysexit
+from inspect import isawaitable
+from io import StringIO
+from contextlib import redirect_stdout
+import traceback
 
 from messages import *
 
@@ -784,3 +788,86 @@ class ConnectingDialog(QDialog):
         x_w = self.offset.x()
         y_w = self.offset.y()
         self.move(x - x_w, y - y_w)
+
+
+class InteractiveConsole(QWidget):
+    def __init__(self, app):
+        super(__class__, self).__init__()
+        uic.loadUi(app.theme["ui_path"] + "/PrivateMessageWidget.ui", self)
+        self.app = app
+
+        self.userLabel.setText("::DEBUG::")
+        self.setWindowTitle("Debug")
+        self.setWindowIcon(QIcon("resources/sburb.png"))
+        self.sendButton.clicked.connect(self.send)
+        self.sendButton.setText("GO!")
+        self.userOutput.setReadOnly(True)
+        self.userOutput.setMouseTracking(True)
+
+        self.show()
+
+    def send(self):
+        msg = self.userInput.text()
+        if msg:
+            self.display_text(">>> {}\n".format(msg))
+            ensure_future(self.run(msg))
+            self.userInput.setText("")
+
+    def display_text(self, msg):
+        if not msg.endswith("\n"):
+            msg += "\n"
+        cursor = self.userOutput.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        self.userOutput.setTextCursor(cursor)
+        self.userOutput.insertPlainText(msg)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return:
+            self.send()
+
+    def get_syntax_error(self, e):
+        return '{0.text}{1:>{0.offset}}\n{2}: {0}'.format(e, '^', type(e).__name__)
+
+    async def run(self, msg):
+        msg = msg.replace("\\n", "\n")
+        executor = exec
+        if msg.count('\n') == 0:
+            # single statement, potentially 'eval'
+            try:
+                code = compile(msg, '<repl>', 'eval')
+            except SyntaxError:
+                pass
+            else:
+                executor = eval
+
+        if executor is exec:
+            try:
+                code = compile(msg, '<repl>', 'exec')
+            except SyntaxError as e:
+                self.display_text(self.get_syntax_error(e))
+                return
+
+        fmt = None
+        stdout = StringIO()
+
+        try:
+            with redirect_stdout(stdout):
+                result = executor(code)
+                if isawaitable(result):
+                    result = await result
+
+        except Exception as e:
+            value = stdout.getvalue()
+            fmt = '{}{}'.format(value, traceback.format_exc())
+        else:
+            value = stdout.getvalue()
+            if result is not None:
+                fmt = '{}{}'.format(value, result)
+            elif value:
+                fmt = '{}'.format(value)
+
+        if fmt is not None:
+            if len(fmt) > 2000:
+                self.display_text('Content too big to be printed.')
+            else:
+                self.display_text(fmt)
