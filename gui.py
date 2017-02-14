@@ -86,6 +86,11 @@ class Gui(QMainWindow):
         self.openBugAction.triggered.connect(self.openBug)
         self.helpMenu.addAction(self.openBugAction)
 
+        # Create DEBUG button in 'HELP' menu
+        self.openDebugAction = QAction("DEBUG", self)
+        self.openDebugAction.triggered.connect(self.openDebug)
+        self.helpMenu.addAction(self.openDebugAction)
+
         # Create a QStandardItem for each friend, friendsModel will auto update
         for channel in self.app.client.private_channels:
             if channel.type == channel.type.group:
@@ -182,6 +187,10 @@ class Gui(QMainWindow):
 
     def openOptions(self):
         self.optionsWindow = OptionsWindow(self.app, self)
+
+    def openDebug(self):
+        self.debugWindow = InteractiveConsole(self.app)
+
 
     def make_setMood(self, button):
         '''Makes set mood button for each button, each button deselects all others and sets user mood'''
