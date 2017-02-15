@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
+from PyQt5.QtCore import Qt, pyqtSlot, QUrl
 from PyQt5 import uic
 
 import discord
+import aiohttp
 from asyncio import ensure_future
+import async_timeout
 from sys import exit as sysexit
 from inspect import isawaitable
 from io import StringIO
@@ -44,7 +46,7 @@ class PrivateMessageWidget(QWidget):
     async def get_logs(self):
         ms = ""
         async for message in self.app.client.logs_from(self.user, 100, reverse=True):
-            fmt = fmt_disp_msg(self.app, message.content, user=message.author)
+            fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
 
@@ -427,12 +429,24 @@ class MemoMessageWidget(QWidget):
         if not self.memo.permissions_for(self.memo.server.me).send_messages:
             self.userInput.setReadOnly(True)
 
+        ensure_future(self.load_emojis())
         ensure_future(self.get_logs())
+
+    async def load_emojis(self):
+        async with aiohttp.ClientSession(loop=self.app.loop) as session:
+            for emoji in self.app.client.get_all_emojis():
+                if emoji.server == self.memo.server:
+                    with async_timeout.timeout(10):
+                        async with session.get(emoji.url) as response:
+                            img = await response.read()
+                            qmg = QImage()
+                            qmg.loadFromData(img)
+                            self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
 
     async def get_logs(self):
         ms = ""
         async for message in self.app.client.logs_from(self.memo, 100, reverse=True):
-            fmt = fmt_disp_msg(self.app, message.content, user=message.author)
+            fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
 
