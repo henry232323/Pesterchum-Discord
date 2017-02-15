@@ -53,7 +53,7 @@ def fmt_disp_msg(app, msg, mobj, user=None):
     # Otherwise convert <c> to <span> and format normally with initials etc
     else:
         msg = color_to_span(msg)
-        time = getTime(app)
+        time = format_time(app, mobj)
         init = getInitials(app, user, b=False)
         color = app.getColor(user)
         fmt = '<b><span style="color:black;">{time} <span style="color:{color};">{init}: {msg}</span></span></b><br />'
@@ -124,6 +124,18 @@ def rgb(triplet, type=str):
 def getTime(app):
     '''Get current time in UTC based off settings'''
     time = datetime.utcnow()
+    if app.options["conversations"]["show_seconds"]:
+        fmt = "{hour}:{minute}:{sec}"
+    else:
+        fmt = "{hour}:{minute}"
+    ftime = fmt.format(
+                hour=str(time.hour).zfill(2),
+                minute=str(time.minute).zfill(2),
+                sec=str(time.second).zfill(2))
+    return ftime
+
+def format_time(app, message):
+    time = message.timestamp
     if app.options["conversations"]["show_seconds"]:
         fmt = "{hour}:{minute}:{sec}"
     else:

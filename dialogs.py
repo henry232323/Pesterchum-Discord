@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage, QPixmap
 from PyQt5.QtCore import Qt, pyqtSlot, QUrl
 from PyQt5 import uic
 
@@ -425,6 +425,8 @@ class MemoMessageWidget(QWidget):
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
+        self.userOutput.document().setDefaultStyleSheet(self.app.theme["styles"])
+        self.userOutput.setHtml("<body>\n</body>")
 
         if not self.memo.permissions_for(self.memo.server.me).send_messages:
             self.userInput.setReadOnly(True)

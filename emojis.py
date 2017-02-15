@@ -14,5 +14,5 @@ class Emojis(object):
         str = str[2:-1]
         name, id = str.split(":")
         emoji = discord.Emoji(id=id, server=mobj.server)
-        fmt = '<p><img src="{}"/></p>'.format(emoji.url)
+        fmt = '<img src="{}"/>'.format(emoji.url)
         return fmt
