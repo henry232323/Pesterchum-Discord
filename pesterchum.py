@@ -105,13 +105,13 @@ class App(QApplication):
                 tab = self.gui.start_privmsg(message.channel)
             else:
                 tab = self.gui.start_privmsg(message.channel)
-            fmt = fmt_disp_msg(self, message.content, user=message.author)
+            fmt = fmt_disp_msg(self, message.content, message, user=message.author)
             if fmt:
                 tab.display_text(fmt)
         else:
             if self.gui.memosWindow:
                 if message.server in self.gui.memosWindow.open.keys():
-                    fmt = fmt_disp_msg(self, message.content, user=message.author)
+                    fmt = fmt_disp_msg(self, message.content, message, user=message.author)
                     if fmt:
                         try:
                             self.gui.memosWindow.display_message(message.channel, fmt)

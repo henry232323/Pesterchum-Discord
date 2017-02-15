@@ -43,7 +43,7 @@ def fmt_me_msg(app, msg, user, time=False):
                      timefmt=timefmt if app.options["conversations"]["time_stamps"] else "", predicate=predicate, suffix=suffix)
     return msg
 
-def fmt_disp_msg(app, msg, user=None):
+def fmt_disp_msg(app, msg, mobj, user=None):
     '''Format a message for display'''
     if not user:
         user = app.nick
@@ -58,11 +58,11 @@ def fmt_disp_msg(app, msg, user=None):
         color = app.getColor(user)
         fmt = '<b><span style="color:black;">{time} <span style="color:{color};">{init}: {msg}</span></span></b><br />'
         msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init, msg=msg.strip(), color=color)
-        msg = app.emojis.process_emojis(msg)
+        msg = app.emojis.process_emojis(msg, mobj)
     return msg
 
 def fmt_img(src):
-    return '<img src="{}" />'.format(src)
+    return '<img src="{}"/>'.format(src)
 
 def fmt_color(color):
     '''Format a color message'''
