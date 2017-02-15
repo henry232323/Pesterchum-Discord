@@ -201,6 +201,10 @@
 	font-size: 12px;
 	selection-background-color: gray;
 }
+img{
+    display: inline-block;
+    height: 1em;
+}
 .QLineEdit#userInput{
 	border-color: #BB8800;
 	border-style: solid;
