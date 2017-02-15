@@ -57,7 +57,7 @@ class App(QApplication):
         self.user, self.passwd, self.token, self.botAccount = UserAuth
 
         if not UserAuth[0] and not UserAuth[1] and not UserAuth[2]:
-            self.openAuth()
+            self.openAuth(i=False)
             save_auth((self.user, self.passwd, self.token, self.botAccount,))
 
         asyncio.ensure_future(self.connecting())
