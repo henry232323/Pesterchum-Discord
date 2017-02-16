@@ -195,10 +195,14 @@ class App(QApplication):
         Called when exiting the client
         Save configurations and sys.exit
         """
-        save_auth((self.user, self.passwd, self.token, self.botAccount,))
-        save_options(self.options)
-        self.quirks.save_quirks()
-        sys.exit(code)
+        try:
+            save_auth((self.user, self.passwd, self.token, self.botAccount,))
+            save_options(self.options)
+            self.quirks.save_quirks()
+        except:
+            pass
+        finally:
+            sys.exit(code)
 
     def lastWindowClosed(self):
         self.exit()
