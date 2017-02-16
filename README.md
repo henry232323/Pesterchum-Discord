@@ -31,3 +31,8 @@ Add custom quirk commands by going to the pyquirks folder and removing quirk_fun
 
 ###Trollian
 ![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.JPG)
+
+#Bugs
+Please report all bugs in the [issues](https://github.com/henry232323/Pesterchum-Discord/issues). 
+If the application is not starting or crashes on startup, try starting it again, if that fails, 
+delete cfg/auth, cfg/config.json, cfg/options.json (and if else fails try removing quirks.json too)
