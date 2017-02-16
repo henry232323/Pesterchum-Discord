@@ -76,10 +76,11 @@ class Gui(QMainWindow):
         self.appLabel.mousePressEvent = self.label_mousePressEvent
         self.appLabel.mouseMoveEvent = self.label_mouseMoveEvent
 
-        # Create a tray icon for the app so you can hide and unhide the app
-        self.trayIcon = QSystemTrayIcon(QIcon("resources/pc_chummy.ico"), self.app)
-        self.trayIcon.setContextMenu(self.clientMenu)
-        self.trayIcon.show()
+        if app.trayIcon is None:
+            # Create a tray icon for the app so you can hide and unhide the app
+            self.app.trayIcon = QSystemTrayIcon(QIcon("resources/pc_chummy.ico"), self.app)
+            self.app.trayIcon.show()
+        self.app.trayIcon.setContextMenu(self.clientMenu)
 
         # Set window info
         self.setWindowTitle('Pesterchum')
