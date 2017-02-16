@@ -585,7 +585,7 @@ class AuthDialog(QDialog):
     def accepted(self):
         email = self.emailEdit.text()
         passwd = self.passEdit.text()
-        token = self.tokenEdit.text()
+        token = self.tokenEdit.text().strip("\"")
         bot = self.botCheck.isChecked()
         if not email:
             email = None
