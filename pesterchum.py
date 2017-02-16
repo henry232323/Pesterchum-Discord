@@ -27,7 +27,7 @@ from dialogs import AuthDialog, ConnectingDialog
 from client import DiscordClient
 from themes import themes, getThemes
 from quirks import Quirks
-from config import Config
+from options import save_options
 from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
@@ -42,11 +42,12 @@ class App(QApplication):
         self.loop = loop
         asyncio.set_event_loop(loop)
 
+        self.idle = False
+
         self.themes = themes
-        self.theme = themes["pesterchum2.5"]
+        self.theme = themes[self.options["theme"]["theme"]]
         self.theme_name = self.theme["name"]
         self.options = Options
-        self.config = Config
         self.moods = Moods
         self.emojis = Emojis
         self.setStyleSheet(self.theme["styles"])
@@ -128,7 +129,13 @@ class App(QApplication):
         self.gui.initialize()
 
     def change_mood(self, mood):
-        pass
+        if mood == "offline" or mood == "abscond":
+            asyncio.ensure_future(self.client.change_presence(status=discord.Status.invisible))
+        else:
+            asyncio.ensure_future(self.client.change_presence(game=discord.Game(name="Feeling {}".format(mood.upper())), status=discord.Status.online))
+
+        if self.idle:
+            self.gui.toggleIdle()
 
     def change_theme(self, theme):
         if theme != self.theme_name:
@@ -189,8 +196,12 @@ class App(QApplication):
         Save configurations and sys.exit
         """
         save_auth((self.user, self.passwd, self.token, self.botAccount,))
+        save_options(self.options)
         self.quirks.save_quirks()
         sys.exit(code)
+
+    def lastWindowClosed(self):
+        self.exit()
 
 
 PesterClient = App()

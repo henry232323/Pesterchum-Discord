@@ -57,6 +57,16 @@ class Gui(QMainWindow):
         self.openMemos.triggered.connect(self.openMemosWindow)
         self.clientMenu.addAction(self.openMemos)
 
+        # Create HIDE button in 'CLIENT' menu
+        self.toggleHidden = QAction("HIDE", self)
+        self.toggleHidden.triggered.connect(self.toggleHide)
+        self.clientMenu.addAction(self.toggleHidden)
+
+        # Create IDLE button in 'CLIENT' menu
+        self.toggleIdled = QAction("IDLE", self)
+        self.toggleIdled.triggered.connect(self.toggleIdle)
+        self.clientMenu.addAction(self.toggleIdled)
+
         # Create EXIT button in 'CLIENT' menu
         self.exitClient = QAction("EXIT", self)
         self.exitClient.triggered.connect(self.app.exit)
@@ -65,6 +75,11 @@ class Gui(QMainWindow):
         # Make window movable from 'Pesterchum' label, for lack of Title Bar
         self.appLabel.mousePressEvent = self.label_mousePressEvent
         self.appLabel.mouseMoveEvent = self.label_mouseMoveEvent
+
+        # Create a tray icon for the app so you can hide and unhide the app
+        self.trayIcon = QSystemTrayIcon(QIcon("resources/pc_chummy.ico"), self.app)
+        self.trayIcon.setContextMenu(self.clientMenu)
+        self.trayIcon.show()
 
         # Set window info
         self.setWindowTitle('Pesterchum')
@@ -191,6 +206,22 @@ class Gui(QMainWindow):
     def openDebug(self):
         self.debugWindow = InteractiveConsole(self.app)
 
+    def toggleHide(self):
+        if self.isHidden():
+            self.show()
+            self.toggleHidden.setIcon(QIcon())
+        else:
+            self.hide()
+            self.toggleHidden.setIcon(QIcon(self.theme["path"] + "/x.png"))
+
+    def toggleIdle(self):
+        self.app.idle = not self.app.idle
+        if self.app.idle:
+            ensure_future(self.app.client.change_presence(status=discord.Status.idle))
+            self.toggleIdled.setIcon(QIcon(self.theme["path"] + "/x.png"))
+        else:
+            ensure_future(self.app.client.change_presence(status=discord.Status.online))
+            self.toggleIdled.setIcon(QIcon())
 
     def make_setMood(self, button):
         '''Makes set mood button for each button, each button deselects all others and sets user mood'''
@@ -206,6 +237,16 @@ class Gui(QMainWindow):
                 else:
                     moodButton.setChecked(False)
         return setMood
+
+    def closeEvent(self, event):
+        if self.app.options["interface"]["close"] != 2:
+            try:
+                self.toggleHide()
+                event.ignore()
+            except Exception as e:
+                print(e)
+        else:
+            event.accept()
 
     class FriendsModel(QStandardItemModel):
         def __init__(self, app, parent=None):

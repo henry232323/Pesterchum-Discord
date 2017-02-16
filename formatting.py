@@ -2,8 +2,9 @@
 import re, os
 from datetime import datetime
 
+
 def color_to_span(msg):
-    '''Convert <c=#hex> codes to <span style="color:"> codes'''
+    """Convert <c=#hex> codes to <span style="color:"> codes"""
     exp = r'<c=(.*?)>(.*?)</c>'
     subexp = r'(?<=<c=).*?(?=>)'
     hexcodes = re.sub(subexp, isrgb, msg)
@@ -12,17 +13,22 @@ def color_to_span(msg):
     colors = re.sub('</c>', '</span>', colors)
     return colors
 
+
 def fmt_begin_msg(app, fromuser, touser):
-    '''Format a PM begin message'''
-    msg = "/me began pestering {touser} {toInit} at {time}".format(touser=touser.display_name, toInit=getInitials(app, touser,
-                                                                   c=True), time=getTime(app))
+    """Format a PM begin message"""
+    msg = "/me began pestering {touser} {toInit} at {time}".format(touser=touser.display_name,
+                                                                   toInit=getInitials(app, touser,
+                                                                                      c=True), time=getTime(app))
     return fmt_me_msg(app, msg, fromuser)
 
+
 def fmt_cease_msg(app, fromuser, touser):
-    '''Format a PM cease message'''
+    """Format a PM cease message"""
     msg = "/me ceased pestering {touser} {toInit} at {time}".format(touser=touser, toInit=getInitials(app, touser,
-                                                                    c=True), time=getTime(app))
+                                                                                                      c=True),
+                                                                    time=getTime(app))
     return fmt_me_msg(app, msg, fromuser)
+
 
 def fmt_mood_msg(app, mood, user):
     fmt = "/me changed their mood to {} {}"
@@ -31,20 +37,23 @@ def fmt_mood_msg(app, mood, user):
     msg = fmt.format(mood.upper(), img)
     return fmt_me_msg(app, msg, user)
 
+
 def fmt_me_msg(app, msg, user, time=False):
-    '''Format a /me style message i.e.  -- ghostDunk's [GD'S] cat says hi -- (/me's cat says hi)'''
+    """Format a /me style message i.e.  -- ghostDunk's [GD'S] cat says hi -- (/me's cat says hi)"""
     me = msg.split()[0]
     suffix = me[3:]
     init = getInitials(app, user, c=True, suffix=suffix)
-    predicate = msg[3+len(suffix):].strip()
+    predicate = msg[3 + len(suffix):].strip()
     timefmt = '<span style="color:black;">[{}]</style>'.format(getTime(app)) if time else ""
     fmt = '<b>{timefmt}<span style="color:#646464;"> -- {user}{suffix} {init} {predicate}--</span></b><br />'
     msg = fmt.format(user=user.display_name, init=init,
-                     timefmt=timefmt if app.options["conversations"]["time_stamps"] else "", predicate=predicate, suffix=suffix)
+                     timefmt=timefmt if app.options["conversations"]["time_stamps"] else "", predicate=predicate,
+                     suffix=suffix)
     return msg
 
+
 def fmt_disp_msg(app, msg, mobj, user=None):
-    '''Format a message for display'''
+    """Format a message for display"""
     if not user:
         user = app.nick
     # If /me message, use fmt_me_msg
@@ -57,26 +66,30 @@ def fmt_disp_msg(app, msg, mobj, user=None):
         init = getInitials(app, user, b=False)
         color = app.getColor(user)
         fmt = '<b><span style="color:black;">{time} <span style="color:{color};">{init}: {msg}</span></span></b><br />'
-        msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init, msg=msg.strip(), color=color)
+        msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init,
+                         msg=msg.strip(), color=color)
         msg = app.emojis.process_emojis(msg, mobj)
     return msg
+
 
 def fmt_img(src):
     return '<img src="{}"/>'.format(src)
 
+
 def fmt_color(color):
-    '''Format a color message'''
+    """Format a color message"""
     if type(color) == tuple:
         return "COLOR >{},{},{}".format(*color)
     else:
         return "COLOR >{},{},{}".format(*rgb(color, type=tuple))
 
+
 def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
-    '''
+    """
     Get colored or uncolored, bracketed or unbracketed initials with
     or without a suffix using a Chumhandle. A suffix being a me style
     ending. i.e. /me's [GD'S]
-    '''
+    """
     nick = user.display_name
     init = nick[0].upper()
     for char in nick:
@@ -95,9 +108,11 @@ def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
         fin = '<span style="color:{color}">{fin}</span>'.format(fin=fin, color=app.getColor(user))
     return fin
 
-def rgbtohex(r,g,b):
+
+def rgbtohex(r, g, b):
     '''Convert RGB values to hex code'''
-    return '#%02x%02x%02x' % (r,g,b)
+    return '#%02x%02x%02x' % (r, g, b)
+
 
 def isrgb(match):
     '''Checks if is RGB, formats CSS rgb func'''
@@ -109,17 +124,19 @@ def isrgb(match):
     else:
         return "rgb(" + s.strip('rgb()') + ")"
 
+
 def rgb(triplet, type=str):
     '''Converts hex triplet to RGB value tuple or string'''
     if hasattr(triplet, "group"):
         triplet = triplet.group(0)
     triplet = triplet.strip("#")
     digits = '0123456789abcdefABCDEF'
-    hexdec = {v: int(v, 16) for v in (x+y for x in digits for y in digits)}
+    hexdec = {v: int(v, 16) for v in (x + y for x in digits for y in digits)}
     if type == str:
         return "rgb" + str((hexdec[triplet[0:2]], hexdec[triplet[2:4]], hexdec[triplet[4:6]]))
     else:
         return hexdec[triplet[0:2]], hexdec[triplet[2:4]], hexdec[triplet[4:6]]
+
 
 def getTime(app):
     '''Get current time in UTC based off settings'''
@@ -129,10 +146,11 @@ def getTime(app):
     else:
         fmt = "{hour}:{minute}"
     ftime = fmt.format(
-                hour=str(time.hour).zfill(2),
-                minute=str(time.minute).zfill(2),
-                sec=str(time.second).zfill(2))
+        hour=str(time.hour).zfill(2),
+        minute=str(time.minute).zfill(2),
+        sec=str(time.second).zfill(2))
     return ftime
+
 
 def format_time(app, message):
     time = message.timestamp
@@ -141,14 +159,16 @@ def format_time(app, message):
     else:
         fmt = "{hour}:{minute}"
     ftime = fmt.format(
-                hour=str(time.hour).zfill(2),
-                minute=str(time.minute).zfill(2),
-                sec=str(time.second).zfill(2))
+        hour=str(time.hour).zfill(2),
+        minute=str(time.minute).zfill(2),
+        sec=str(time.second).zfill(2))
     return ftime
+
 
 def fmt_color_wrap(msg, color):
     fmt = "<span style=\"color:{color}\">{msg}</span>"
     return fmt.format(msg=msg, color=color)
+
 
 def fmt_memo_msg(app, msg, user):
     return "<c={color}>{initials}: {msg}</c>".format(
@@ -156,12 +176,14 @@ def fmt_memo_msg(app, msg, user):
         color=app.getColor(user),
         msg=msg)
 
+
 def fmt_disp_memo(app, message, user, prefix=""):
     msg = "<b><span color={color}>{msg}</span><b><br />".format(
         prefix=prefix,
         msg=color_to_span(message),
         color=app.getColor(user))
     return msg
+
 
 def fmt_memo_join(app, user, time, memo, part=False, opened=False):
     if part:
@@ -175,7 +197,7 @@ def fmt_memo_join(app, user, time, memo, part=False, opened=False):
         fmt = "<b>{clr} <span style=\"color:#646464\">RIGHT NOW {type}</span></b><br />"
         pfx = "C"
         timefmt = ""
-        
+
     else:
         hours, minutes = time.split(":")
         hours, minutes = int(hours), int(minutes)
@@ -193,7 +215,7 @@ def fmt_memo_join(app, user, time, memo, part=False, opened=False):
                 timefmt = "{} MINUTES AGO".format(minutes)
         pfx = time[0]
         fmt = "<b>{clr} <span style=\"color:#646464\">{time} {type}</span></b><br />"
-        
+
     colorfmt = "<span style=\"color:{color}\">{frame} {user} {binit}</span>"
     clr = colorfmt.format(color=app.getColor(user),
                           frame=frame,
