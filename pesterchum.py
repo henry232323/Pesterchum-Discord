@@ -43,6 +43,7 @@ class App(QApplication):
         asyncio.set_event_loop(loop)
 
         self.idle = False
+        self.trayIcon = None
 
         self.themes = themes
         self.options = Options
