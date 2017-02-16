@@ -45,9 +45,9 @@ class App(QApplication):
         self.idle = False
 
         self.themes = themes
-        self.theme = themes[self.options["theme"]["theme"]]
         self.theme_name = self.theme["name"]
         self.options = Options
+        self.theme = themes[self.options["theme"]["theme"]]
         self.moods = Moods
         self.emojis = Emojis
         self.setStyleSheet(self.theme["styles"])
