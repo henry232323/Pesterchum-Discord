@@ -76,7 +76,7 @@ class Gui(QMainWindow):
         self.appLabel.mousePressEvent = self.label_mousePressEvent
         self.appLabel.mouseMoveEvent = self.label_mouseMoveEvent
 
-        if app.trayIcon is None:
+        if self.app.trayIcon is None:
             # Create a tray icon for the app so you can hide and unhide the app
             self.app.trayIcon = QSystemTrayIcon(QIcon("resources/pc_chummy.ico"), self.app)
             self.app.trayIcon.show()
