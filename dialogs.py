@@ -242,7 +242,7 @@ class OptionsWindow(QWidget):
         self.themesComboBox.setInsertPolicy(QComboBox.InsertAlphabetically)
         index = self.themesComboBox.findText(self.app.theme_name)
         self.themesComboBox.setCurrentIndex(index)
-        self.refreshThemeButton.clicked.connect(lambda: self.app.refresh_theme())
+        self.refreshThemeButton.clicked.connect(lambda: self.app.change_theme(self.themesComboBox.currentText(), f=True))
 
         convo_opt = self.options["conversations"]
         chum_opt = self.options["chum_list"]
