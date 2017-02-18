@@ -63,7 +63,7 @@ class App(QApplication):
         self.user, self.passwd, self.token, self.botAccount = UserAuth
 
         if not UserAuth[0] and not UserAuth[1] and not UserAuth[2]:
-            self.openAuth(i=False)
+            self.openAuth(i=True)
             save_auth((self.user, self.passwd, self.token, self.botAccount,))
 
         asyncio.ensure_future(self.connecting())
@@ -185,8 +185,6 @@ class App(QApplication):
 
     def openAuth(self, f=False, i=True):
         auth = AuthDialog(self, self, f=f, i=i).auth
-        if not auth and not hasattr(self, "gui"):
-            self.exit()
         self.user, self.passwd, self.token, self.botAccount = auth
         if hasattr(self, "gui") and auth:
             self.exit()
