@@ -1,0 +1,6 @@
+{
+  "name": "Serious Business",
+  "ui_path": "ui",
+  "inherits": null,
+  "css": "serious_business.css"
+}

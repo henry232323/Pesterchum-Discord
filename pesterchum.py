@@ -139,6 +139,8 @@ class App(QApplication):
             self.gui.toggleIdle()
 
     def change_theme(self, theme, f=False):
+        if f:
+            self.refresh_themes()
         if theme != self.theme_name or f:
             self.theme = themes[theme]
             self.theme_name = self.theme["name"]
@@ -147,6 +149,9 @@ class App(QApplication):
                 self.gui.close()
                 self.gui = Gui(self.loop, self)
                 self.gui.initialize()
+
+    def refresh_themes(self):
+        self.themes = getThemes(dict())
 
     @staticmethod
     def getColor(member, type=str):
