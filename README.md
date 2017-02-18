@@ -37,7 +37,7 @@ delete cfg/auth, cfg/config.json, cfg/options.json (and if else fails try removi
 ![PesterchumPreview2](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum2.5-preview.png)
 
 ###Trollian 2.5
-![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.png)
+![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian2.5-preview.png)
 
 ###Pesterchum
 ![PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.png)
