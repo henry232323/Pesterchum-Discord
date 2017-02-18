@@ -16,6 +16,7 @@ class Gui(QMainWindow):
         self.app = app
         self.loop = loop
         self.theme = self.app.theme
+        self.offset = None
         self.tabWindow = None
         self.quirkWindow = None
         self.memosWindow = None
@@ -25,6 +26,7 @@ class Gui(QMainWindow):
         uic.loadUi(self.theme["ui_path"] + "/Main.ui", self)
 
         self.nameButton.setText(self.app.client.user.name)
+        self.nameButton.setIcon(QIcon(self.theme["path"] + "/chummy.png"))
 
         # Fix dimensions
         width = self.frameGeometry().width()
@@ -71,10 +73,6 @@ class Gui(QMainWindow):
         self.exitClient = QAction("EXIT", self)
         self.exitClient.triggered.connect(self.app.exit)
         self.clientMenu.addAction(self.exitClient)
-
-        # Make window movable from 'Pesterchum' label, for lack of Title Bar
-        self.appLabel.mousePressEvent = self.label_mousePressEvent
-        self.appLabel.mouseMoveEvent = self.label_mouseMoveEvent
 
         if self.app.trayIcon is None:
             # Create a tray icon for the app so you can hide and unhide the app
@@ -150,16 +148,22 @@ class Gui(QMainWindow):
 
     # Methods for moving window
     @pyqtSlot()
-    def label_mousePressEvent(self, event):
+    def mousePressEvent(self, event):
         self.offset = event.pos()
 
     @pyqtSlot()
-    def label_mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event):
+        if self.offset is None:
+            return
         x = event.globalX()
         y = event.globalY()
         x_w = self.offset.x()
         y_w = self.offset.y()
         self.move(x - x_w, y - y_w)
+
+    @pyqtSlot()
+    def mouseReleaseEvent(self, event):
+        self.offset = None
 
     def privmsg_pester(self):
         '''Opens selected user in tree when PESTER! button pressed, same as double click'''

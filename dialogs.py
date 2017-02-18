@@ -307,6 +307,7 @@ class OptionsWindow(QWidget):
             self.options["theme"]["theme"] = self.themesComboBox.currentText()
         except Exception as e:
             self.errorLabel.setText("Error changing theme: \n{}".format(e))
+            self.app.change_theme(oldtheme)
             print(e)
 
         self.close()
