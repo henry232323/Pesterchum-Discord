@@ -45,7 +45,7 @@ def getThemes(themes):
             if data["inherits"]:
                 try:
                     data["styles"] = "\n".join([themes[data["inherits"]]["styles"], data["styles"]])
-                except Exception as e:
+                except Exception:
                     continue
 
 getThemes(themes)

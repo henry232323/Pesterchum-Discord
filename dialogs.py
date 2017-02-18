@@ -272,7 +272,8 @@ class OptionsWindow(QWidget):
         self.minimizeCombo.setCurrentIndex(interface_opt["minimize"])
         self.closeCombo.addItems(('Minimize to Taskbar', 'Minimize to Tray', 'Quit'))
         self.closeCombo.setCurrentIndex(interface_opt["close"])
-
+        # Updates
+        self.pesterchumUpdatesCombo.setCurrentIndex(int(interface_opt["auto_update"]))
         self.show()
 
     def saveConfig(self):
@@ -298,6 +299,8 @@ class OptionsWindow(QWidget):
             self.options["interface"]["blink_taskbar_on_memos"] = self.blinkMemoBox.isChecked()
             self.options["interface"]["minimize"] = self.minimizeCombo.currentIndex()
             self.options["interface"]["close"] = self.closeCombo.currentIndex()
+            # Updates
+            self.options["interface"]["auto_update"] = self.pesterchumUpdatesCombo.currentIndex()
 
             self.app.change_theme(self.themesComboBox.currentText())
             # Theme
