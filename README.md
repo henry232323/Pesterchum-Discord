@@ -31,8 +31,53 @@ Please report all bugs in the [issues](https://github.com/henry232323/Pesterchum
 If the application is not starting or crashes on startup, try starting it again, if that fails, 
 delete cfg/auth, cfg/config.json, cfg/options.json (and if else fails try removing quirks.json too)
 
-#Preview
-
+#Themes
+While I've made every theme available so far, they're easy (ish) for anyone to make. If you'd like
+me to add a theme, just send a pull request or message me.
+If you want to make a theme, best chance is to reverse engineer the already available (in the source) 
+.ui files of an existing theme.
+ <br /><br />
+All themes have several main parts:
+#####theme.json
+ ```json
+{
+  "name": "Pesterchum",
+  "ui_path": "ui",
+  "inherits": "Pesterchum 2.5",
+  "css": "pesterchum.css"
+}
+ ```
+ This file is found in the theme folder. Name the folder whatever you'd like, that doesn't matter, 
+ for example this is in the `themes/Pesterchum` folder. 
+ In your folder there are several things. 
+ - A folder (designated in the `theme.json`) with your UI's in it, 
+ this one has its in `themes/Pesterchum/ui` as designated in the file `"ui_path": "ui"` 
+ - All your image files, look at the other themes for examples. These must be `.png`'s, eventually 
+ I'll map out where every image is needed, for now its pretty easy to figure out.
+ - Your css / styles, this is the file that is used to decorate your theme, just like a webpage, and
+ is designated in your `theme.json`, in this one it is set to the path `themes/Pesterchum/pesterchum.css`
+ with the line `"css": "pesterchum.css"` Look at example css to figure out how to use IDs and Classes 
+ in your css to match with the UIs, for example the main window can be targeted with `.Gui` or `.QMainWindow`
+ 
+ The `theme.json` will designate four things, like mentioned above
+ - `name` The name of the theme (as displayed in the options)
+ - `ui_path` The relative path in the folder to find the ui's
+ - `inherits` Which theme's css it will inherit (for example Pesterchum inherits Pesterchum 2.5)
+ - `css` The relative path to the css file with the themes styles
+ 
+ Make sure all relative paths do not start with a `/` 
+ 
+ Another note, in order to designate the associated mood with the button, the mood button must be 
+ checkable and called moodButton# where # is a number between 0 and 22 designating to the position in this list minus 1
+ ```python
+ ["chummy", "rancorous", "offline", "pleasant", "distraught",
+ "pranky", "smooth", "ecstatic", "relaxed", "discontent",
+ "devious", "sleek", "detestful", "mirthful", "manipulative",
+ "vigorous", "perky", "acceptant", "protective", "mystified",
+ "amazed", "insolent", "bemused"]
+ ```
+ For example moodButton0 would be the button for "Chummy" or moodButton2 would reference Offline / Abscond.
+ The text on the button will remain and does not matter.
 ###Pesterchum 2.5
 ![PesterchumPreview2](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum2.5-preview.png)
 
