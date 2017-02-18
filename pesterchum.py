@@ -47,7 +47,10 @@ class App(QApplication):
 
         self.themes = themes
         self.options = Options
-        self.theme = themes[self.options["theme"]["theme"]]
+        try:
+            self.theme = themes[self.options["theme"]["theme"]]
+        except KeyError:
+            self.theme = themes["Pesterchum 2.5"]
         self.theme_name = self.theme["name"]
         self.moods = Moods
         self.emojis = Emojis
@@ -180,8 +183,11 @@ class App(QApplication):
         asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
 
     def openAuth(self, f=False, i=True):
-        self.user, self.passwd, self.token, self.botAccount = AuthDialog(self, self, f=f, i=i).auth
-        if hasattr(self, "gui"):
+        auth = AuthDialog(self, self, f=f, i=i).auth
+        if not auth and not hasattr(self, gui):
+            self.exit()
+        self.user, self.passwd, self.token, self.botAccount = auth
+        if hasattr(self, "gui") and auth:
             self.exit()
 
     async def runbot(self):
