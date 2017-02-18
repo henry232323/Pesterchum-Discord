@@ -89,3 +89,7 @@ All themes have several main parts:
 
 ###Serious Business
 ![DadPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/dad-preview.png)
+
+###sbahj
+![sbahjPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/sbahj-preview.png)
+
