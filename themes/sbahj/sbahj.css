@@ -1,0 +1,411 @@
+.Gui{
+	background-color: transparent;
+	background-image: url($path/hbasj.png);
+}
+.QLabel#appLabel{
+	color: white;
+	font-size: 20px;
+	padding: 5px;
+	font-family: Courier New;
+	font-weight: bold;
+}
+.QMenuBar#menubar{
+	color: black;
+	font-weight: bold;
+	font-family: Courier New;
+	background-color: transparent;
+	padding-left: 12px;
+}
+.QMenuBar#menubar::item::selected{
+	background-color: transparent;
+}
+.QMenu{
+	color: black;
+	font-family: Courier New;
+	background-color: #06e8ff;
+	border-color:red;
+	border-style:solid;
+	border-width:2px;
+	left: -5px;
+	font-weight: bold;
+}
+.QMenu::item:selected{
+	background-color: yellow;
+	color: white;
+}
+.QTreeView#chumsTree{
+	background-color: #06e8ff;
+	color:#666;
+	border-color: red;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Courier New;
+}
+.QTreeView::item{
+	color: white;
+	font: bold;
+}
+.QTreeView::item::selected, .QTreeView::item::selected::hover{
+	background-color: gray;
+}
+.QTreeView::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.QHeaderView::section{
+	background-color: #06e8ff;
+	color:white;
+	font-family: Courier New;
+	font-size: 12px;
+	height: 1.1em;
+}
+.QPushButton#addChumButton{
+	text-align: center;
+	background-color:#f8f242;
+	border-color:#f84107;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 5px 0px 5px 0px;
+	color: #19a937;
+}
+.QPushButton#addChumButton::pressed{
+	background-color:transparent;
+}
+.QPushButton#pesterButton{
+	text-align: center;
+	background-color:#f8f242;
+	border-color:#f84107;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 5px 0px 5px 0px;
+	color: #19a937;
+}
+.QPushButton#pesterButton::pressed{
+	background-color:transparent;
+}
+.QPushButton#blockButton{
+	text-align: center;
+	background-color:#f8f242;
+	border-color:#f84107;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 5px 0px 5px 0px;
+	color: #19a937;
+}
+.QPushButton#blockButton::pressed{
+	background-color: transparent;
+}
+.QPushButton#nameButton{
+	background-color: #f8f242;
+	color:#f84107;
+	text-align: left;
+	border-color: #06e8ff;
+	border-style: solid;
+	border-width: 2px;
+	font-family: Courier New;
+	padding: 3px 0px 3px 2px;
+}
+.Gui .QPushButton[checkable="true"]{
+	text-align: left;
+	background-color:#06e8ff;
+	border-color:#06e8ff;
+	border-style:solid;
+	border-width:2px;
+	padding: 5px 5px 5px 5px;
+	font-family: Courier New;
+	font-size:11px;
+}
+.Gui .QPushButton[checkable="true"]::checked{
+	background-color:#f84107;
+	border-color: #f8f242
+}
+.QPushButton#moodButton2{
+	text-align: center;
+	background-color: red;
+	border-color:black;
+	border-style:solid;
+	border-width:2px;
+	padding: 5px 5px 5px 5px;
+	color: black;
+	font-family: Courier New;
+}
+.TabWindow{
+	background-color: #a700fe;
+	border-color: black;
+	border-style: solid;
+	border-width: 2px;
+}
+.QTabWidget::pane {
+	background-color: #ccc;
+	border-color: red;
+	border-style: solid;
+	border-width: 2px;
+}
+.QTabBar::tab{
+	background-color: #7f7f7f;
+	font-family: 'Courier';
+	font:bold;
+	font-size:12px;
+	min-height:25px;
+    min-width: 8ex;
+}
+.QTabBar::tab::selected{
+	border:0px;
+	background-color:#ccc;
+	border-top:2px solid red;
+	border-left:2px solid red;
+	border-right:2px solid red;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.PrivateMessageWidget{
+	background-color: #a700fe;
+	border-color: red;
+	border-style: solid;
+	border-width: 2px;
+}
+.QLabel#userLabel{
+	padding: 13px 0px 13px 0px;
+	height:60px;
+	color:white;
+	background-color:#05ff17;
+	font-size: 15px;
+}
+.QTextEdit#userOutput{
+	border-color: red;
+	border-style: solid;
+	border-width: 2px;
+	background-color: #d2ffff;
+	font-size: 12px;
+	selection-background-color: gray;
+}
+img{
+    display: inline-block;
+    height: 1em;
+}
+.QLineEdit#userInput{
+	border-color: #06e8ff;
+	border-style: solid;
+	border-width: 2px;
+	background-color: #fa9716;
+	selection-background-color: gray;
+}
+.QPushButton#sendButton{
+	text-align: left;
+	background-color:red;
+	border-color:#06e8ff;
+	border-style:solid;
+	border-width:2px;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+}
+.SwitchDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QLabel#chamhanelLabel{
+	font-family: Courier New;
+}
+.QLineEdit#getHandleInput{
+	background-color: #06e8ff;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.QLabel#chooseProfileLabel{
+	font-family: Courier New;
+}
+.QComboBox{
+	background-color: #06e8ff;
+	selection-background-color: gray;
+	font-family: Courier New;
+}
+.QComboBox QAbstractItemView {
+	selection-background-color: gray;
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QPushButton#cancelButton, .QPushButton#proceedButton,
+.QPushButton#deleteProfileButton,
+.QPushButton#acceptButton, .QPushButton#rejectButton,
+.QPushButton#addBlockButton, .QPushButton#removeBlockButton,
+.QPushButton#closeUserlist, .QPushButton#connectingExitButton,
+.QPushButton#refreshThemeButton, .QPushButton#cancelMemoButton,
+ .QPushButton#joinMemoButton, .QPushButton#closeButton {
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QCheckBox#defaultCheckBox{
+	background-color: #06e8ff;
+	font-family: Courier New;
+	selection-background-color: gray;
+}
+.ConfirmDeleteDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.AddFriendDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.AddBlockedDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.BlockedDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QListWidget#blockedList, .QListWidget#userList{
+	background-color: #06e8ff;
+	border: 2px solid red;
+}
+.QListWidget::item{
+	color: white;
+}
+.QListWidget::item::selected, .QListWidget::item::selected::hover{
+	background-color: gray;
+}
+.QListWidget::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.QLineEdit#addChumInput{
+	background-color: #06e8ff;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.InvalidUserDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.ConnectingDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.UserlistWindow{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.OptionsWindow{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.OptionsWindow .QPushButton[checkable="true"]{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.OptionsWindow .QPushButton[checkable="true"]::selected{
+	font-family: Courier New;
+}
+.MemosWindow{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QLineEdit#timeframeDisplayLine, .QLineEdit#memoNameLineEdit{
+	background-color: #06e8ff;
+	border: 1px solid black;
+	selection-background-color: gray;	
+}
+.QTableWidget#memosTableWidget{
+	background-color: #06e8ff;
+	border: 2px solid red;
+}
+.QTableWidget::item{
+	color: white;
+	font: bold;
+}
+.QTableWidget::item::selected, .QTableWidget::item::selected::hover{
+	background-color: gray;
+}
+.QTableWidget::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.MemoTabWindow{
+	background-color: #06e8ff;
+}
+.QListWidget#memoUsers{
+	background-color: #fa9716;
+	color: black;
+	font-family: Courier New;
+}
+.QListWidget#memoUsers::item{
+	color: black;
+	font-family: Courier New;
+}
+.QSlider::handle:horizontal {
+	background-color: #06e8ff;
+	border: 1px solid black;
+}
+.QPushButton#memoCloseButton, .QPushButton#memoGoButton{
+	text-align: center;
+	background-color:red;
+	border-color:#06e8ff;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 5px 0px 5px 0px;
+	width: 10px;
+}
+.AuthDialog{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.AuthDialog .QLineEdit{
+	background-color: #06e8ff;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.QuirksWindow .QPushButton, .AddQuirkWindow .QPushButton{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QuirksWindow, .AddQuirkWindow{
+	background-color: #06e8ff;
+	font-family: Courier New;
+}
+.QuirksWindow .QListWidget,.AddQuirkWindow .QListWidget{
+	background-color: #06e8ff;
+	color:#666;
+	border-color: red;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Courier New;
+}
+.InteractiveConsole{
+	background-color: #BBB;
+	border-color: #666;
+	border-style: solid;
+	border-width: 2px;
+}
+.InteractiveConsole .QTextEdit#userOutput{
+	border-color: #666;
+	border-style: solid;
+	border-width: 2px;
+	background-color: #d2ffff;
+	font-size: 12px;
+	selection-background-color: gray;
+}
+.InteractiveConsole .QLabel#userLabel{
+	padding: 13px 0px 13px 0px;
+	height:60px;
+	color:white;
+	background-color:#666;
+	font-size: 15px;
+}
+.InteractiveConsole .QLineEdit#userInput{
+	border-color: red;
+	border-style: solid;
+	border-width: 2px;
+	background-color: #fa9716;
+	selection-background-color: gray;
+}
+.InteractiveConsole .QPushButton#sendButton{
+	text-align: left;
+	background-color:#AAA;
+	border-color:#666;
+	border-style:solid;
+	border-width:2px;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+}
