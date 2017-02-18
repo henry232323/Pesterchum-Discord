@@ -138,8 +138,8 @@ class App(QApplication):
         if self.idle:
             self.gui.toggleIdle()
 
-    def change_theme(self, theme):
-        if theme != self.theme_name:
+    def change_theme(self, theme, f=False):
+        if theme != self.theme_name or f:
             self.theme = themes[theme]
             self.theme_name = self.theme["name"]
             self.setStyleSheet(self.theme["styles"])
