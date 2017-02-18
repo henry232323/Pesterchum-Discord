@@ -26,15 +26,21 @@ Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) f
 Add custom quirk commands by going to the pyquirks folder and removing quirk_funcs.pyc and replacing it with your own quirk_funcs.py
 (if you want parts from the original just grab the [source](https://github.com/henry232323/Pesterchum-Discord/blob/master/pyquirks/quirk_funcs.py))
 
-#Preview
-
-###Pesterchum2.5
-![PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.JPG)
-
-###Trollian
-![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.JPG)
-
 #Bugs
 Please report all bugs in the [issues](https://github.com/henry232323/Pesterchum-Discord/issues). 
 If the application is not starting or crashes on startup, try starting it again, if that fails, 
 delete cfg/auth, cfg/config.json, cfg/options.json (and if else fails try removing quirks.json too)
+
+#Preview
+
+###Pesterchum 2.5
+![PesterchumPreview2](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum2.5-preview.png)
+
+###Trollian 2.5
+![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian-preview.png)
+
+###Pesterchum
+![PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.png)
+
+###Serious Business
+![DadPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/dad-preview.png)

@@ -621,6 +621,7 @@ class AuthDialog(QDialog):
             event.accept()
             self.app.exit()
         else:
+            self.auth = None
             event.accept()
 
 

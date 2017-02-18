@@ -48,5 +48,4 @@ def getThemes(themes):
                 except Exception:
                     continue
     return themes
-
 themes = getThemes(themes)
