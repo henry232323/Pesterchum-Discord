@@ -711,7 +711,6 @@ class AddQuirkWindow(QWidget):
 
         self.show()
 
-
     def back(self):
         self.stackWidget.setCurrentIndex(0)
 
