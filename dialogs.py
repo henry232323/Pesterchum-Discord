@@ -575,6 +575,7 @@ class AuthDialog(QDialog):
         self.parent = parent
         self.app = app
         self.i = i
+        self.fin = False
         uic.loadUi(self.app.theme["ui_path"] + "/AuthDialog.ui", self)
         self.setWindowTitle('Auth')
         self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
@@ -608,7 +609,9 @@ class AuthDialog(QDialog):
             self.errorLabel.setText("You cant login with an email/pass to a bot account")
 
         else:
+            self.fin = True
             self.close()
+
 
     def rejected(self):
         if hasattr(self.app, "gui"):
@@ -617,11 +620,10 @@ class AuthDialog(QDialog):
             self.app.exit()
 
     def closeEvent(self, event):
-        if self.i:
+        if self.i and not self.fin:
             event.accept()
             self.app.exit()
         else:
-            self.auth = None
             event.accept()
 
 
