@@ -76,7 +76,7 @@ class Gui(QMainWindow):
 
         if self.app.trayIcon is None:
             # Create a tray icon for the app so you can hide and unhide the app
-            self.app.trayIcon = QSystemTrayIcon(QIcon("resources/pc_chummy.ico"), self.app)
+            self.app.trayIcon = QSystemTrayIcon(QIcon(self.app.theme["path"] + "/trayicon.png"), self.app)
             self.app.trayIcon.show()
         self.app.trayIcon.setContextMenu(self.clientMenu)
 

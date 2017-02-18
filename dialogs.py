@@ -88,7 +88,7 @@ class TabWindow(QWidget):
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.tabCloseRequested.connect(self.closeTab)
         self.setWindowTitle("Private Message")
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.show()
 
     def closeTab(self, currentIndex):
@@ -142,7 +142,7 @@ class AddFriendDialog(QDialog):
         self.app = app
         uic.loadUi(self.app.theme["ui_path"] + "/AddFriendDialog.ui", self)
         self.setWindowTitle('Add Chum')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.acceptButton.clicked.connect(self.accepted)
         self.rejectButton.clicked.connect(self.close)
         self.exec_()
@@ -165,7 +165,7 @@ class AddBlockedDialog(QDialog):
         self.app = app
         uic.loadUi(self.app.theme["ui_path"] + "/AddBlockedDialog.ui", self)
         self.setWindowTitle('TROLLSLUM')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.acceptButton.clicked.connect(self.accepted)
         self.rejectButton.clicked.connect(self.close)
         self.exec_()
@@ -193,7 +193,7 @@ class BlockedDialog(QDialog):
         self.app = app
         self.parent = parent
         self.setWindowTitle('TROLLSLUM')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.addBlockButton.clicked.connect(self.add)
         self.removeBlockButton.clicked.connect(self.remove)
         for user in self.app.blocked:
@@ -225,7 +225,7 @@ class OptionsWindow(QWidget):
         self.app = app
         self.parent = parent
         self.setWindowTitle('Options')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.options = self.app.options
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
@@ -330,7 +330,7 @@ class MemosWindow(QWidget):
         self.app = app
         self.parent = parent
         self.setWindowTitle('Memos')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
@@ -577,7 +577,7 @@ class AuthDialog(QDialog):
         self.i = i
         uic.loadUi(self.app.theme["ui_path"] + "/AuthDialog.ui", self)
         self.setWindowTitle('Auth')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.acceptButton.clicked.connect(self.accepted)
         self.closeButton.clicked.connect(self.rejected)
         if f:
@@ -639,7 +639,7 @@ class QuirksWindow(QWidget):
             self.quirksList.addItem("{}:{}".format(type, quirk))
 
         self.setWindowTitle('Quirks')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
 
         self.show()
 
@@ -675,7 +675,7 @@ class AddQuirkWindow(QWidget):
 
         self.buttons = ('opts', 'prefix', 'suffix', 'replace', 'regex', 'random')
         self.setWindowTitle('Quirks')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
 
         enableNext = lambda: self.nextButton.setEnabled(True)
         self.nextButton.setEnabled(False)
@@ -799,7 +799,7 @@ class ConnectingDialog(QDialog):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.connectingExitButton.clicked.connect(sysexit)
         self.setWindowTitle('Connecting')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.app.connectingDialog = self
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
