@@ -69,6 +69,7 @@ def fmt_disp_msg(app, msg, mobj, user=None):
         msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init,
                          msg=msg.strip(), color=color)
         msg = app.emojis.process_emojis(msg, mobj)
+        msg = app.mentions.process_mentions(msg, mobj)
     return msg
 
 

@@ -2,6 +2,8 @@
 
 A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client
 
+If you have any questions either contact me the github or add me at Henry#6174 on Discord.
+
 #Install
 Unzip the file and run Pesterchum.exe, the GUI wont launch until connected. If there is an update, updater.exe will launch in a console.
 It doesn't install anywhere, its fairly portable. It is not yet for OSX/Linux, contact me if anyone is interested in 

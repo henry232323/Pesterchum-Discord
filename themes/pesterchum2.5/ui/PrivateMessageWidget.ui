@@ -75,8 +75,11 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QTextEdit" name="userOutput">
+       <widget class="QTextBrowser" name="userOutput">
         <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
          <bool>true</bool>
         </property>
        </widget>

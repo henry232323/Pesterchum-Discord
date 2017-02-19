@@ -20,7 +20,7 @@ if sys.platform == "win32":
 
 setup(
     name="Pesterchum-Discord",
-    version="1.1.0",
+    version="1.1.1",
     description="A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client.",
     options={"build_exe": build_exe_options},
     executables=[Executable("pesterchum.py", base=base, icon="resources/pc_chummy.ico"),

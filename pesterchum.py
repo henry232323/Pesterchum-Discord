@@ -4,7 +4,7 @@ import requests
 import sys
 from options import Options
 
-__version__ = "v1.1.0"
+__version__ = "v1.1.1"
 __author__ = "henry232323"
 
 if Options["interface"]["auto_update"]:
@@ -33,6 +33,7 @@ from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
 from emojis import Emojis
+from mentions import Mentions
 
 
 class App(QApplication):
@@ -55,6 +56,7 @@ class App(QApplication):
         self.theme_name = self.theme["name"]
         self.moods = Moods
         self.emojis = Emojis
+        self.mentions = Mentions
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
