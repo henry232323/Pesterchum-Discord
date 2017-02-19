@@ -9,6 +9,9 @@ Unzip the file and run Pesterchum.exe, the GUI wont launch until connected. If t
 It doesn't install anywhere, its fairly portable. It is not yet for OSX/Linux, contact me if anyone is interested in 
 supporting it.
 
+If you are running an older version and would like to update (> v1.0.6) you can enable the auto updater
+by going into your `cfg/options.json` and changing the value `"auto_update": false` to `"auto_update": true`
+
 #Tokens
 The Discord API has officially deprecated user logins, (email / password) best choice is to use tokens. All accounts
 have tokens, to find yours:

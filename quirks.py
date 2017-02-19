@@ -14,7 +14,7 @@ class Quirks(object):
         self.id = self.app.client.user.id
         if not os.path.exists("cfg/quirks.json"):
             with open("cfg/quirks.json", 'w') as qf:
-                qf.write(json.dumps({self.id:list()}))
+                qf.write(json.dumps({self.id:list()}, indent=4))
         with open("cfg/quirks.json", 'r') as qf:
             self.allquirks = json.loads(qf.read())
 
@@ -55,7 +55,7 @@ class Quirks(object):
 
     def save_quirks(self):
         with open("cfg/quirks.json", 'w') as qf:
-            qf.write(json.dumps(self.allquirks))
+            qf.write(json.dumps(self.allquirks, indent=4))
 
     def append(self, item):
         self.quirks.append(item)

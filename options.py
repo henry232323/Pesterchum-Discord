@@ -53,7 +53,7 @@ if os.path.exists(confpath):
                     Options[key][key] = default_options[key][key]
 else:
     with open(confpath, 'w') as options:
-        options.write(json.dumps(default_options))
+        options.write(json.dumps(default_options, indent=4))
 
     with open(confpath, 'r') as options:
         data = options.read()
@@ -62,4 +62,4 @@ else:
 
 def save_options(options):
     with open("cfg/options.json", 'w') as conffile:    
-        conffile.write(json.dumps(options))
+        conffile.write(json.dumps(options, indent=4))
