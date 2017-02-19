@@ -293,7 +293,7 @@ class OptionsWindow(QWidget):
         self.closeCombo.addItems(('Minimize to Taskbar', 'Minimize to Tray', 'Quit'))
         self.closeCombo.setCurrentIndex(interface_opt["close"])
         # Updates
-        self.pesterchumUpdatesCombo.setCurrentIndex(int(interface_opt["auto_update"]))
+        self.pesterchumUpdatesCheck.setChecked(int(interface_opt["auto_update"]))
         self.show()
 
     def saveConfig(self):
@@ -320,7 +320,7 @@ class OptionsWindow(QWidget):
             self.options["interface"]["minimize"] = self.minimizeCombo.currentIndex()
             self.options["interface"]["close"] = self.closeCombo.currentIndex()
             # Updates
-            self.options["interface"]["auto_update"] = self.pesterchumUpdatesCombo.currentIndex()
+            self.options["interface"]["auto_update"] = self.pesterchumUpdatesCheck.isChecked()
 
             self.app.change_theme(self.themesComboBox.currentText())
             # Theme
@@ -525,6 +525,7 @@ class MemoMessageWidget(QWidget):
             member = discord.utils.get(self.memo.server.members, name=user)
             if member.id != self.app.client.user.id:
                 ensure_future(self.app.gui.start_pm(member))
+
 
 class MemoTabWindow(QWidget):
     def __init__(self, app, parent, memo):
