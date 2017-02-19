@@ -14,8 +14,7 @@ from io import StringIO
 import discord
 import aiohttp
 
-from messages import *
-
+from formatting import *
 
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, user, name):
