@@ -184,7 +184,7 @@ class App(QApplication):
     def openAuth(self, f=False, i=True):
         auth = AuthDialog(self, self, f=f, i=i).auth
         self.user, self.passwd, self.token, self.botAccount = auth
-        if hasattr(self, "gui") and auth:
+        if hasattr(self, "gui") and auth and not f:
             self.exit()
 
     async def runbot(self):
@@ -193,11 +193,11 @@ class App(QApplication):
                 await self.client.start(self.user, self.passwd, bot=False)
             elif self.token and not (self.user or self.passwd):
                 await self.client.start(self.token, bot=self.botAccount)
-                return
-            self.exit()
         except discord.LoginFailure:
             self.openAuth(f=True)
             save_auth((self.user, self.passwd, self.token, self.botAccount,))
+        finally:
+            await self.runbot()
 
     def exit(self, code=0):
         """
