@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage, QPixmap
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage, QDesktopServices
 from PyQt5.QtCore import Qt, pyqtSlot, QUrl
 from PyQt5 import uic
 
@@ -37,11 +37,28 @@ class PrivateMessageWidget(QWidget):
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
+        self.userOutput.anchorClicked.connect(self.anchorClicked)
+        self.userOutput.setOpenLinks(False)
 
         if not isinstance(user, discord.PrivateChannel):
-            self.display_text(fmt_begin_msg(app, self.app.client.user, user.user))
-
+                self.display_text(fmt_begin_msg(app, self.app.client.user, user.user if not isinstance(user, discord.User) else user))
         ensure_future(self.get_logs())
+
+    @pyqtSlot(QUrl)
+    def anchorClicked(self, url):
+        urlstr = url.toString()
+        if urlstr.startswith("mention="):
+            id = urlstr[8:]
+            user = discord.utils.get(self.app.client.get_all_members(), id=id)
+            if user.id != self.app.client.user.id:
+                self.app.gui.start_privmsg(user)
+        elif urlstr.startswith("channel="):
+            id = urlstr[8:]
+            channel = discord.utils.get(self.memo.server.channels, id=id)
+            if channel.id != self.memo.id:
+                self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
+        elif urlstr.startswith("role="):
+            pass
 
     async def get_logs(self):
         ms = ""
@@ -113,7 +130,9 @@ class TabWindow(QWidget):
         :param user: The `discord.User` to message
         """
         if user.id not in self.ids:
-            if user.type == user.type.group:
+            if isinstance(user, discord.User):
+                name = user.display_name
+            elif user.type == user.type.group:
                 if not user.name:
                     name = ", ".join(map(lambda c: c.display_name, user.recipients))
                 else:
@@ -431,6 +450,8 @@ class MemoMessageWidget(QWidget):
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
         self.userOutput.setMouseTracking(True)
+        self.userOutput.anchorClicked.connect(self.anchorClicked)
+        self.userOutput.setOpenLinks(False)
         self.userOutput.document().setDefaultStyleSheet(self.app.theme["styles"])
         self.userOutput.setHtml("<body>\n</body>")
 
@@ -450,6 +471,22 @@ class MemoMessageWidget(QWidget):
                             qmg = QImage()
                             qmg.loadFromData(img)
                             self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
+
+    @pyqtSlot(QUrl)
+    def anchorClicked(self, url):
+        urlstr = url.toString()
+        if urlstr.startswith("mention="):
+            id = urlstr[8:]
+            user = discord.utils.get(self.app.client.get_all_members(), id=id)
+            if user.id != self.app.client.user.id:
+                self.app.gui.start_privmsg(user)
+        elif urlstr.startswith("channel="):
+            id = urlstr[8:]
+            channel = discord.utils.get(self.memo.server.channels, id=id)
+            if channel.id != self.memo.id:
+                self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
+        elif urlstr.startswith("role="):
+            pass
 
     async def get_logs(self):
         ms = ""

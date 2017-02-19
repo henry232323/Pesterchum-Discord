@@ -82,7 +82,7 @@ class Gui(QMainWindow):
 
         # Set window info
         self.setWindowTitle('Pesterchum')
-        self.setWindowIcon(QIcon("resources/pc_chummy.png"))
+        self.setWindowIcon(QIcon(self.theme["path"] + "/trayicon.png"))
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         # Create QStandardItemModel for QTreeView
@@ -180,11 +180,18 @@ class Gui(QMainWindow):
         Start a private message window, if one exists add a user to it
         Return the new tab of the user
         """
+        if isinstance(user, discord.User):
+            ensure_future(self.start_pm(user))
+            return
         if not self.tabWindow:
             self.tabWindow = TabWindow(self.app, self, user)
             return self.tabWindow.init_user
         else:
             return self.tabWindow.add_user(user)
+
+    async def start_pm(self, user):
+        channel = await self.app.client.start_private_message(user)
+        self.start_privmsg(channel)
 
     @pyqtSlot(QModelIndex)
     def open_privmsg(self, index):
