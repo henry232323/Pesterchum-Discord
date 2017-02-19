@@ -1,10 +1,10 @@
 #!/usr/bin/env python
+from importlib import reload
+from random import choice
+import inspect
 import json
 import re
 import os
-import inspect
-from importlib import reload
-from random import choice
 
 import pyquirks
 

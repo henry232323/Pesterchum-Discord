@@ -1,18 +1,18 @@
 #!/usr/bin/env python
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage, QDesktopServices
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
 from PyQt5.QtCore import Qt, pyqtSlot, QUrl
+from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-import discord
-import aiohttp
+from contextlib import redirect_stdout
 from asyncio import ensure_future
-import async_timeout
+from async_timeout import timeout
+from traceback import format_exc
 from sys import exit as sysexit
 from inspect import isawaitable
 from io import StringIO
-from contextlib import redirect_stdout
-import traceback
+import discord
+import aiohttp
 
 from messages import *
 
@@ -465,7 +465,7 @@ class MemoMessageWidget(QWidget):
         async with aiohttp.ClientSession(loop=self.app.loop) as session:
             for emoji in self.app.client.get_all_emojis():
                 if emoji.server == self.memo.server:
-                    with async_timeout.timeout(10):
+                    with timeout(10):
                         async with session.get(emoji.url) as response:
                             img = await response.read()
                             qmg = QImage()
@@ -930,7 +930,7 @@ class InteractiveConsole(QWidget):
 
         except Exception as e:
             value = stdout.getvalue()
-            fmt = '{}{}'.format(value, traceback.format_exc())
+            fmt = '{}{}'.format(value, format_exc())
         else:
             value = stdout.getvalue()
             if result is not None:

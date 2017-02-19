@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+from options import Options
 import subprocess
 import requests
 import sys
-from options import Options
 
 __version__ = "v1.1.1"
 __author__ = "henry232323"
@@ -15,25 +15,25 @@ if Options["interface"]["auto_update"]:
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
 
-from PyQt5.QtWidgets import *
 from quamash import QEventLoop, QThreadExecutor
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QColor
 
+from inspect import isawaitable
 import discord
 import asyncio
-from inspect import isawaitable
 
-from gui import Gui
 from dialogs import AuthDialog, ConnectingDialog
-from client import DiscordClient
 from themes import themes, getThemes
-from quirks import Quirks
-from options import save_options
-from moods import Moods
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
-from emojis import Emojis
+from options import save_options
+from client import DiscordClient
 from mentions import Mentions
+from emojis import Emojis
+from quirks import Quirks
+from moods import Moods
+from gui import Gui
 
 
 class App(QApplication):
@@ -69,11 +69,8 @@ class App(QApplication):
             save_auth((self.user, self.passwd, self.token, self.botAccount,))
 
         asyncio.ensure_future(self.connecting())
-
         asyncio.ensure_future(self.runbot())
-
         self.gui = Gui(self.loop, self)
-
         loop.run_forever()
 
     def cli(self):
@@ -81,7 +78,6 @@ class App(QApplication):
         Runs a REPL style loop, if eval(input) is awaitable (`inspect.isawaitable`)
         will await, runs in an executor
         """
-
         asyncio.ensure_future(self.run_exe())
 
     async def run_exe(self):

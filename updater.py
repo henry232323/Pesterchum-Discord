@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-import sys, os, shutil
-import zipfile
-import requests
-import subprocess
 from stat import S_IWUSR
+import subprocess
+import requests
+import zipfile
+import shutil
+import sys
+import os
 
 
 def get_update(url):

@@ -1,5 +1,5 @@
-import sys
 from cx_Freeze import setup, Executable
+import sys
 
 sys.argv.append("build")
 
