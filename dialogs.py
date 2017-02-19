@@ -625,13 +625,10 @@ class AuthDialog(QDialog):
         self.auth = (email, passwd, token, bot)
         if (email or passwd) and token:
             self.errorLabel.setText("You must have either a email/pass OR a token (for bot accounts)")
-
-        if not (email and passwd) and not token:
+        elif not (email and passwd) and not token:
             self.errorLabel.setText("You must have BOTH an email and password OR a token")
-
-        if (email or passwd) and bot:
+        elif (email or passwd) and bot:
             self.errorLabel.setText("You cant login with an email/pass to a bot account")
-
         else:
             self.fin = True
             self.close()
