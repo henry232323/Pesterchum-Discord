@@ -22,10 +22,6 @@ class PrivateMessageWidget(QWidget):
         """
         The widget within each tab of TabWindow, a display
         for new private messages and user input
-        :param app: `pesterchum.App` Master app reference
-        :param container: Associated `QStackedWidget`
-        :param parent: `gui.Gui` Master GUI reference
-        :param user: `discord.User` associated Discord User object
         """
         super(__class__, self).__init__()
         uic.loadUi(app.theme["ui_path"] + "/PrivateMessageWidget.ui", self)
@@ -611,8 +607,7 @@ class AuthDialog(QDialog):
         self.acceptButton.clicked.connect(self.accepted)
         self.closeButton.clicked.connect(self.rejected)
         if f:
-            self.errorLabel.setText("""Invalid login / token! Failed to login.
-(Once you edit credentials the client will close)""")
+            self.errorLabel.setText("""Invalid login / token! Failed to login.""")
         self.auth = None
         self.exec_()
 
