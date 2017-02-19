@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-import discord
-import re
-
-
 class Mentions(object):
     @staticmethod
     def process_mentions(message, mobj):

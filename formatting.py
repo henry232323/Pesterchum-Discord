@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import re, os
 from datetime import datetime
+import re
+import os
 
 
 def color_to_span(msg):

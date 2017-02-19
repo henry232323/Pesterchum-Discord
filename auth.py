@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import json, os
 import base64
+import json
+import os
 
 default_auth = (None, None, None, False)
 

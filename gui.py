@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QDesktopServices, \
-    QStandardItemModel
+from PyQt5.QtGui import QIcon, QDesktopServices, QStandardItemModel
 from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant, QUrl
 from PyQt5 import uic
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import json, os
+import json
+import os
 
 default_options = {
     "chum_list":{
@@ -33,8 +34,8 @@ default_options = {
 
 if not os.path.exists("cfg"):
     os.mkdir("cfg")
-if not os.path.exists("cfg/config.json"):
-    with open("cfg/config.json", 'w+'):
+if not os.path.exists("cfg/options.json"):
+    with open("cfg/options.json", 'w+'):
         pass
 confpath = "cfg/options.json"
 if os.path.exists(confpath):

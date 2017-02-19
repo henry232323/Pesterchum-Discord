@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import os, json
+import os
+import json
 
 themes = dict()
 
