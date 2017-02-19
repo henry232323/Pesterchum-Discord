@@ -16,8 +16,9 @@ import aiohttp
 
 from formatting import *
 
+
 class PrivateMessageWidget(QWidget):
-    def __init__(self, app, user, name):
+    def __init__(self, app, parent, user, name):
         """
         The widget within each tab of TabWindow, a display
         for new private messages and user input
@@ -30,6 +31,7 @@ class PrivateMessageWidget(QWidget):
         uic.loadUi(app.theme["ui_path"] + "/PrivateMessageWidget.ui", self)
         self.user = user
         self.app = app
+        self.parent = parent
 
         # setattr(user, "display_name", friend)
         self.userLabel.setText(name.join(["::", "::"]))
@@ -139,7 +141,7 @@ class TabWindow(QWidget):
             else:
                 name = user.user.display_name
 
-            windw = PrivateMessageWidget(self.app, user, name)
+            windw = PrivateMessageWidget(self.app, self, user, name)
             icon = QIcon("resources/pc_chummy.png")
             a = self.tabWidget.addTab(windw, icon, name)
             tab = self.tabWidget.widget(a)
@@ -440,10 +442,8 @@ class MemoMessageWidget(QWidget):
 
         self.memoUsers.setContextMenuPolicy(Qt.CustomContextMenu)
         self.memoUsers.customContextMenuRequested.connect(self.openMemoMenu)
-        self.blockContext = QAction("BLOCK")
-        self.blockContext.triggered.connect(self.block_selected)
-        self.addFriendContext = QAction("ADD FRIEND")
-        self.addFriendContext.triggered.connect(self.add_selected_friend)
+        self.messageContext = QAction("MESSAGE")
+        self.messageContext.triggered.connect(self.message_user)
 
         self.userLabel.setText(memo.name.join(["::", "::"]))
         self.sendButton.clicked.connect(self.send)
@@ -515,24 +515,16 @@ class MemoMessageWidget(QWidget):
 
     def openMemoMenu(self, position):
         menu = QMenu()
-        menu.addAction(self.addFriendContext)
-        menu.addAction(self.blockContext)
-        menu.exec_(self.chumsTree.viewport().mapToGlobal(position))
+        menu.addAction(self.messageContext)
+        menu.exec_(self.memoUsers.viewport().mapToGlobal(position))
 
-    def block_selected(self):
-        selected = self.memoUsers.selected()
+    def message_user(self):
+        selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            if user not in self.app.blocked:
-                self.app.add_blocked(user)
-
-    def add_selected_friend(self):
-        selected = self.memoUsers.selected()
-        if selected:
-            user = selected[0].text()
-            if user not in self.app.friends.keys():
-                self.app.add_friend(user)
-
+            member = discord.utils.get(self.memo.server.members, name=user)
+            if member.id != self.app.client.user.id:
+                ensure_future(self.app.gui.start_pm(member))
 
 class MemoTabWindow(QWidget):
     def __init__(self, app, parent, memo):
