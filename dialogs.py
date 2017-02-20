@@ -633,7 +633,6 @@ class AuthDialog(QDialog):
             self.fin = True
             self.close()
 
-
     def rejected(self):
         if hasattr(self.app, "gui"):
             self.close()
