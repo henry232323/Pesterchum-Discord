@@ -1,0 +1,378 @@
+.Gui{
+	background-color: #FFB500;
+	background-image: url($path/gbg.png);
+}
+.QLabel#appLabel{
+	color: white;
+	font-size: 20px;
+	padding: 5px;
+	font-family: Courier New;
+	font-weight: bold;
+}
+.QMenuBar#menubar{
+	color: black;
+	font-weight: bold;
+	font-family: Courier New;
+	background-color: transparent;
+	padding-left: 12px;
+}
+.QMenuBar#menubar::item::selected{
+	background-color: transparent;
+}
+.QMenu{
+	color: black;
+	font-family: Courier New;
+	background-color: #FFB500;
+	border-color:yellow;
+	border-style:solid;
+	border-width:2px;
+	left: -5px;
+	font-weight: bold;
+}
+.QMenu::item:selected{
+	background-color: yellow;
+}
+.QTreeView#chumsTree{
+	background-color: qlineargradient(x1:0,y1:0,x2:0,y2:0.5,x3:0,y3:1,stop:0, #444, stop: 1, #DDD);
+	color:#666;
+	border-radius: 5px;
+	border-color: yellow;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Courier New;
+}
+.QTreeView::item{
+	color: white;
+	font: bold;
+}
+.QTreeView::item::selected, .QTreeView::item::selected::hover{
+	background-color: gray;
+}
+.QTreeView::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.QHeaderView::section{
+	background-color: black;
+	color:white;
+	font-family: Courier New;
+	font-size: 12px;
+	height: 1.1em;
+}
+.QPushButton#pesterButton{
+	background-color: transparent;
+}
+.QPushButton#pesterButton::pressed{
+	background-image: url($path/gbg.png);
+	border-image: url($path/pesterhold.png);
+}
+.QPushButton#nameButton{
+	background-color: transparent;
+	color: white;
+}
+.Gui .QPushButton[checkable="true"]{
+	display: None;
+	background: transparent;
+	background-color: transparent;
+}
+.QPushButton#moodButton0::checked{
+	background-image: url($path/moodcheck1.png);
+}
+.QPushButton#moodButton21::checked{
+	background-image: url($path/moodcheck2.png);
+}
+.QPushButton#moodButton6::checked{
+	background-image: url($path/moodcheck3.png);	
+}
+.QPushButton#moodButton19::checked{
+	background-image: url($path/moodcheck4.png);	
+}
+.QPushButton#moodButton22::checked{
+	background-image: url($path/moodcheck5.png);	
+}
+.QPushButton#moodButton3::checked{
+	background-image: url($path/moodcheck6.png);	
+}
+.QPushButton#moodButton20::checked{
+	background-image: url($path/moodcheck7.png);	
+}
+.QPushButton#moodButton5::checked{
+	background-image: url($path/moodcheck8.png);	
+}
+.QPushButton#moodButton1::checked{
+	background-image: url($path/moodcheck9.png);	
+}
+.TabWindow{
+	background-color: #FFB500;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 2px;
+}
+.QTabWidget::pane {
+	background-color: #FFB500;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 2px;
+}
+.QTabBar::tab{
+	background-color: #7f7f7f;
+	font-family: 'Courier';
+	font:bold;
+	font-size:12px;
+	min-height:25px;
+    min-width: 8ex;
+}
+.QTabBar::tab::selected{
+	border:0px;
+	background-color:#fdb302;
+	border-top:2px solid yellow;
+	border-left:2px solid yellow;
+	border-right:2px solid yellow;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.PrivateMessageWidget{
+	background-color: #FFB500;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 2px;
+}
+.QLabel#userLabel{
+	padding: 13px 0px 13px 0px;
+	height:60px;
+	color:white;
+	background-color:#BB8800;
+	font-size: 15px;
+}
+.QTextEdit#userOutput{
+	border-color: #BB8800;
+	border-style: solid;
+	border-width: 2px;
+	font-size: 12px;
+	selection-background-color: gray;
+}
+img{
+    display: inline-block;
+    height: 1em;
+}
+.QLineEdit#userInput{
+	border-color: #BB8800;
+	border-style: solid;
+	border-width: 2px;
+	selection-background-color: gray;
+}
+.QPushButton#sendButton{
+	text-align: left;
+	background-color:yellow;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+}
+.SwitchDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QLabel#chamhanelLabel{
+	font-family: Courier New;
+}
+.QLineEdit#getHandleInput{
+	background-color: #fdb302;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.QLabel#chooseProfileLabel{
+	font-family: Courier New;
+}
+.QComboBox{
+	background-color: #fdb302;
+	selection-background-color: gray;
+	font-family: Courier New;
+}
+.QComboBox QAbstractItemView {
+	selection-background-color: gray;
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QPushButton#cancelButton, .QPushButton#proceedButton,
+.QPushButton#deleteProfileButton,
+.QPushButton#acceptButton, .QPushButton#rejectButton,
+.QPushButton#addBlockButton, .QPushButton#removeBlockButton,
+.QPushButton#closeUserlist, .QPushButton#connectingExitButton,
+.QPushButton#refreshThemeButton, .QPushButton#cancelMemoButton,
+ .QPushButton#joinMemoButton, .QPushButton#closeButton {
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QCheckBox#defaultCheckBox{
+	background-color: #fdb302;
+	font-family: Courier New;
+	selection-background-color: gray;
+}
+.ConfirmDeleteDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.AddFriendDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.AddBlockedDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.BlockedDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QListWidget#blockedList, .QListWidget#userList{
+	background-color: black;
+	border: 2px solid yellow;
+}
+.QListWidget::item{
+	color: white;
+}
+.QListWidget::item::selected, .QListWidget::item::selected::hover{
+	background-color: gray;
+}
+.QListWidget::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.QLineEdit#addChumInput{
+	background-color: #fdb302;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.InvalidUserDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.ConnectingDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.UserlistWindow{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.OptionsWindow{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.OptionsWindow .QPushButton[checkable="true"]{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.OptionsWindow .QPushButton[checkable="true"]::selected{
+	font-family: Courier New;
+}
+.MemosWindow{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QLineEdit#timeframeDisplayLine, .QLineEdit#memoNameLineEdit{
+	background-color: #fdb302;
+	border: 1px solid black;
+	selection-background-color: gray;	
+}
+.QTableWidget#memosTableWidget{
+	background-color: black;
+	border: 2px solid yellow;
+}
+.QTableWidget::item{
+	color: white;
+	font: bold;
+}
+.QTableWidget::item::selected, .QTableWidget::item::selected::hover{
+	background-color: gray;
+}
+.QTableWidget::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.MemoTabWindow{
+	background-color: #ffb500;
+}
+.QListWidget#memoUsers{
+	background-color: white;
+	color: black;
+	font-family: Courier New;
+}
+.QListWidget#memoUsers::item{
+	color: black;
+	font-family: Courier New;
+}
+.QSlider::handle:horizontal {
+	background-color: #ffb500;
+	border: 1px solid black;
+	
+}
+.QPushButton#memoCloseButton, .QPushButton#memoGoButton{
+	text-align: center;
+	background-color:yellow;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 5px 0px 5px 0px;
+	width: 10px;
+}
+.AuthDialog{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.AuthDialog .QLineEdit{
+	background-color: #fdb302;
+	border: 1px solid black;
+	selection-background-color: gray;
+}
+.QuirksWindow .QPushButton, .AddQuirkWindow .QPushButton{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QuirksWindow, .AddQuirkWindow{
+	background-color: #fdb302;
+	font-family: Courier New;
+}
+.QuirksWindow .QListWidget,.AddQuirkWindow .QListWidget{
+	background-color: black;
+	color:#666;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Courier New;
+}
+.InteractiveConsole{
+	background-color: #BBB;
+	border-color: #666;
+	border-style: solid;
+	border-width: 2px;
+}
+.InteractiveConsole .QTextEdit#userOutput{
+	border-color: #666;
+	border-style: solid;
+	border-width: 2px;
+	font-size: 12px;
+	selection-background-color: gray;
+}
+.InteractiveConsole .QLabel#userLabel{
+	padding: 13px 0px 13px 0px;
+	height:60px;
+	color:white;
+	background-color:#666;
+	font-size: 15px;
+}
+.InteractiveConsole .QLineEdit#userInput{
+	border-color: #666;
+	border-style: solid;
+	border-width: 2px;
+	selection-background-color: gray;
+}
+.InteractiveConsole .QPushButton#sendButton{
+	text-align: left;
+	background-color:#AAA;
+	border-color:#666;
+	border-style:solid;
+	border-width:2px;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+}

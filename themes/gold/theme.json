@@ -1,0 +1,6 @@
+{
+  "name": "Pesterchum 7.0",
+  "ui_path": "ui",
+  "inherits": null,
+  "css": "pesterchum7.0.css"
+}
