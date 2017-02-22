@@ -216,5 +216,4 @@ class App(QApplication):
     def lastWindowClosed(self):
         self.exit()
 
-
-PesterClient = App()
+App()

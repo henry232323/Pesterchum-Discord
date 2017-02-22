@@ -32,10 +32,15 @@
 .QMenu::item:selected{
 	background-color: yellow;
 }
+.QHeaderView::section:checked {
+    background-color: transparent;
+    color: white;
+	border-radius: 10px;
+}
 .QTreeView#chumsTree{
-	background-color: qlineargradient(x1:0,y1:0,x2:0,y2:0.5,x3:0,y3:1,stop:0, #444, stop: 1, #DDD);
+	background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #101010, stop: 1 #777777);
 	color:#666;
-	border-radius: 5px;
+	border-radius: 10px;
 	border-color: yellow;
 	border-style: solid;
 	border-width: 3px;
