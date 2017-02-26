@@ -3,12 +3,15 @@ import sys
 
 sys.argv.append("build")
 
-include_files = ["resources", "themes", "README.md", "LICENSE"]
+include_files = ["resources", "themes", "README.md", "LICENSE"]                 
 
 build_exe_options = {
-    "includes": ["PyQt5", "os", "json", "asyncio", "types", "discord", "aiohttp",
+    "includes": ["PyQt5", "os", "json", "types", "discord", "aiohttp",
                  "requests", "contextlib", "io", "inspect", "traceback", "subprocess",
-                 "async_timeout"],
+                 "async_timeout", "asyncio", "asyncio.compat", "asyncio.base_futures",
+                 "asyncio.base_events", "asyncio.base_tasks", "asyncio.base_subprocess",
+                 "asyncio.proactor_events", "asyncio.constants","asyncio.selector_events",
+                 "asyncio.windows_utils"],
     "excludes": ["tkinter", "_tkinter", '_gtkagg', '_tkagg', 'bsddb', 'curses',
                  'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'tcl',
                  'unittest', 'idlelib', 'certifi', 'nacl', "_lzma", "_hashlib", "_bz2"],
