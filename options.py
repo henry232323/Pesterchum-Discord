@@ -35,8 +35,8 @@ default_options = {
 if not os.path.exists("cfg"):
     os.mkdir("cfg")
 if not os.path.exists("cfg/options.json"):
-    with open("cfg/options.json", 'w+'):
-        pass
+    with open("cfg/options.json", 'w+') as options:
+        options.write(json.dumps(default_options, indent=4))
 confpath = "cfg/options.json"
 if os.path.exists(confpath):
     with open(confpath, 'r') as options:
