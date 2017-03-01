@@ -24,7 +24,6 @@ have tokens, to find yours:
 6. Copy the text in quotes on the same row
 
 #Quirks
-
 Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) for help on quirks (they work identically) check out
 [illuminatedWax's quirk info](https://github.com/illuminatedwax/pesterchum#quirks-1) on the original Pesterchum. Misspeller has not yet been added
 
