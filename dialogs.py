@@ -38,11 +38,6 @@ class PrivateMessageWidget(QWidget):
         self.userOutput.anchorClicked.connect(self.anchorClicked)
         self.userOutput.setOpenLinks(False)
 
-        try:
-            playsound(os.path.join(self.app.theme["path"], "alarm.wav"))
-        except Exception as e:
-            print(e)
-
         if not isinstance(user, discord.PrivateChannel):
                 self.display_text(fmt_begin_msg(app, self.app.client.user, user.user if not isinstance(user, discord.User) else user))
         ensure_future(self.get_logs())
@@ -69,6 +64,7 @@ class PrivateMessageWidget(QWidget):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
+        playsound(os.path.join(self.app.theme["path"], "alarm.wav"))
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
@@ -116,9 +112,9 @@ class TabWindow(QWidget):
         widget.deleteLater()
         self.tabWidget.removeTab(currentIndex)
         self.users.remove(widget.user)
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
         if not self.users:
             self.close()
+        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
 
     def closeEvent(self, event):
         event.accept()
@@ -550,16 +546,16 @@ class MemoTabWindow(QWidget):
         for channel in self.channels:
             self.add_memo(channel)
 
-        playsound(os.path.join(self.app.theme["path"], "alarm2.wav"))
         self.add_user_items()
 
         self.show()
+        playsound(os.path.join(self.app.theme["path"], "alarm2.wav"))
 
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
         del self.parent.open[self.memo]
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
         event.accept()
+        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
 
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)
