@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from playsound import playsound  # Modified version, original tries to join a list of strs and bytes, decodes the bytes
 from options import Options
 import subprocess
 import requests
@@ -11,6 +12,7 @@ if Options["interface"]["auto_update"]:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
     current_version = response["tag_name"]
     if current_version > __version__:
+        playsound("resources/update.wav")
         download_url = response["assets"][0]["browser_download_url"]
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
@@ -22,6 +24,7 @@ from PyQt5.QtGui import QColor
 from inspect import isawaitable
 import discord
 import asyncio
+import os.path
 
 from dialogs import AuthDialog, ConnectingDialog
 from themes import themes, getThemes
@@ -129,6 +132,7 @@ class App(QApplication):
         self.quirks = Quirks(self)
         if "debug" in sys.argv:
             self.cli()
+        playsound(os.path.join(self.theme["path"], "alarm.wav"))
         self.gui.initialize()
 
     def change_mood(self, mood):
