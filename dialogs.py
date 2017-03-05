@@ -64,7 +64,7 @@ class PrivateMessageWidget(QWidget):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
-        playsound(os.path.join(self.app.theme["path"], "alarm.wav"))
+        playsound(os.path.join(self.app.theme["path"], "alarm.wav"), block=False)
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
@@ -114,7 +114,7 @@ class TabWindow(QWidget):
         self.users.remove(widget.user)
         if not self.users:
             self.close()
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
+        playsound(os.path.join(self.app.theme["path"], "cease.wav"), block=False)
 
     def closeEvent(self, event):
         event.accept()
@@ -549,13 +549,13 @@ class MemoTabWindow(QWidget):
         self.add_user_items()
 
         self.show()
-        playsound(os.path.join(self.app.theme["path"], "alarm2.wav"))
+        playsound(os.path.join(self.app.theme["path"], "alarm2.wav"), block=False)
 
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
         del self.parent.open[self.memo]
         event.accept()
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"))
+        playsound(os.path.join(self.app.theme["path"], "cease.wav"), block=False)
 
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)

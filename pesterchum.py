@@ -12,7 +12,7 @@ if Options["interface"]["auto_update"]:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
     current_version = response["tag_name"]
     if current_version > __version__:
-        playsound("resources/update.wav")
+        playsound("resources/update.wav", block=False)
         download_url = response["assets"][0]["browser_download_url"]
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
@@ -132,7 +132,7 @@ class App(QApplication):
         self.quirks = Quirks(self)
         if "debug" in sys.argv:
             self.cli()
-        playsound(os.path.join(self.theme["path"], "alarm.wav"))
+        playsound(os.path.join(self.theme["path"], "alarm.wav"), block=False)
         self.gui.initialize()
 
     def change_mood(self, mood):
