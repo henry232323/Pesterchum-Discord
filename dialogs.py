@@ -16,6 +16,7 @@ import aiohttp
 
 from formatting import *
 
+from playsound import playsound
 
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, parent, user, name):
@@ -36,6 +37,8 @@ class PrivateMessageWidget(QWidget):
         self.userOutput.setMouseTracking(True)
         self.userOutput.anchorClicked.connect(self.anchorClicked)
         self.userOutput.setOpenLinks(False)
+
+        playsound(os.path.join(self.theme["path"], "alarm.wav"))
 
         if not isinstance(user, discord.PrivateChannel):
                 self.display_text(fmt_begin_msg(app, self.app.client.user, user.user if not isinstance(user, discord.User) else user))
@@ -110,6 +113,7 @@ class TabWindow(QWidget):
         widget.deleteLater()
         self.tabWidget.removeTab(currentIndex)
         self.users.remove(widget.user)
+        playsound(os.path.join(self.theme["path"], "cease.wav"))
         if not self.users:
             self.close()
 
@@ -543,6 +547,7 @@ class MemoTabWindow(QWidget):
         for channel in self.channels:
             self.add_memo(channel)
 
+        playsound(os.path.join(self.theme["path"], "alarm2.wav"))
         self.add_user_items()
 
         self.show()
@@ -550,6 +555,7 @@ class MemoTabWindow(QWidget):
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
         del self.parent.open[self.memo]
+        playsound(os.path.join(self.theme["path"], "cease.wav"))
         event.accept()
 
     def display_message(self, channel, message):
