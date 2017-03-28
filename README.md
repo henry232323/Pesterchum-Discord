@@ -4,13 +4,23 @@ A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot
 
 If you have any questions either contact me the github or add me at Henry#6174 on Discord.
 
+This app is NOT an all-in-one client! It is meant to enhance RP and anything else you wish to do with it, however
+it is recommended you still use regular Discord for technical functions.
+
 #Install
-Unzip the file and run Pesterchum.exe, the GUI wont launch until connected. If there is an update, updater.exe will launch in a console.
+The release download is distributed as a .zip file. Unzip the file and inside will be a file called `pesterchum.exe`
+If there is an update, updater.exe will launch in a console.
 It doesn't install anywhere, its fairly portable. It is not yet for OSX/Linux, contact me if anyone is interested in 
 supporting it.
 
 If you are running an older version and would like to update (> v1.0.6) you can enable the auto updater
 by going into your `cfg/options.json` and changing the value `"auto_update": false` to `"auto_update": true`
+
+#Updating
+Auto updating by default is disabled, but can be enabled in settings, if you would rather manually install the new
+update, copy and replace the following files and folders into the old installation
+`discord, pesterchum.exe, updater.exe, python3.6.zip, python3.6.dll`
+If there are new themes or quirks, copy the relevant files / folders into the `quirks` folder and the `themes` folder
 
 #Tokens
 The Discord API has officially deprecated user logins, (email / password) best choice is to use tokens. All accounts
@@ -22,6 +32,9 @@ have tokens, to find yours:
 4. Expand Storage > Local Storage > https://discordapp.com
 5. Find "token" under "key"
 6. Copy the text in quotes on the same row
+
+Starting soon (not yet) the app will **ONLY** accept tokens, however once tokens are mandatory, we will also
+get some cool new functionality.
 
 #Quirks
 Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) for help on quirks (they work identically) check out
