@@ -5,7 +5,7 @@ import subprocess
 import requests
 import sys
 
-__version__ = "v1.1.2"
+__version__ = "v1.2.0"
 __author__ = "henry232323"
 
 if Options["interface"]["auto_update"]:
