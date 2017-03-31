@@ -20,7 +20,7 @@ setup(
     version="v1.0.4",
     description="A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client.",
     author="henry232323",
-    author_email="henry@rhodochrosite.xyz",
+    author_email="henry@henry232323",
     packages=["pyquirks"],
     url="https://github.com/henry232323/Pesterchum-Discord",
     license="GPL3",
