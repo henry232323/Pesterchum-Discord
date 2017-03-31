@@ -19,8 +19,8 @@ by going into your `cfg/options.json` and changing the value `"auto_update": fal
 #Updating
 Auto updating by default is disabled, but can be enabled in settings, if you would rather manually install the new
 update, copy and replace the following files and folders into the old installation
-`discord, pesterchum.exe, updater.exe, python3.6.zip, python3.6.dll`
-If there are new themes or quirks, copy the relevant files / folders into the `quirks` folder and the `themes` folder
+`discord, pesterchum.exe, updater.exe, python3.6.zip, python3.6.dll, asyncio, pywintypes36.dll`
+If there are new themes or quirks, copy the relevant files / folders into the `pyquirks` folder and the `themes` folder
 
 #Tokens
 The Discord API has officially deprecated user logins, (email / password) best choice is to use tokens. All accounts
