@@ -7,6 +7,9 @@ If you have any questions either contact me the github or add me at Henry#6174 o
 This app is NOT an all-in-one client! It is meant to enhance RP and anything else you wish to do with it, however
 it is recommended you still use regular Discord for technical functions.
 
+###Donate
+If you like what I've made, consider [buying me a coffee](https://ko-fi.com/A372XXA)
+
 #Install
 The release download is distributed as a .zip file. Unzip the file and inside will be a file called `pesterchum.exe`
 If there is an update, updater.exe will launch in a console.
