@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Copyright (c) 2016-2017, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
