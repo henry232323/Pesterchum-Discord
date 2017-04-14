@@ -24,10 +24,10 @@ from PyQt5.QtCore import Qt, pyqtSlot, QUrl
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
+from traceback import format_exc, print_exc
 from contextlib import redirect_stdout
 from asyncio import ensure_future
 from async_timeout import timeout
-from traceback import format_exc
 from sys import exit as sysexit
 from inspect import isawaitable
 from io import StringIO
@@ -58,8 +58,9 @@ class PrivateMessageWidget(QWidget):
         self.userOutput.anchorClicked.connect(self.anchorClicked)
         self.userOutput.setOpenLinks(False)
 
-        if not isinstance(user, discord.PrivateChannel):
-                self.display_text(fmt_begin_msg(app, self.app.client.user, user.user if not isinstance(user, discord.User) else user))
+        if isinstance(user, discord.DMChannel):
+            self.display_text(fmt_begin_msg(app, self.app.client.user, user.recipient))
+
         ensure_future(self.get_logs())
 
     @pyqtSlot(QUrl)
@@ -67,12 +68,12 @@ class PrivateMessageWidget(QWidget):
         urlstr = url.toString()
         if urlstr.startswith("mention="):
             id = urlstr[8:]
-            user = discord.utils.get(self.app.client.get_all_members(), id=id)
+            user = discord.utils.get(self.app.client.get_all_members(), id=int(id))
             if user.id != self.app.client.user.id:
                 self.app.gui.start_privmsg(user)
         elif urlstr.startswith("channel="):
             id = urlstr[8:]
-            channel = discord.utils.get(self.memo.server.channels, id=id)
+            channel = discord.utils.get(self.memo.guild.channels, id=int(id))
             if channel.id != self.memo.id:
                 self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
         elif urlstr.startswith("role="):
@@ -80,7 +81,7 @@ class PrivateMessageWidget(QWidget):
 
     async def get_logs(self):
         ms = ""
-        async for message in self.app.client.logs_from(self.user, 100, reverse=True):
+        async for message in self.user.history(limit=100, reverse=True):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
@@ -152,13 +153,13 @@ class TabWindow(QWidget):
         if user.id not in self.ids:
             if isinstance(user, discord.User):
                 name = user.display_name
-            elif user.type == user.type.group:
+            elif isinstance(user, discord.GroupChannel):
                 if not user.name:
                     name = ", ".join(map(lambda c: c.display_name, user.recipients))
                 else:
                     name = user.name
             else:
-                name = user.user.display_name
+                name = user.recipient.display_name
 
             windw = PrivateMessageWidget(self.app, self, user, name)
             icon = QIcon("resources/pc_chummy.png")
@@ -379,11 +380,9 @@ class MemosWindow(QWidget):
         header = self.memosTableWidget.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.ctr = 0
-        self.servers = dict()
         self.open = dict()
-        for server in self.app.client.servers:
-            self.servers[server.name] = server
-            self.add_channel(server.name, len(server.members))
+        for guild in self.app.client.guilds:
+            self.add_channel(guild.name, len(guild.members))
         self.memosTableWidget.sortItems(0)
 
         self.show()
@@ -406,25 +405,28 @@ class MemosWindow(QWidget):
                 self.openMemo(selected[0])
 
     def display_message(self, channel, message):
-        win = self.getWindow(channel.server)
+        win = self.getWindow(channel.guild)
         win.display_message(channel, message)
 
-    def getWindow(self, server):
-        if isinstance(server, discord.Server):
-            return self.open[server]
-        elif isinstance(server, str):
-            return self.servers[server]
+    def getWindow(self, guild):
+        if isinstance(guild, discord.Guild):
+            return self.open[guild]
+        elif isinstance(guild, str):
+            return discord.utils.get(self.app.client.guilds, name=str)
         else:
             return None
 
     def openMemo(self, index):
-        if index.column():
-            index = index.sibling(index.row(), 0)
-        item = self.memosTableWidget.itemFromIndex(index)
-        server = self.servers[item.text()]
-        tab = MemoTabWindow(self.app, self, server)
-        self.open[server] = tab
-        return tab.memo
+        try:
+            if index.column():
+                index = index.sibling(index.row(), 0)
+            item = self.memosTableWidget.itemFromIndex(index)
+            guild = discord.utils.get(self.app.client.guilds, name=item.text())
+            tab = MemoTabWindow(self.app, self, guild)
+            self.open[guild] = tab
+            return tab.memo
+        except:
+            print_exc()
 
     def add_channel(self, memo, usercount):
         self.memosTableWidget.insertRow(self.ctr)
@@ -457,12 +459,21 @@ class MemoMessageWidget(QWidget):
         self.memo = memo
         self.app = app
         self.container = container
-        self.names = self.memo.server.members
+        self.names = self.memo.guild.members
 
         self.memoUsers.setContextMenuPolicy(Qt.CustomContextMenu)
         self.memoUsers.customContextMenuRequested.connect(self.openMemoMenu)
         self.messageContext = QAction("MESSAGE")
         self.messageContext.triggered.connect(self.message_user)
+        self.blockContext = QAction("BLOCK")
+        self.blockContext.triggered.connect(self.block_user)
+        self.blockContext = QAction("UNBLOCK")
+        self.blockContext.triggered.connect(self.unblock_user)
+        self.friendContext = QAction("ADD FRIEND")
+        self.friendContext.triggered.connect(self.send_friend_request)
+        self.removeContext = QAction("REMOVE FRIEND")
+        self.removeContext.triggered.connect(self.remove_friend)
+
 
         self.userLabel.setText(memo.name.join(["::", "::"]))
         self.sendButton.clicked.connect(self.send)
@@ -473,7 +484,7 @@ class MemoMessageWidget(QWidget):
         self.userOutput.document().setDefaultStyleSheet(self.app.theme["styles"])
         self.userOutput.setHtml("<body>\n</body>")
 
-        if not self.memo.permissions_for(self.memo.server.me).send_messages:
+        if not self.memo.permissions_for(self.memo.guild.me).send_messages:
             self.userInput.setReadOnly(True)
 
         ensure_future(self.load_emojis())
@@ -481,34 +492,36 @@ class MemoMessageWidget(QWidget):
 
     async def load_emojis(self):
         async with aiohttp.ClientSession(loop=self.app.loop) as session:
-            for emoji in self.app.client.get_all_emojis():
-                if emoji.server == self.memo.server:
-                    with timeout(10):
-                        async with session.get(emoji.url) as response:
-                            img = await response.read()
-                            qmg = QImage()
-                            qmg.loadFromData(img)
-                            self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
+            for emoji in self.memo.guild.emojis:
+                with timeout(10):
+                    async with session.get(emoji.url) as response:
+                        img = await response.read()
+                        qmg = QImage()
+                        qmg.loadFromData(img)
+                        self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
 
     @pyqtSlot(QUrl)
     def anchorClicked(self, url):
-        urlstr = url.toString()
-        if urlstr.startswith("mention="):
-            id = urlstr[8:]
-            user = discord.utils.get(self.app.client.get_all_members(), id=id)
-            if user.id != self.app.client.user.id:
-                self.app.gui.start_privmsg(user)
-        elif urlstr.startswith("channel="):
-            id = urlstr[8:]
-            channel = discord.utils.get(self.memo.server.channels, id=id)
-            if channel.id != self.memo.id:
-                self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
-        elif urlstr.startswith("role="):
-            pass
+        try:
+            urlstr = url.toString()
+            if urlstr.startswith("mention="):
+                id = urlstr[8:]
+                user = discord.utils.get(self.app.client.get_all_members(), id=int(id))
+                if user.id != self.app.client.user.id:
+                    self.app.gui.start_privmsg(user)
+            elif urlstr.startswith("channel="):
+                id = urlstr[8:]
+                channel = discord.utils.get(self.memo.guild.channels, id=int(id))
+                if channel.id != self.memo.id:
+                    self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
+            elif urlstr.startswith("role="):
+                pass
+        except:
+            print_exc()
 
     async def get_logs(self):
         ms = ""
-        async for message in self.app.client.logs_from(self.memo, 100, reverse=True):
+        async for message in self.memo.history(limit=100, reverse=True):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
@@ -534,17 +547,70 @@ class MemoMessageWidget(QWidget):
 
     def openMemoMenu(self, position):
         menu = QMenu()
-        menu.addAction(self.messageContext)
+        selected = self.memoUsers.selectedItems()
+        if selected:
+            user = selected[0].text()
+            member = discord.utils.get(self.memo.guild.members, name=user)
+            if self.app.client.user.bot and member is not self.memo.guild.me:
+                menu.addAction(self.messageContext)
+
+            elif member is not self.memo.guild.me:
+                menu.addAction(self.messageContext)
+
+                if member.is_friend():
+                    menu.addAction(self.removeContext)
+                else:
+                    menu.addAction(self.friendContext)
+
+                if member.is_blocked():
+                    menu.addAction(self.removeBlockContext)
+                else:
+                    menu.addAction(self.blockContext)
+
+            else:
+                return
+
         menu.exec_(self.memoUsers.viewport().mapToGlobal(position))
 
     def message_user(self):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.server.members, name=user)
+            member = discord.utils.get(self.memo.guild.members, name=user)
             if member.id != self.app.client.user.id:
                 ensure_future(self.app.gui.start_pm(member))
 
+    def block_user(self):
+        selected = self.memoUsers.selectedItems()
+        if selected:
+            user = selected[0].text()
+            member = discord.utils.get(self.memo.guild.members, name=user)
+            if member.id != self.app.client.user.id:
+                ensure_future(user.block())
+
+    def unblock_user(self):
+        selected = self.memoUsers.selectedItems()
+        if selected:
+            user = selected[0].text()
+            member = discord.utils.get(self.memo.guild.members, name=user)
+            if member.id != self.app.client.user.id:
+                ensure_future(user.unblock())
+
+    def send_friend_request(self):
+        selected = self.memoUsers.selectedItems()
+        if selected:
+            user = selected[0].text()
+            member = discord.utils.get(self.memo.guild.members, name=user)
+            if member.id != self.app.client.user.id:
+                ensure_future(user.send_friend_request())
+
+    def remove_friend(self):
+        selected = self.memoUsers.selectedItems()
+        if selected:
+            user = selected[0].text()
+            member = discord.utils.get(self.memo.guild.members, name=user)
+            if member.id != self.app.client.user.id:
+                ensure_future(user.remove_friend())
 
 class MemoTabWindow(QWidget):
     def __init__(self, app, parent, memo):
@@ -557,8 +623,8 @@ class MemoTabWindow(QWidget):
         self.app = app
         uic.loadUi(app.theme["ui_path"] + "/MemoTabWindow.ui", self)
         self.memo = memo
-        self.channels = list(filter(lambda x: x.type is discord.ChannelType.text and x.permissions_for(x.server.me).read_messages, self.memo.channels))
-        self.channels.sort(key=lambda server: server.name)
+        self.channels = list(filter(lambda x: isinstance(x, discord.TextChannel) and x.permissions_for(x.guild.me).read_messages, self.memo.channels))
+        self.channels.sort(key=lambda guild: guild.name)
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
         self.setWindowTitle("Memos")
@@ -580,9 +646,9 @@ class MemoTabWindow(QWidget):
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)
 
-    def getWidget(self, server):
+    def getWidget(self, guild):
         try:
-            idx = self.channels.index(server)
+            idx = self.channels.index(guild)
             return self.tabWidget.widget(idx)
         except IndexError as e:
             print(e)
@@ -632,28 +698,19 @@ class AuthDialog(QDialog):
         self.acceptButton.clicked.connect(self.accepted)
         self.closeButton.clicked.connect(self.rejected)
         if f:
-            self.errorLabel.setText("""Invalid login / token! Failed to login.""")
+            self.errorLabel.setText("""Invalid token! Failed to login. Make sure if you are using a bot to check the bot account check""")
+        else:
+            self.errorLabel.setText("""Discord no longer allows usernames/passwords!
+Check the README for how to find yours!""")
         self.auth = None
         self.exec_()
 
     def accepted(self):
-        email = self.emailEdit.text()
-        passwd = self.passEdit.text()
         token = self.tokenEdit.text().strip("\"")
         bot = self.botCheck.isChecked()
-        if not email:
-            email = None
-        if not passwd:
-            passwd = None
+        self.auth = (token, bot)
         if not token:
-            token = None
-        self.auth = (email, passwd, token, bot)
-        if (email or passwd) and token:
-            self.errorLabel.setText("You must have either a email/pass OR a token (for bot accounts)")
-        elif not (email and passwd) and not token:
-            self.errorLabel.setText("You must have BOTH an email and password OR a token")
-        elif (email or passwd) and bot:
-            self.errorLabel.setText("You cant login with an email/pass to a bot account")
+            return
         else:
             self.fin = True
             self.close()

@@ -175,7 +175,7 @@ def getTime(app):
 
 
 def format_time(app, message):
-    time = message.timestamp
+    time = message.created_at
     if app.options["conversations"]["show_seconds"]:
         fmt = "{hour}:{minute}:{sec}"
     else:

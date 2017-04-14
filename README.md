@@ -7,10 +7,10 @@ If you have any questions either contact me the github or add me at Henry#6174 o
 This app is NOT an all-in-one client! It is meant to enhance RP and anything else you wish to do with it, however
 it is recommended you still use regular Discord for technical functions.
 
-###Donate
+### Donate
 If you like what I've made, consider [buying me a coffee](https://ko-fi.com/A372XXA)
 
-#Install
+# Install
 The release download is distributed as a .zip file. Unzip the file and inside will be a file called `pesterchum.exe`
 If there is an update, updater.exe will launch in a console.
 It doesn't install anywhere, its fairly portable. It is not yet for OSX/Linux, contact me if anyone is interested in 
@@ -19,13 +19,13 @@ supporting it.
 If you are running an older version and would like to update (> v1.0.6) you can enable the auto updater
 by going into your `cfg/options.json` and changing the value `"auto_update": false` to `"auto_update": true`
 
-#Updating
+# Updating
 Auto updating by default is disabled, but can be enabled in settings, if you would rather manually install the new
 update, copy and replace the following files and folders into the old installation
 `discord, pesterchum.exe, updater.exe, python3.6.zip, python3.6.dll, asyncio, pywintypes36.dll`
 If there are new themes or quirks, copy the relevant files / folders into the `pyquirks` folder and the `themes` folder
 
-#Tokens
+# Tokens
 The Discord API has officially deprecated user logins, (email / password) best choice is to use tokens. All accounts
 have tokens, to find yours:
 
@@ -39,26 +39,26 @@ have tokens, to find yours:
 Starting soon (not yet) the app will **ONLY** accept tokens, however once tokens are mandatory, we will also
 get some cool new functionality.
 
-#Quirks
+# Quirks
 Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) for help on quirks (they work identically) check out
 [illuminatedWax's quirk info](https://github.com/illuminatedwax/pesterchum#quirks-1) on the original Pesterchum. Misspeller has not yet been added
 
 Add custom quirk commands by going to the pyquirks folder and removing quirk_funcs.pyc and replacing it with your own quirk_funcs.py
 (if you want parts from the original just grab the [source](https://github.com/henry232323/Pesterchum-Discord/blob/master/pyquirks/quirk_funcs.py))
 
-#Bugs
+# Bugs
 Please report all bugs in the [issues](https://github.com/henry232323/Pesterchum-Discord/issues). 
 If the application is not starting or crashes on startup, try starting it again, if that fails, 
 delete cfg/auth, cfg/config.json, cfg/options.json (and if else fails try removing quirks.json too)
 
-#Themes
+# Themes
 While I've made every theme available so far, they're easy (ish) for anyone to make. If you'd like
 me to add a theme, just send a pull request or message me.
 If you want to make a theme, best chance is to reverse engineer the already available (in the source) 
 .ui files of an existing theme.
  <br /><br />
 All themes have several main parts:
-#####theme.json
+##### theme.json
  ```json
 {
   "name": "Pesterchum",
@@ -98,18 +98,18 @@ All themes have several main parts:
  ```
  For example moodButton0 would be the button for "Chummy" or moodButton2 would reference Offline / Abscond.
  The text on the button will remain and does not matter.
-###Pesterchum 2.5
+### Pesterchum 2.5
 ![PesterchumPreview2](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum2.5-preview.png)
 
-###Trollian 2.5
+### Trollian 2.5
 ![TrollianPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/trollian2.5-preview.png)
 
-###Pesterchum
+### Pesterchum
 ![PesterchumPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/pesterchum-preview.png)
 
-###Serious Business
+### Serious Business
 ![DadPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/dad-preview.png)
 
-###sbahj
+### sbahj
 ![sbahjPreview](https://raw.githubusercontent.com/henry232323/Pesterchum-Discord/master/resources/sbahj-preview.png)
 

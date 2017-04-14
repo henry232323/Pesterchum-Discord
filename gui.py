@@ -125,13 +125,13 @@ class Gui(QMainWindow):
 
         # Create a QStandardItem for each friend, friendsModel will auto update
         for channel in self.app.client.private_channels:
-            if channel.type == channel.type.group:
+            if isinstance(channel, discord.GroupChannel):
                 if not channel.name:
                     friend = ", ".join(map(lambda c: c.display_name, channel.recipients))
                 else:
                     friend = channel.name
             else:
-                friend = channel.user.display_name
+                friend = channel.recipient.display_name
             self.friendsUsers[friend] = channel
 
             treeitem = QStandardItem(friend)
@@ -150,6 +150,8 @@ class Gui(QMainWindow):
         self.chumsTree.setItemsExpandable(True)
 
         self.pesterButton.clicked.connect(self.privmsg_pester)
+        self.blockButton.clicked.connect(self.block_selected)
+        self.addChumButton.clicked.connect(self.add_selected)
 
         for num in range(23):
             name = "moodButton{}".format(num)
@@ -193,22 +195,36 @@ class Gui(QMainWindow):
             self.tabWindow.raise_()
             self.tabWindow.activateWindow()
 
-    def start_privmsg(self, user):
+    def add_selected(self):
+        selected = self.chumsTree.selectedIndexes()
+        if selected:
+            idx = selected[0]
+            user = self.friendsModel.data(idx)
+            user.send_friend_request()
+
+    def block_selected(self):
+        selected = self.chumsTree.selectedIndexes()
+        if selected:
+            idx = selected[0]
+            user = self.friendsModel.data(idx)
+            user.block()
+
+    def start_privmsg(self, channel):
         """
         Start a private message window, if one exists add a user to it
         Return the new tab of the user
         """
-        if isinstance(user, discord.User):
-            ensure_future(self.start_pm(user))
+        if isinstance(channel, (discord.User, discord.Member)):
+            ensure_future(self.start_pm(channel))
             return
         if not self.tabWindow:
-            self.tabWindow = TabWindow(self.app, self, user)
+            self.tabWindow = TabWindow(self.app, self, channel)
             return self.tabWindow.init_user
         else:
-            return self.tabWindow.add_user(user)
+            return self.tabWindow.add_user(channel)
 
     async def start_pm(self, user):
-        channel = await self.app.client.start_private_message(user)
+        channel = await user.create_dm()
         self.start_privmsg(channel)
 
     @pyqtSlot(QModelIndex)
