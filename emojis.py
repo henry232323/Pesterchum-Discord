@@ -33,6 +33,6 @@ class Emojis(object):
         str = match.group(0)
         str = str[2:-1]
         name, id = str.split(":")
-        emoji = discord.Emoji(id=id, server=mobj.server)
+        emoji = discord.utils.get(mobj.guild.emojis, id=int(id))
         fmt = '<img src="{}"/>'.format(emoji.url)
         return fmt

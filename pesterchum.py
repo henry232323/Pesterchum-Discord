@@ -25,7 +25,7 @@ import subprocess
 import requests
 import sys
 
-__version__ = "v1.2.2"
+__version__ = "v1.3.0"
 __author__ = "henry232323"
 
 if Options["interface"]["auto_update"]:
@@ -85,11 +85,11 @@ class App(QApplication):
         self.nick = None
         self.client = DiscordClient(app=self, loop=self.loop)
 
-        self.user, self.passwd, self.token, self.botAccount = UserAuth
+        self.token, self.botAccount = UserAuth
 
-        if not UserAuth[0] and not UserAuth[1] and not UserAuth[2]:
+        if not UserAuth[0]:
             self.openAuth(i=True)
-            save_auth((self.user, self.passwd, self.token, self.botAccount,))
+            save_auth((self.token, self.botAccount,))
 
         asyncio.ensure_future(self.connecting())
         asyncio.ensure_future(self.runbot())
@@ -125,10 +125,10 @@ class App(QApplication):
         """Called on `Client.on_message`, Message handling happens here"""
         if message.content.startswith("_") and message.content.endswith("_"):
             message.content = "/me " + message.content[1:-1]
-        if isinstance(message.channel, discord.PrivateChannel):
-            if not message.channel.name:
-                message.channel.name = ",".join(map(lambda m: m.display_name, message.channel.recipients))
-            if message.channel.type is discord.ChannelType.group:
+        if isinstance(message.channel, (discord.DMChannel, discord.GroupChannel)):
+            if isinstance(message.channel, discord.GroupChannel):
+                if not message.channel.name:
+                    message.channel.name = ",".join(map(lambda m: m.display_name, message.channel.recipients))
                 tab = self.gui.start_privmsg(message.channel)
             else:
                 tab = self.gui.start_privmsg(message.channel)
@@ -137,7 +137,7 @@ class App(QApplication):
                 tab.display_text(fmt)
         else:
             if self.gui.memosWindow:
-                if message.server in self.gui.memosWindow.open.keys():
+                if message.guild in self.gui.memosWindow.open.keys():
                     fmt = fmt_disp_msg(self, message.content, message, user=message.author)
                     if fmt:
                         try:
@@ -203,23 +203,20 @@ class App(QApplication):
         if message.startswith("/ooc"):
             message = "((" + message[4:] + "))"
         message = self.quirks.process_quirks(message)
-        asyncio.ensure_future(self.client.send_message(channel, message, tts=tts))
+        asyncio.ensure_future(channel.send(message, tts=tts))
 
     def openAuth(self, f=False, i=True):
         auth = AuthDialog(self, self, f=f, i=i).auth
-        self.user, self.passwd, self.token, self.botAccount = auth
+        self.token, self.botAccount = auth
         if hasattr(self, "gui") and auth and not f:
             self.exit()
 
     async def runbot(self):
         try:
-            if (self.user and self.passwd) and not self.token:
-                await self.client.start(self.user, self.passwd, bot=False)
-            elif self.token and not (self.user or self.passwd):
-                await self.client.start(self.token, bot=self.botAccount)
+            await self.client.start(self.token, bot=self.botAccount)
         except discord.LoginFailure:
             self.openAuth(f=True)
-            save_auth((self.user, self.passwd, self.token, self.botAccount,))
+            save_auth((self.token, self.botAccount,))
         finally:
             await self.runbot()
 
@@ -229,7 +226,7 @@ class App(QApplication):
         Save configurations and sys.exit
         """
         try:
-            save_auth((self.user, self.passwd, self.token, self.botAccount,))
+            save_auth((self.token, self.botAccount,))
             save_options(self.options)
             self.quirks.save_quirks()
         except:
