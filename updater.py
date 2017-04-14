@@ -55,7 +55,9 @@ def get_update(url):
     zip_ref.extractall("temp")
     zip_ref.close()
 
-    to_copy = ["python35.zip", "resources", "themes"]
+    to_copy = ["python35.zip", "resources", "themes",
+               "python36.zip", "python36.dll", "pywintypes36.dll",
+               "asyncio", "discord"]
     for cfile in to_copy:
         fn = "temp/{}".format(cfile)
         if os.path.isfile(fn):
