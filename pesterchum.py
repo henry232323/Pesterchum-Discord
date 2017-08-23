@@ -69,6 +69,7 @@ class App(QApplication):
 
         self.idle = False
         self.trayIcon = None
+        self.connectingDialog = None
 
         self.themes = themes
         self.options = Options
@@ -93,6 +94,7 @@ class App(QApplication):
 
         asyncio.ensure_future(self.connecting())
         asyncio.ensure_future(self.runbot())
+
         self.gui = Gui(self.loop, self)
         loop.run_forever()
 
@@ -118,8 +120,7 @@ class App(QApplication):
                 print(e)
 
     async def connecting(self):
-        self.connectingDialog = ConnectingDialog(self, self)
-        self.connectingDialog.exec_()
+        ConnectingDialog(self, self)
 
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
@@ -148,6 +149,7 @@ class App(QApplication):
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
         self.connectingDialog.close()
+        self.connectingDialog = None
         self.nick = self.client.user.name
         self.quirks = Quirks(self)
         if "debug" in sys.argv:

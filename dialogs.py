@@ -38,6 +38,7 @@ from formatting import *
 
 from playsound import playsound
 
+
 class PrivateMessageWidget(QWidget):
     def __init__(self, app, parent, user, name):
         """
@@ -412,21 +413,18 @@ class MemosWindow(QWidget):
         if isinstance(guild, discord.Guild):
             return self.open[guild]
         elif isinstance(guild, str):
-            return discord.utils.get(self.app.client.guilds, name=str)
+            return discord.utils.get(self.app.client.guilds, name=guild)
         else:
             return None
 
     def openMemo(self, index):
-        try:
-            if index.column():
-                index = index.sibling(index.row(), 0)
-            item = self.memosTableWidget.itemFromIndex(index)
-            guild = discord.utils.get(self.app.client.guilds, name=item.text())
-            tab = MemoTabWindow(self.app, self, guild)
-            self.open[guild] = tab
-            return tab.memo
-        except:
-            print_exc()
+        if index.column():
+            index = index.sibling(index.row(), 0)
+        item = self.memosTableWidget.itemFromIndex(index)
+        guild = discord.utils.get(self.app.client.guilds, name=item.text())
+        tab = MemoTabWindow(self.app, self, guild)
+        self.open[guild] = tab
+        return tab.memo
 
     def add_channel(self, memo, usercount):
         self.memosTableWidget.insertRow(self.ctr)
@@ -474,7 +472,6 @@ class MemoMessageWidget(QWidget):
         self.removeContext = QAction("REMOVE FRIEND")
         self.removeContext.triggered.connect(self.remove_friend)
 
-
         self.userLabel.setText(memo.name.join(["::", "::"]))
         self.sendButton.clicked.connect(self.send)
         self.userOutput.setReadOnly(True)
@@ -502,22 +499,19 @@ class MemoMessageWidget(QWidget):
 
     @pyqtSlot(QUrl)
     def anchorClicked(self, url):
-        try:
-            urlstr = url.toString()
-            if urlstr.startswith("mention="):
-                id = urlstr[8:]
-                user = discord.utils.get(self.app.client.get_all_members(), id=int(id))
-                if user.id != self.app.client.user.id:
-                    self.app.gui.start_privmsg(user)
-            elif urlstr.startswith("channel="):
-                id = urlstr[8:]
-                channel = discord.utils.get(self.memo.guild.channels, id=int(id))
-                if channel.id != self.memo.id:
-                    self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
-            elif urlstr.startswith("role="):
-                pass
-        except:
-            print_exc()
+        urlstr = url.toString()
+        if urlstr.startswith("mention="):
+            id = urlstr[8:]
+            user = discord.utils.get(self.app.client.get_all_members(), id=int(id))
+            if user.id != self.app.client.user.id:
+                self.app.gui.start_privmsg(user)
+        elif urlstr.startswith("channel="):
+            id = urlstr[8:]
+            channel = discord.utils.get(self.memo.guild.channels, id=int(id))
+            if channel.id != self.memo.id:
+                self.parent.tabWidget.setCurrentIndex(self.parent.channels.index(channel))
+        elif urlstr.startswith("role="):
+            pass
 
     async def get_logs(self):
         ms = ""
@@ -550,7 +544,7 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if self.app.client.user.bot and member is not self.memo.guild.me:
                 menu.addAction(self.messageContext)
 
@@ -576,7 +570,7 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if member.id != self.app.client.user.id:
                 ensure_future(self.app.gui.start_pm(member))
 
@@ -584,7 +578,7 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if member.id != self.app.client.user.id:
                 ensure_future(user.block())
 
@@ -592,7 +586,7 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if member.id != self.app.client.user.id:
                 ensure_future(user.unblock())
 
@@ -600,7 +594,7 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if member.id != self.app.client.user.id:
                 ensure_future(user.send_friend_request())
 
@@ -608,9 +602,10 @@ class MemoMessageWidget(QWidget):
         selected = self.memoUsers.selectedItems()
         if selected:
             user = selected[0].text()
-            member = discord.utils.get(self.memo.guild.members, name=user)
+            member = self.memo.guild.get_member_named(user)
             if member.id != self.app.client.user.id:
                 ensure_future(user.remove_friend())
+
 
 class MemoTabWindow(QWidget):
     def __init__(self, app, parent, memo):
@@ -623,8 +618,7 @@ class MemoTabWindow(QWidget):
         self.app = app
         uic.loadUi(app.theme["ui_path"] + "/MemoTabWindow.ui", self)
         self.memo = memo
-        self.channels = list(filter(lambda x: isinstance(x, discord.TextChannel) and x.permissions_for(x.guild.me).read_messages, self.memo.channels))
-        self.channels.sort(key=lambda guild: guild.name)
+        self.channels = list(filter(lambda x: x.permissions_for(x.guild.me).read_messages, self.memo.text_channels))
         self.tabWidget.removeTab(0)  # Remove two default tabs
         self.tabWidget.removeTab(0)
         self.setWindowTitle("Memos")
@@ -901,6 +895,7 @@ class ConnectingDialog(QDialog):
         uic.loadUi(app.theme["ui_path"] + "/ConnectingDialog.ui", self)
         self.app = app
         self.parent = parent
+        self.app.connectingDialog = self
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.connectingExitButton.clicked.connect(sysexit)
         self.setWindowTitle('Connecting')
@@ -909,6 +904,8 @@ class ConnectingDialog(QDialog):
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
+
+        self.exec_()
 
     # Methods for moving window
     @pyqtSlot()
