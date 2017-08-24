@@ -186,7 +186,7 @@ class Gui(QMainWindow):
         self.offset = None
 
     def privmsg_pester(self):
-        '''Opens selected user in tree when PESTER! button pressed, same as double click'''
+        """Opens selected user in tree when PESTER! button pressed, same as double click"""
         selected = self.chumsTree.selectedIndexes()
         if selected:
             idx = selected[0]

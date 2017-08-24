@@ -660,20 +660,16 @@ class MemoTabWindow(QWidget):
         return tab
 
     def add_user_items(self):
-        try:
-            for member in self.memo.members:
-                nam = QListWidgetItem(member.display_name)
-                clra = member.color
-                clr = QBrush()
-                clr.setColor(QColor(clra.r, clra.g, clra.b))
-                nam.setForeground(clr)
-                if member.top_role.permissions.administrator:
-                    nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
-                widget = self.tabWidget.widget(0)
-                widget.memoUsers.addItem(nam)
-            widget.memoUsers.sortItems()
-        except Exception as e:
-            print(e)
+        for member in sorted(self.memo.members, key=lambda x: (max([r.position for r in x.roles if r.hoist], default=0), x.display_name), reverse=True):
+            nam = QListWidgetItem(member.display_name)
+            clra = member.color
+            clr = QBrush()
+            clr.setColor(QColor(clra.r, clra.g, clra.b))
+            nam.setForeground(clr)
+            if member.top_role.permissions.administrator:
+                nam.setIcon(QIcon(self.app.theme["path"] + "/op.png"))
+            widget = self.tabWidget.widget(0)
+            widget.memoUsers.addItem(nam)
 
 
 class AuthDialog(QDialog):
