@@ -25,7 +25,7 @@ import subprocess
 import requests
 import sys
 
-__version__ = "v1.3.0"
+__version__ = "v1.3.1"
 __author__ = "henry232323"
 
 if Options["interface"]["auto_update"]:
@@ -47,11 +47,11 @@ import asyncio
 import os.path
 
 from dialogs import AuthDialog, ConnectingDialog
+from client import DiscordClient, AutoShardClient
 from themes import themes, getThemes
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
 from options import save_options
-from client import DiscordClient
 from mentions import Mentions
 from emojis import Emojis
 from quirks import Quirks
@@ -84,9 +84,8 @@ class App(QApplication):
         self.setStyleSheet(self.theme["styles"])
 
         self.nick = None
-        self.client = DiscordClient(app=self, loop=self.loop)
-
         self.token, self.botAccount = UserAuth
+        self.client = (DiscordClient if self.botAccount else AutoShardClient)(app=self, loop=self.loop)
 
         if not UserAuth[0]:
             self.openAuth(i=True)

@@ -62,6 +62,7 @@ def scramble(text):
 def capitalize(str):
     return str.capitalize()
 
+
 def wingding(str):
     f = ""
     for char in str:
