@@ -1,6 +1,6 @@
 Troll Quirks
 ============
-Taken from illuminatedWax's (trollquirks.mkdn)[https://github.com/illuminatedwax/pesterchum/blob/master/trollquirks.mkdn]
+Taken from illuminatedWax's [trollquirks.mkdn](https://github.com/illuminatedwax/pesterchum/blob/master/trollquirks.mkdn)
 
 Karkat
 ------
