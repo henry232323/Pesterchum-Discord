@@ -1,5 +1,6 @@
 Troll Quirks
 ============
+Taken from illuminatedWax's (trollquirks.mkdn)[https://github.com/illuminatedwax/pesterchum/blob/master/trollquirks.mkdn]
 
 Karkat
 ------
@@ -15,7 +16,7 @@ REGEXP: "[oO]"
 REPLACE WITH: "0"
 </pre>
 
-#####After Prototyping
+##### After Prototyping
 <pre>
 RANDOM REGEXP: "\s"
 REPLACED WITH: " ribbit ", " ", " ", " ", " ", " ", etc....
@@ -46,7 +47,7 @@ WITH: "lower(\1)"
 
 Sollux
 ------
-#####Pre-blind
+##### Pre-blind
 <pre>
 REGEXP: "[iI]"
 REPLACE WITH: "\1\1"
@@ -60,7 +61,7 @@ REGEXP: "\btoo?\b"
 REPLACE WITH: "two"
 </pre>
 
-#####Blind
+##### Blind
 <pre>
 REGEXP: "[oO]"
 REPLACE WITH: "0"
@@ -147,13 +148,13 @@ REPLACE WITH: "00"
 
 Gamzee
 ------
-#####Version 1: "HoNk HoNk"
+##### Version 1: "HoNk HoNk"
 <pre>
 REGEXP: "([a-zA-Z])([a-zA-Z]?)"
 REPLACED WITH: "upper(\1)\2"
 </pre>
 
-#####Version 2: "HoNk hOnK"
+##### Version 2: "HoNk hOnK"
 <pre>
 REGEXP: "([\w\s])([\w\s]?)"
 REPLACED WITH: "upper(\1)\2"
