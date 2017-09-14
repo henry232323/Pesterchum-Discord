@@ -21,10 +21,10 @@
 
 from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
 from PyQt5.QtCore import Qt, pyqtSlot, QUrl
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QDialog, QWidget, QListWidgetItem, QComboBox, QHeaderView, QTableWidgetItem, QAction, QMenu
 from PyQt5 import uic
 
-from traceback import format_exc, print_exc
+from traceback import format_exc
 from contextlib import redirect_stdout
 from asyncio import ensure_future
 from async_timeout import timeout
@@ -488,14 +488,13 @@ class MemoMessageWidget(QWidget):
         ensure_future(self.get_logs())
 
     async def load_emojis(self):
-        async with aiohttp.ClientSession(loop=self.app.loop) as session:
-            for emoji in self.memo.guild.emojis:
-                with timeout(10):
-                    async with session.get(emoji.url) as response:
-                        img = await response.read()
-                        qmg = QImage()
-                        qmg.loadFromData(img)
-                        self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
+        for emoji in self.memo.guild.emojis:
+            with timeout(10):
+                async with self.app.session.get(emoji.url) as response:
+                    img = await response.read()
+                    qmg = QImage()
+                    qmg.loadFromData(img)
+                    self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
 
     @pyqtSlot(QUrl)
     def anchorClicked(self, url):
@@ -686,6 +685,7 @@ class AuthDialog(QDialog):
         self.setWindowTitle('Auth')
         self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
         self.acceptButton.clicked.connect(self.accepted)
+        self.acceptButton.setDefault(True)
         self.closeButton.clicked.connect(self.rejected)
         if f:
             self.errorLabel.setText("""Invalid token! Failed to login. Make sure if you are using a bot to check the bot account check""")
@@ -693,7 +693,7 @@ class AuthDialog(QDialog):
             self.errorLabel.setText("""Discord no longer allows usernames/passwords!
 Check the README for how to find yours!""")
         self.auth = None
-        self.exec_()
+        self.show()
 
     def accepted(self):
         token = self.tokenEdit.text().strip("\"")
@@ -901,7 +901,7 @@ class ConnectingDialog(QDialog):
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
 
-        self.exec_()
+        self.show()
 
     # Methods for moving window
     @pyqtSlot()

@@ -28,6 +28,7 @@ import os
 
 import pyquirks
 
+
 class Quirks(object):
     def __init__(self, app):
         self.app = app
