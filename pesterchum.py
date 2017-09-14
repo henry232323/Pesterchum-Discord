@@ -37,18 +37,22 @@ if Options["interface"]["auto_update"]:
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
 
+import ujson
+sys.modules["json"] = sys.modules["ujson"]
+
 from quamash import QEventLoop, QThreadExecutor
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QColor
+import discord
+import aiohttp
 
 from inspect import isawaitable
-import discord
 import asyncio
 import os.path
 
 from dialogs import AuthDialog, ConnectingDialog
 from client import DiscordClient, AutoShardClient
-from themes import themes, getThemes
+from theme import themes, getThemes
 from auth import UserAuth, save_auth
 from formatting import fmt_disp_msg
 from options import save_options
@@ -66,6 +70,7 @@ class App(QApplication):
         loop = QEventLoop(self)
         self.loop = loop
         asyncio.set_event_loop(loop)
+        self.session = aiohttp.ClientSession(loop=loop)
 
         self.idle = False
         self.trayIcon = None
@@ -79,7 +84,7 @@ class App(QApplication):
             self.theme = themes["Pesterchum 2.5"]
         self.theme_name = self.theme["name"]
         self.moods = Moods
-        self.emojis = Emojis
+        self.emojis = Emojis(self)
         self.mentions = Mentions
         self.setStyleSheet(self.theme["styles"])
 
@@ -157,7 +162,7 @@ class App(QApplication):
         self.gui.initialize()
 
     def change_mood(self, mood):
-        if mood == "offline" or mood == "abscond":
+        if mood in ("offline", "abscond"):
             asyncio.ensure_future(self.client.change_presence(status=discord.Status.invisible))
         else:
             asyncio.ensure_future(self.client.change_presence(game=discord.Game(name="Feeling {}".format(mood.upper())), status=discord.Status.online))

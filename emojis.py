@@ -22,17 +22,19 @@
 import discord
 import re
 
+
 class Emojis(object):
-    @staticmethod
-    def process_emojis(message, mobj):
-        fmt = re.sub("<:(.*?)>", lambda x: Emojis.fmt_emote(x, mobj), message)
+    def __init__(self, bot):
+        self.bot = bot
+
+    def process_emojis(self, message, mobj):
+        fmt = re.sub(r"/<:.*?:(\d+)>/", lambda x: self.fmt_emote(x, mobj), message)
         return fmt
 
-    @staticmethod
-    def fmt_emote(match, mobj):
+    def fmt_emote(self, match, mobj):
         str = match.group(0)
         str = str[2:-1]
-        name, id = str.split(":")
-        emoji = discord.utils.get(mobj.guild.emojis, id=int(id))
+        _name, id = str.split(":")
+        emoji = self.bot.get_emoji(id)
         fmt = '<img src="{}"/>'.format(emoji.url)
         return fmt
