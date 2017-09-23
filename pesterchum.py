@@ -19,7 +19,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from playsound import playsound  # Modified version, original tries to join a list of strs and bytes, decodes the bytes
+import simpleaudio as sa
 from options import Options
 import subprocess
 import requests
@@ -32,7 +32,7 @@ if Options["interface"]["auto_update"]:
     response = requests.get("https://api.github.com/repos/henry232323/pesterchum-discord/releases/latest").json()
     current_version = response["tag_name"]
     if current_version > __version__:
-        playsound("resources/update.wav", block=False)
+        sa.WaveObject.from_wave_file("resources/update.wav").play()
         download_url = response["assets"][0]["browser_download_url"]
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
@@ -155,7 +155,7 @@ class App(QApplication):
         self.quirks = Quirks(self)
         if "debug" in sys.argv:
             self.cli()
-        self.loop.create_task(self.bot.run_in_executor(playsound, os.path.join(self.theme["path"], "alarm.wav")))
+        sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
         self.gui.initialize()
 
     def change_mood(self, mood):
