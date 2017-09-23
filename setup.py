@@ -32,7 +32,7 @@ build_exe_options = {
                  "async_timeout", "asyncio", "asyncio.compat", "asyncio.base_futures",
                  "asyncio.base_events", "asyncio.base_tasks", "asyncio.base_subprocess",
                  "asyncio.proactor_events", "asyncio.constants","asyncio.selector_events",
-                 "asyncio.windows_utils"],
+                 "asyncio.windows_utils", "idna.idnadata"],
     "excludes": ["tkinter", "_tkinter", '_gtkagg', '_tkagg', 'bsddb', 'curses',
                  'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'tcl',
                  'unittest', 'idlelib', 'nacl', "_lzma", "_hashlib", "_bz2"],
