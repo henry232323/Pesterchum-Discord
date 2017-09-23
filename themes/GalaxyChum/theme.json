@@ -1,0 +1,6 @@
+{
+  "name": "GalaxyChum",
+  "ui_path": "ui",
+  "inherits": "Pesterchum 2.5",
+  "css": "GalaxyChum.css"
+}
