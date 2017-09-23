@@ -36,7 +36,7 @@ import aiohttp
 
 from formatting import *
 
-from playsound import playsound
+import simpleaudio as sa
 
 
 class PrivateMessageWidget(QWidget):
@@ -86,7 +86,7 @@ class PrivateMessageWidget(QWidget):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
-        self.app.loop.create_task(self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "alarm.wav")))
+        sa.WaveObject.from_wave_file(os.path.join(self.app.theme["path"], "alarm.wav")).play()
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
@@ -137,8 +137,7 @@ class TabWindow(QWidget):
         if not self.users:
             self.close()
 
-        self.app.loop.create_task(
-            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "cease.wav")))
+        sa.WaveObject.from_wave_file(os.path.join(self.app.theme["path"], "cease.wav")).play()
 
     def closeEvent(self, event):
         event.accept()
@@ -630,15 +629,13 @@ class MemoTabWindow(QWidget):
         self.add_user_items()
 
         self.show()
-        self.app.loop.create_task(
-            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "alarm2.wav")))
+        sa.WaveObject.from_wave_file(os.path.join(self.app.theme["path"], "alarm2.wav")).play()
 
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
         del self.parent.open[self.memo]
         event.accept()
-        self.app.loop.create_task(
-            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "cease.wav")))
+        sa.WaveObject.from_wave_file(os.path.join(self.app.theme["path"], "cease.wav")).play()
 
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)
