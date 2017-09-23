@@ -1,6 +1,6 @@
 Quamash >= 0.5.5
 PyQt5 >= 5.7
--e git://github.com/Rapptz/discord.py@rewrite#egg=discord.py
+-e git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 aiohttp >= 1.0.5
 asyncio >= 3.4.3
 requests >= 2.12.4
