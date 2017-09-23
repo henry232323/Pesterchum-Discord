@@ -25,7 +25,7 @@ def _playsoundWin(sound, block = True):
             errorBuffer = c_buffer(255)
             windll.winmm.mciGetErrorStringA(errorCode, errorBuffer, 254)
             exceptionMessage = ('\n    Error ' + str(errorCode) + ' for command:'
-                                '\n        ' + command +
+                                '\n        ' + command.decode() +
                                 '\n    ' + errorBuffer.value)
             raise PlaysoundException(exceptionMessage)
         return buf.value
@@ -38,6 +38,7 @@ def _playsoundWin(sound, block = True):
 
     if block:
         sleep(float(durationInMS) / 1000.0)
+
 
 def _playsoundOSX(sound, block = True):
     '''
@@ -77,8 +78,8 @@ def _playsoundNix(sound, block = True):
     https://web.archive.org/web/20080218155209/http://mail.python.org/pipermail/python-list/2004-October/288905.html
     '''
     import ossaudiodev
-    from sys  import byteorder
-    from wave import open as waveOpen, AFMT_S16_LE, AFMT_S16_BE
+    from sys import byteorder
+    from wave import open as waveOpen
     
     with waveOpen(sound, 'rb') as sound:
         channelCount, sampleWidth, framerate, frameCount, compressionType, compressionName = sound.getparams()
