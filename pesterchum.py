@@ -155,7 +155,7 @@ class App(QApplication):
         self.quirks = Quirks(self)
         if "debug" in sys.argv:
             self.cli()
-        playsound(os.path.join(self.theme["path"], "alarm.wav"), block=False)
+        self.loop.create_task(self.bot.run_in_executor(playsound, os.path.join(self.theme["path"], "alarm.wav")))
         self.gui.initialize()
 
     def change_mood(self, mood):
