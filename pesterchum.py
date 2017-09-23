@@ -37,9 +37,6 @@ if Options["interface"]["auto_update"]:
         subprocess.call("start updater.exe {}".format(download_url), shell=True)
         sys.exit()
 
-import ujson
-sys.modules["json"] = sys.modules["ujson"]
-
 from quamash import QEventLoop, QThreadExecutor
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QColor
@@ -217,14 +214,14 @@ class App(QApplication):
         if hasattr(self, "gui") and auth and not f:
             self.exit()
 
-    async def runbot(self):
+    async def runbot(self, x=1):
         try:
             await self.client.start(self.token, bot=self.botAccount)
         except discord.LoginFailure:
             self.openAuth(f=True)
             save_auth((self.token, self.botAccount,))
-        finally:
-            await self.runbot()
+            await asyncio.sleep(x)
+            await self.runbot(x * 2)
 
     def exit(self, code=0):
         """

@@ -59,7 +59,8 @@ def getThemes(themes):
                 theme_dict["ui_dir"] = os.listdir(ui_path)
                 theme_dict["inherits"] = theme_conf["inherits"]
                 themes[theme_conf["name"]] = theme_dict
-        except Exception:
+        except Exception as e:
+            print(e)
             continue
 
         for data in themes.values():

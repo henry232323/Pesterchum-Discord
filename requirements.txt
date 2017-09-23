@@ -5,4 +5,3 @@ aiohttp >= 1.0.5
 asyncio >= 3.4.3
 requests >= 2.12.4
 async-timeout >= 1.1.0
-playsound >= 1.2.1

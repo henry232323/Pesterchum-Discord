@@ -86,7 +86,7 @@ class PrivateMessageWidget(QWidget):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
-        playsound(os.path.join(self.app.theme["path"], "alarm.wav"), block=False)
+        self.app.loop.create_task(self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "alarm.wav")))
 
     def send(self):
         """Send the user the message in the userInput box, called on enter press / send button press"""
@@ -136,7 +136,9 @@ class TabWindow(QWidget):
         self.users.remove(widget.user)
         if not self.users:
             self.close()
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"), block=False)
+
+        self.app.loop.create_task(
+            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "cease.wav")))
 
     def closeEvent(self, event):
         event.accept()
@@ -628,13 +630,15 @@ class MemoTabWindow(QWidget):
         self.add_user_items()
 
         self.show()
-        playsound(os.path.join(self.app.theme["path"], "alarm2.wav"), block=False)
+        self.app.loop.create_task(
+            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "alarm2.wav")))
 
     def closeEvent(self, event):
         """On window (or tab) close send a PESTERCHUM:CEASE message to each user, destroy self"""
         del self.parent.open[self.memo]
         event.accept()
-        playsound(os.path.join(self.app.theme["path"], "cease.wav"), block=False)
+        self.app.loop.create_task(
+            self.app.loop.run_in_executor(playsound, os.path.join(self.app.theme["path"], "cease.wav")))
 
     def display_message(self, channel, message):
         self.getWidget(channel).display_text(message)
@@ -693,7 +697,7 @@ class AuthDialog(QDialog):
             self.errorLabel.setText("""Discord no longer allows usernames/passwords!
 Check the README for how to find yours!""")
         self.auth = None
-        self.show()
+        self.exec_()
 
     def accepted(self):
         token = self.tokenEdit.text().strip("\"")
@@ -901,7 +905,7 @@ class ConnectingDialog(QDialog):
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
 
-        self.show()
+        self.exec_()
 
     # Methods for moving window
     @pyqtSlot()

@@ -1,0 +1,132 @@
+.Gui{
+	background-color: #FFB500;
+	background-image: url($path/pcbg.png);
+}
+.QLabel#appLabel{
+	color: white;
+	font-size: 20px;
+	padding: 5px;
+	font-family: Courier New;
+	font-weight: bold;
+}
+.QMenuBar#menubar{
+	color: black;
+	font-weight: bold;
+	font-family: Courier New;
+	background-color: transparent;
+	padding-left: 12px;
+}
+.QMenuBar#menubar::item::selected{
+	background-color: transparent;
+}
+.QMenu{
+	color: black;
+	font-family: Courier New;
+	background-color: #FFB500;
+	border-color:yellow;
+	border-style:solid;
+	border-width:2px;
+	left: -5px;
+	font-weight: bold;
+}
+.QMenu::item:selected{
+	background-color: yellow;
+}
+.QTreeWidget#chumsTree{
+	background-color: black;
+	color:#666;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 3px;
+	font-family: Courier New;
+}
+.QTreeWidget::item{
+	color: white;
+}
+.QTreeWidget::item::selected, .QTreeWidget::item::selected::hover{
+	background-color: gray;
+}
+.QTreeWidget::item::hover{
+	background-color: rgb(200,200,200,50);
+}
+.QPushButton#addChumButton{
+	text-align: center;
+	background-color:yellow;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 2px 0px 2px 0px;
+}
+.QPushButton#pesterButton{
+	text-align: center;
+	background-color:yellow;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 2px 0px 2px 0px;
+}
+.QPushButton#blockButton{
+	text-align: center;
+	background-color:red;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	font-family: Courier New;
+	padding: 2px 0px 2px 0px;
+}
+.QPushButton#nameButton{
+	background-color: black;
+	color:white;
+	text-align: left;
+	border-color: #FFFF00;
+	border-style: solid;
+	border-width: 2px;
+	font-family: Courier New;
+	padding: 3px 0px 3px 2px;
+}
+.Gui .QPushButton[checkable="true"]{
+	text-align: left;
+	background-color:yellow;
+	border-color:#BB8800;
+	border-style:solid;
+	border-width:2px;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+	font-size:11px;
+}
+.Gui .QPushButton[checkable="true"]::checked{
+	text-align: left;
+	background-color:white;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+	font-size:11px;
+}
+.QPushButton#moodButton1{
+	text-align: left;
+	background-color:red;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+}
+.QPushButton#moodButton1::checked{
+	text-align: left;
+	background-color:white;
+	padding: 1px 0px 1px 0px;
+	font-family: Courier New;
+	color: red;
+}
+.QPushButton#moodButton2{
+	text-align: center;
+	background-color: black;
+	padding: 1px 0px 1px 0px;
+	color: white;
+	font-family: Courier New;
+}
+.QPushButton#moodButton2::checked{
+	text-align: center;
+	background-color:white;
+	padding: 5px 0px 5px 0px;
+	font-family: Courier New;
+	color: #CCCCCC;
+}
