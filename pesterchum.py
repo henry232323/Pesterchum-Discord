@@ -25,7 +25,7 @@ import subprocess
 import requests
 import sys
 
-__version__ = "v1.3.1"
+__version__ = "v1.3.5"
 __author__ = "henry232323"
 
 if Options["interface"]["auto_update"]:
@@ -87,7 +87,7 @@ class App(QApplication):
 
         self.nick = None
         self.token, self.botAccount = UserAuth
-        self.client = (DiscordClient if self.botAccount else AutoShardClient)(app=self, loop=self.loop)
+        self.client = (AutoShardClient if self.botAccount else DiscordClient)(app=self, loop=self.loop)
 
         if not UserAuth[0]:
             self.openAuth(i=True)
