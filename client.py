@@ -38,6 +38,7 @@ class DiscordClient(discord.Client):
     async def on_message(self, message):
         await self.app.on_message(message)
 
+
 class AutoShardClient(discord.AutoShardedClient):
     def __init__(self, app=None, **kwargs):
         super(self.__class__, self).__init__(**kwargs)
