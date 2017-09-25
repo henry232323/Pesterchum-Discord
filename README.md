@@ -26,7 +26,7 @@ update, copy and replace the following files and folders into the old installati
 If there are new themes or quirks, copy the relevant files / folders into the `pyquirks` folder and the `themes` folder
 
 # Tokens
-The Discord API no longer allows use of Tokens! Once you update to v1.3.0 or later you MUST use a token. All accounts
+The Discord API no longer allows use of credentials! Once you update to v1.3.0 or later you MUST use a token. All accounts
 have tokens, here's how to find yours:
 
 1. Open Discord
