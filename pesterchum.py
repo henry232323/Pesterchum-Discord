@@ -93,7 +93,8 @@ class App(QApplication):
             self.openAuth(i=True)
             save_auth((self.token, self.botAccount,))
 
-        asyncio.ensure_future(self.connecting())
+        #asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
+        self.loop.call_later(0, self.connecting)
         asyncio.ensure_future(self.runbot())
 
         self.gui = Gui(self.loop, self)
@@ -120,8 +121,12 @@ class App(QApplication):
             except Exception as e:
                 print(e)
 
-    async def connecting(self):
-        ConnectingDialog(self, self)
+    def connecting(self):
+        print("konnectante")
+        self.connectingDialog = ConnectingDialog(self, self)
+        self.connectingDialog.show()
+        #self.connectingDialog.exec_()
+        print("closed connecting (one day)")
 
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
@@ -149,14 +154,17 @@ class App(QApplication):
 
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
-        self.connectingDialog.close()
-        self.connectingDialog = None
-        self.nick = self.client.user.name
-        self.quirks = Quirks(self)
-        if "debug" in sys.argv:
-            self.cli()
-        sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
-        self.gui.initialize()
+        try:
+            print("received ready")
+            self.connectingDialog.close()
+            self.connectingDialog = None
+            self.nick = self.client.user.name
+            self.quirks = Quirks(self)
+            if "debug" in sys.argv:
+                self.cli()
+            sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
+        finally:
+            self.gui.initialize()
 
     def change_mood(self, mood):
         if mood in ("offline", "abscond"):

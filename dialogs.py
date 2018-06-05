@@ -902,8 +902,6 @@ class ConnectingDialog(QDialog):
         height = self.frameGeometry().height()
         self.setFixedSize(width, height)
 
-        self.exec_()
-
     # Methods for moving window
     @pyqtSlot()
     def mousePressEvent(self, event):
