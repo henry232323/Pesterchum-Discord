@@ -19,8 +19,9 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import discord
+
 import re
+import unicodedata
 
 
 class Emojis(object):
@@ -29,6 +30,7 @@ class Emojis(object):
 
     def process_emojis(self, message, mobj):
         fmt = re.sub(r"/<:.*?:(\d+)>/", lambda x: self.fmt_emote(x, mobj), message)
+        fmt = re.sub(r":[\w]*?:", lambda x: self.fmt_emoji(x, mobj), fmt)
         return fmt
 
     def fmt_emote(self, match, mobj):
@@ -38,3 +40,12 @@ class Emojis(object):
         emoji = self.bot.get_emoji(id)
         fmt = '<img src="{}"/>'.format(emoji.url)
         return fmt
+
+    def fmt_emoji(self, match, mobj):
+        str = match.group(0)
+        name = str[1:-1]
+        try:
+            return unicodedata.lookup(name.upper())
+        except KeyError:
+            print(name)
+            return str

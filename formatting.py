@@ -23,6 +23,8 @@ from datetime import datetime
 import re
 import os
 
+from PyQt5.QtGui import QPalette
+
 
 def color_to_span(msg):
     """Convert <c=#hex> codes to <span style="color:"> codes"""
@@ -86,6 +88,16 @@ def fmt_disp_msg(app, msg, mobj, user=None):
         time = format_time(app, mobj)
         init = getInitials(app, user, b=False)
         color = app.getColor(user)
+        bgcolor = app.gui.palette().color(QPalette.Background)
+        bgluma = 0.2126 * bgcolor.red() + 0.7152 * bgcolor.green() + 0.0722 * bgcolor.blue()
+        r, g, b = parse_rgb_literal(color)
+        colorluma = 0.2126 * r + 0.7152 * g + 0.0722 * b
+        if bgluma < 40 and colorluma < 40:
+            color = f"#{hex(int(r * 1.5))}{hex(int(g * 1.5))}{hex(int(g * 1.5))}"
+
+        if bgluma > 215 and colorluma > 215:
+            color = f"#{hex(r // 1.5)}{hex(g // 1.5)}{hex(g // 1.5)}"
+
         fmt = '<b><span style="color:black;">{time} <span style="color:{color};">{init}: {msg}</span></span></b><br />'
         msg = fmt.format(time="[" + time + "]" if app.options["conversations"]["time_stamps"] else "", init=init,
                          msg=msg.strip(), color=color)
@@ -134,6 +146,14 @@ def getInitials(app, user, b=True, c=False, suffix=None, prefix=None):
 def rgbtohex(r, g, b):
     '''Convert RGB values to hex code'''
     return '#%02x%02x%02x' % (r, g, b)
+
+
+def parse_rgb_literal(color):
+    if color.startswith("#"):
+        return int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
+    color = color.strip("()rgb")
+    colors = color.split(",")
+    return int(colors[0].strip(), 16), int(colors[1].strip(), 16), int(colors[2].strip(), 16)
 
 
 def isrgb(match):
