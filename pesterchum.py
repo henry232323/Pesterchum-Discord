@@ -95,7 +95,7 @@ class App(QApplication):
 
         #asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
         self.loop.call_later(0, self.connecting)
-        asyncio.ensure_future(self.runbot())
+        loop.create_task(self.runbot())
 
         self.gui = Gui(self.loop, self)
         loop.run_forever()
