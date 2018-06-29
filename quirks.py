@@ -39,9 +39,9 @@ class Quirks(object):
         with open("cfg/quirks.json", 'r') as qf:
             self.allquirks = json.loads(qf.read())
 
-        if self.id not in self.allquirks.keys():
-            self.allquirks[self.id] = list()
-        self.quirks = self.allquirks[self.id]
+        if str(self.id) not in self.allquirks.keys():
+            self.allquirks[str(self.id)] = list()
+        self.quirks = self.allquirks[str(self.id)]
         self.qfuncs = dict(inspect.getmembers(pyquirks.quirk_funcs, inspect.isfunction))
 
     def process_quirks(self, message):
