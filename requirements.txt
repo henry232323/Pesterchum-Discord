@@ -1,4 +1,4 @@
-Quamash >= 0.5.5
+-e git+https://github.com/henry232323/quamash
 PyQt5 >= 5.7
 -e git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 aiohttp >= 1.0.5
