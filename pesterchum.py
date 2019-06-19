@@ -67,7 +67,7 @@ class App(QApplication):
         loop = QEventLoop(self)
         self.loop = loop
         asyncio.set_event_loop(loop)
-        self.session = aiohttp.ClientSession(loop=loop)
+        self.session = None
 
         self.idle = False
         self.trayIcon = None
@@ -87,17 +87,19 @@ class App(QApplication):
 
         self.nick = None
         self.token, self.botAccount = UserAuth
-        self.client = (AutoShardClient if self.botAccount else DiscordClient)(app=self, loop=self.loop)
+        self.client = (lambda app, loop: AutoShardClient(app=app, loop=loop, shard_id=3) if self.botAccount else DiscordClient(app=app, loop=loop))(app=self, loop=self.loop)
+        #print(self.client)
 
         if not UserAuth[0]:
             self.openAuth(i=True)
             save_auth((self.token, self.botAccount,))
 
         #asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
-        self.loop.call_later(0, self.connecting)
+        #self.loop.call_later(0, self.connecting)
         loop.create_task(self.runbot())
 
         self.gui = Gui(self.loop, self)
+        self.gui.initialize()
         loop.run_forever()
 
     def cli(self):
@@ -154,17 +156,21 @@ class App(QApplication):
 
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
-        try:
-            print("received ready")
-            self.connectingDialog.close()
-            self.connectingDialog = None
-            self.nick = self.client.user.name
-            self.quirks = Quirks(self)
-            if "debug" in sys.argv:
-                self.cli()
-            sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
-        finally:
-            self.gui.initialize()
+        if self.session is None:
+            self.session = aiohttp.ClientSession(loop=self.loop)
+            try:
+                print("received ready")
+                #self.connectingDialog.close()
+                #self.connectingDialog = None
+                self.nick = self.client.user.name
+                self.quirks = Quirks(self)
+                if "debug" in sys.argv:
+                    self.cli()
+                sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
+            except Exception as e:
+                self.bot.nameButton.setText(str(e))
+            finally:
+                self.gui.initialize()
 
     def change_mood(self, mood):
         if mood in ("offline", "abscond"):

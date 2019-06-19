@@ -44,7 +44,10 @@ class Gui(QMainWindow):
     def initialize(self):
         uic.loadUi(self.theme["ui_path"] + "/Main.ui", self)
 
-        self.nameButton.setText(self.app.client.user.name)
+        if self.app.client.user is not None:
+            self.nameButton.setText(self.app.client.user.name)
+        else:
+            self.nameButton.setText("")
         self.nameButton.setIcon(QIcon(self.theme["path"] + "/chummy.png"))
 
         # Fix dimensions
