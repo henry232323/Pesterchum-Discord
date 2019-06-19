@@ -31,13 +31,14 @@ have tokens, here's how to find yours:
 
 1. Open Discord
 2. Press Ctrl+Shift+i
-3. Click "Application" tab
-4. Expand Storage > Local Storage > https://discordapp.com
-5. Find "token" under "key"
-6. Copy the text in quotes on the same row
-
-Starting soon (not yet) the app will **ONLY** accept tokens, however once tokens are mandatory, we will also
-get some cool new functionality.
+3. Click "Network" tab
+4. Type into filter "/api/v6"
+5. Press Ctrl+R (restarts Discord)
+6. Click the Library tab
+7. Click "Headers"
+8. Select an item, "science" will always work
+9. Scroll to "Request Headers"
+10. Your token is after "authorization: "
 
 # Quirks
 Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) for help on quirks (they work identically) check out
