@@ -176,7 +176,7 @@ class App(QApplication):
         if mood in ("offline", "abscond"):
             asyncio.ensure_future(self.client.change_presence(status=discord.Status.invisible))
         else:
-            asyncio.ensure_future(self.client.change_presence(game=discord.Game(name="Feeling {}".format(mood.upper())), status=discord.Status.online))
+            asyncio.ensure_future(self.client.change_presence(activity=discord.Game(name="Feeling {}".format(mood.upper())), status=discord.Status.online))
 
         if self.idle:
             self.gui.toggleIdle()
