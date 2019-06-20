@@ -82,7 +82,7 @@ class PrivateMessageWidget(QWidget):
 
     async def get_logs(self):
         ms = ""
-        async for message in self.user.history(limit=100, reverse=True):
+        async for message in self.user.history(limit=100, oldest_first=True):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
