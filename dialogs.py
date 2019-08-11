@@ -618,9 +618,14 @@ class MemoTabWindow(QWidget):
         self.app = app
         uic.loadUi(app.theme["ui_path"] + "/MemoTabWindow.ui", self)
         self.memo = memo
+
+        # Filter channels by read permission
         self.channels = list(filter(lambda x: x.permissions_for(x.guild.me).read_messages, self.memo.text_channels))
-        self.tabWidget.removeTab(0)  # Remove two default tabs
+
+        # Remove two default tabs
         self.tabWidget.removeTab(0)
+        self.tabWidget.removeTab(0)
+
         self.setWindowTitle("Memos")
         self.setWindowIcon(QIcon(self.app.theme["path"] + "/memo.png"))
         for channel in self.channels:
