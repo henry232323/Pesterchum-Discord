@@ -204,14 +204,14 @@ class Gui(QMainWindow):
         if selected:
             idx = selected[0]
             user = self.friendsModel.data(idx)
-            user.send_friend_request()
+            ensure_future(user.send_friend_request())
 
     def block_selected(self):
         selected = self.chumsTree.selectedIndexes()
         if selected:
             idx = selected[0]
             user = self.friendsModel.data(idx)
-            user.block()
+            ensure_future(user.block())
 
     def start_privmsg(self, channel):
         """
