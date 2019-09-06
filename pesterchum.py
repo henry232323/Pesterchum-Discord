@@ -224,6 +224,8 @@ class App(QApplication):
 
     def openAuth(self, f=False, i=True):
         auth = AuthDialog(self, self, f=f, i=i).auth
+        if not auth:
+            return
         self.token, self.botAccount = auth
         if hasattr(self, "gui") and auth and not f:
             self.exit()
