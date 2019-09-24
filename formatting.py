@@ -74,9 +74,22 @@ def fmt_me_msg(app, msg, user, time=False):
                      suffix=suffix)
     return msg
 
+html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;",
+    }
+
+def html_escape(text):
+    """Produce entities within text."""
+    return "".join(html_escape_table.get(c,c) for c in text)
+
 
 def fmt_disp_msg(app, msg, mobj, user=None):
     """Format a message for display"""
+    msg = html_escape(msg)
     if not user:
         user = app.nick
     # If /me message, use fmt_me_msg

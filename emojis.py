@@ -47,5 +47,4 @@ class Emojis(object):
         try:
             return unicodedata.lookup(name.upper())
         except KeyError:
-            print(name)
             return str
