@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
+    <width>470</width>
     <height>451</height>
    </rect>
   </property>
@@ -55,13 +55,6 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QSlider" name="memoTimeSlider">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLineEdit" name="memoTimeEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -72,7 +65,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QSlider" name="memoTimeSlider">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="memoGoButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>4</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>GO</string>
         </property>
@@ -80,6 +86,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="memoCloseButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>CLOSE</string>
         </property>

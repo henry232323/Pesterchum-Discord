@@ -32,7 +32,6 @@ from sys import exit as sysexit
 from inspect import isawaitable
 from io import StringIO
 import discord
-import aiohttp
 
 from formatting import *
 
@@ -373,9 +372,9 @@ class MemosWindow(QWidget):
         self.parent = parent
         self.setWindowTitle('Memos')
         self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
-        width = self.frameGeometry().width()
-        height = self.frameGeometry().height()
-        self.setFixedSize(width, height)
+        #width = self.frameGeometry().width()
+        #height = self.frameGeometry().height()
+        #self.setFixedSize(width, height)
         self.memosTableWidget.setColumnCount(2)
         self.memosTableWidget.setHorizontalHeaderLabels(["Memo", "Users"])
         self.memosTableWidget.doubleClicked.connect(self.openMemo)
@@ -386,27 +385,27 @@ class MemosWindow(QWidget):
         for guild in self.app.client.guilds:
             self.add_channel(guild.name, len(guild.members))
         self.memosTableWidget.sortItems(0)
+        self.joinMemoButton.clicked.connect(self.join_button)
 
         self.show()
 
     def join_button(self):
         name = self.memoNameLineEdit.text()
         if name:
-            if not self.app.gui.memoTabWindow:
-                self.app.gui.memoTabWindow = MemoTabWindow(self.app, self, name)
-                self.close()
-                return self.app.gui.memoTabWindow.init_memo
-            else:
-                self.close()
-                return self.app.gui.memoTabWindow.add_memo(name)
+            try:
+                items = self.memosTableWidget.findItems(name, Qt.MatchExactly)
+                self.openMemo(self.memosTableWidget.indexFromItem(items[0]))
+            except:
+                import traceback; traceback.print_exc()
         else:
-            selected = self.memosTableWidget.selected()
+            selected = self.memosTableWidget.selectedItems()
             if not selected:
                 return
             else:
                 self.openMemo(selected[0])
 
     def display_message(self, channel, message):
+
         win = self.getWindow(channel.guild)
         win.display_message(channel, message)
 
