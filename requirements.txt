@@ -1,7 +1,6 @@
--e git+https://github.com/harvimt/quamash
-PyQt5 >= 5.7
--e git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
-aiohttp>=3.3.0,<3.6.0
-requests >= 2.12.4
-async-timeout >= 1.1.0
+-e git+https://github.com/harvimt/quamash#egg=quamash
+PyQt5 >= 5.15.0
+discord.py
+requests >= 2.23.0
+async-timeout >= 3.0.1
 simpleaudio

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2017, henry232323
+# Copyright (c) 2016-2020, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -38,7 +38,7 @@ class Emojis(object):
         str = str[2:-1]
         _name, id = str.split(":")
         emoji = self.bot.get_emoji(id)
-        fmt = '<img src="{}"/>'.format(emoji.url)
+        fmt = '<img src="{}"/>'.format(str(emoji.url))
         return fmt
 
     def fmt_emoji(self, match, mobj):

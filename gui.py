@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2017, henry232323
+# Copyright (c) 2016-2020, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -30,8 +30,8 @@ from dialogs import *
 
 
 class Gui(QMainWindow):
-    def __init__(self, loop, app, **kwargs):
-        super(__class__, self).__init__(**kwargs)
+    def __init__(self, loop, app):
+        super(__class__, self).__init__()
         self.app = app
         self.loop = loop
         self.theme = self.app.theme
