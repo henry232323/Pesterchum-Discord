@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2017, henry232323
+# Copyright (c) 2016-2020, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,9 @@ class DiscordClient(discord.Client):
         print(self.user.id)
         print('------')
         await self.app.on_ready()
+
+    # async def on_socket_response(self, msg):
+    #     print(msg)
 
     async def on_message(self, message):
         await self.app.on_message(message)

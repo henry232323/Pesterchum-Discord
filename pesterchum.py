@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2017, henry232323
+# Copyright (c) 2016-2020, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -19,11 +19,13 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-import simpleaudio as sa
-from options import Options
 import subprocess
-import requests
 import sys
+
+import requests
+import simpleaudio as sa
+
+from options import Options
 
 __version__ = "v1.3.5"
 __author__ = "henry232323"
@@ -64,8 +66,7 @@ class App(QApplication):
     def __init__(self):
         QApplication.__init__(self, sys.argv)
         # Establish loop as Quamash Event Loop
-        loop = QEventLoop(self)
-        self.loop = loop
+        self.loop = loop = QEventLoop(self)
         asyncio.set_event_loop(loop)
         self.session = None
 
@@ -87,20 +88,23 @@ class App(QApplication):
 
         self.nick = None
         self.token, self.botAccount = UserAuth
-        self.client = (lambda app, loop: AutoShardClient(app=app, loop=loop, shard_id=3) if self.botAccount else DiscordClient(app=app, loop=loop))(app=self, loop=self.loop)
-        #print(self.client)
+        self.client = (
+            lambda app, loop: AutoShardClient(app=app, loop=loop, shard_id=3) if self.botAccount else DiscordClient(
+                app=app, loop=loop))(app=self, loop=self.loop)
+        # print(self.client)
+
+        self.loop.call_later(10, lambda: self.loop.create_task(self.on_ready()))
 
         if not UserAuth[0]:
             self.openAuth(i=True)
             save_auth((self.token, self.botAccount,))
 
-        #asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
-        #self.loop.call_later(0, self.connecting)
+        # asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
+        # self.loop.call_later(0, self.connecting)
         loop.create_task(self.runbot())
 
         self.gui = Gui(self.loop, self)
         self.gui.initialize()
-        loop.run_forever()
 
     def cli(self):
         """
@@ -125,9 +129,9 @@ class App(QApplication):
 
     def connecting(self):
         print("konnectante")
-        self.connectingDialog = ConnectingDialog(self, self)
+        self.connectingDialog = ConnectingDialog(self, self.gui)
         self.connectingDialog.show()
-        #self.connectingDialog.exec_()
+        # self.connectingDialog.exec_()
         print("closed connecting (one day)")
 
     async def on_message(self, message):
@@ -156,12 +160,13 @@ class App(QApplication):
 
     async def on_ready(self):
         """Called on `Client.on_ready`, generally once the client is logged in and ready"""
+        # print("on ready!!!")
         if self.session is None:
             self.session = aiohttp.ClientSession(loop=self.loop)
             try:
-                print("received ready")
-                #self.connectingDialog.close()
-                #self.connectingDialog = None
+                # print("received ready")
+                # self.connectingDialog.close()
+                # self.connectingDialog = None
                 self.nick = self.client.user.name
                 self.quirks = Quirks(self)
                 if "debug" in sys.argv:
@@ -176,7 +181,9 @@ class App(QApplication):
         if mood in ("offline", "abscond"):
             asyncio.ensure_future(self.client.change_presence(status=discord.Status.invisible))
         else:
-            asyncio.ensure_future(self.client.change_presence(activity=discord.Game(name="Feeling {}".format(mood.upper())), status=discord.Status.online))
+            asyncio.ensure_future(
+                self.client.change_presence(activity=discord.Game(name="Feeling {}".format(mood.upper())),
+                                            status=discord.Status.online))
 
         if self.idle:
             self.gui.toggleIdle()
@@ -223,7 +230,7 @@ class App(QApplication):
         asyncio.ensure_future(channel.send(message, tts=tts))
 
     def openAuth(self, f=False, i=True):
-        auth = AuthDialog(self, self, f=f, i=i).auth
+        auth = AuthDialog(self, self.gui, f=f, i=i).auth
         if not auth:
             return
         self.token, self.botAccount = auth
@@ -256,4 +263,6 @@ class App(QApplication):
     def lastWindowClosed(self):
         self.exit()
 
-App()
+
+app = App()
+app.loop.run_forever()

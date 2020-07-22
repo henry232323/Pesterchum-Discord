@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016-2017, henry232323
+# Copyright (c) 2016-2020, henry232323
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@ from asyncio import ensure_future
 from async_timeout import timeout
 from sys import exit as sysexit
 from inspect import isawaitable
-from io import StringIO
+from io import StringIO, BytesIO
 import discord
 
 from formatting import *
@@ -81,7 +81,7 @@ class PrivateMessageWidget(QWidget):
 
     async def get_logs(self):
         ms = ""
-        async for message in self.user.history(limit=100, oldest_first=True):
+        for message in reversed(await self.user.history(limit=100).flatten()):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
@@ -390,19 +390,21 @@ class MemosWindow(QWidget):
         self.show()
 
     def join_button(self):
-        name = self.memoNameLineEdit.text()
-        if name:
-            try:
+        try:
+            name = self.memoNameLineEdit.text()
+            if name:
                 items = self.memosTableWidget.findItems(name, Qt.MatchExactly)
                 self.openMemo(self.memosTableWidget.indexFromItem(items[0]))
-            except:
-                import traceback; traceback.print_exc()
-        else:
-            selected = self.memosTableWidget.selectedItems()
-            if not selected:
-                return
+
             else:
-                self.openMemo(selected[0])
+                selected = self.memosTableWidget.selectedItems()
+                if not selected:
+                    return
+                else:
+                    self.openMemo(self.memosTableWidget.indexFromItem(selected[0]))
+        except:
+            import traceback
+            traceback.print_exc()
 
     def display_message(self, channel, message):
 
@@ -490,11 +492,11 @@ class MemoMessageWidget(QWidget):
     async def load_emojis(self):
         for emoji in self.memo.guild.emojis:
             with timeout(10):
-                async with self.app.session.get(emoji.url) as response:
-                    img = await response.read()
-                    qmg = QImage()
-                    qmg.loadFromData(img)
-                    self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(emoji.url), qmg)
+                bop = BytesIO()
+                await emoji.url.save(bop)
+                qmg = QImage()
+                qmg.loadFromData(bop.getvalue())
+                self.userOutput.document().addResource(QTextDocument.ImageResource, QUrl(str(emoji.url)), qmg)
 
     @pyqtSlot(QUrl)
     def anchorClicked(self, url):
@@ -514,7 +516,7 @@ class MemoMessageWidget(QWidget):
 
     async def get_logs(self):
         ms = ""
-        async for message in self.memo.history(limit=100, reverse=True):
+        for message in reversed(await self.memo.history(limit=100).flatten()):
             fmt = fmt_disp_msg(self.app, message.content, message, user=message.author)
             ms += fmt
         self.display_text(ms)
