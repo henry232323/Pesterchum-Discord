@@ -95,16 +95,20 @@ class App(QApplication):
 
         self.loop.call_later(10, lambda: self.loop.create_task(self.on_ready()))
 
-        if not UserAuth[0]:
-            self.openAuth(i=True)
-            save_auth((self.token, self.botAccount,))
-
         # asyncio.ensure_future(self.loop.run_in_executor(QThreadExecutor(1), self.connecting()))
         # self.loop.call_later(0, self.connecting)
-        loop.create_task(self.runbot())
 
         self.gui = Gui(self.loop, self)
         self.gui.initialize()
+
+        self.authevent = None
+        loop.create_task(self.runbot())
+
+        if not self.token:
+            self.authevent = asyncio.Event()
+            self.openAuth(i=True)
+            self.authevent.set()
+            save_auth((self.token, self.botAccount,))
 
     def cli(self):
         """
@@ -136,8 +140,10 @@ class App(QApplication):
 
     async def on_message(self, message):
         """Called on `Client.on_message`, Message handling happens here"""
+
         if message.content.startswith("_") and message.content.endswith("_"):
             message.content = "/me " + message.content[1:-1]
+
         if isinstance(message.channel, (discord.DMChannel, discord.GroupChannel)):
             if isinstance(message.channel, discord.GroupChannel):
                 if not message.channel.name:
@@ -173,7 +179,7 @@ class App(QApplication):
                     self.cli()
                 sa.WaveObject.from_wave_file(os.path.join(self.theme["path"], "alarm.wav")).play()
             except Exception as e:
-                self.bot.nameButton.setText(str(e))
+                self.gui.nameButton.setText(str(e))
             finally:
                 self.gui.initialize()
 
@@ -238,10 +244,14 @@ class App(QApplication):
             self.exit()
 
     async def runbot(self, x=1):
+        if self.authevent is not None:
+            await self.authevent.wait()
         try:
             await self.client.start(self.token, bot=self.botAccount)
         except discord.LoginFailure:
+            self.authevent = asyncio.Event()
             self.openAuth(f=True)
+            self.authevent.set()
             save_auth((self.token, self.botAccount,))
             await asyncio.sleep(x)
             await self.runbot(x * 2)
