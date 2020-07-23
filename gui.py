@@ -19,12 +19,11 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from PyQt5.QtGui import QIcon, QDesktopServices, QStandardItemModel
-from PyQt5.QtCore import Qt, pyqtSlot, QModelIndex, QVariant, QUrl
-from PyQt5.QtWidgets import QMainWindow, QSystemTrayIcon, QTreeView
-from PyQt5 import uic
-
 from random import randint, choice
+
+from PyQt5.QtCore import QModelIndex, QVariant
+from PyQt5.QtGui import QDesktopServices, QStandardItemModel
+from PyQt5.QtWidgets import QMainWindow, QSystemTrayIcon, QTreeView
 
 from dialogs import *
 
@@ -166,7 +165,8 @@ class Gui(QMainWindow):
                 button.setIcon(QIcon(os.path.join(self.theme["path"], "{}.png".format(mood_name))))
                 button.clicked.connect(self.make_setMood(button))
 
-        self.colorButton.setStyleSheet('background-color: rgb({},{},{});'.format(randint(0,255), randint(0,255), randint(0,255)))
+        self.colorButton.setStyleSheet(
+            'background-color: rgb({},{},{});'.format(randint(0, 255), randint(0, 255), randint(0, 255)))
 
         self.show()
 
@@ -203,15 +203,17 @@ class Gui(QMainWindow):
         selected = self.chumsTree.selectedIndexes()
         if selected:
             idx = selected[0]
-            user = self.friendsModel.data(idx)
-            ensure_future(user.send_friend_request())
+            user = self.friendsUsers[self.friendsModel.data(idx)]
+            if isinstance(user, (discord.User, discord.Member)):
+                ensure_future(user.send_friend_request())
 
     def block_selected(self):
         selected = self.chumsTree.selectedIndexes()
         if selected:
             idx = selected[0]
-            user = self.friendsModel.data(idx)
-            ensure_future(user.block())
+            user = self.friendsUsers[self.friendsModel.data(idx)]
+            if isinstance(user, (discord.User, discord.Member)):
+                ensure_future(user.block())
 
     def start_privmsg(self, channel):
         """
@@ -275,6 +277,7 @@ class Gui(QMainWindow):
 
     def make_setMood(self, button):
         '''Makes set mood button for each button, each button deselects all others and sets user mood'''
+
         def setMood():
             if not button.isChecked():
                 button.setChecked(True)
@@ -286,6 +289,7 @@ class Gui(QMainWindow):
                     self.app.change_mood(mood_name)
                 else:
                     moodButton.setChecked(False)
+
         return setMood
 
     def closeEvent(self, event):
