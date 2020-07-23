@@ -19,23 +19,22 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
-from PyQt5.QtCore import Qt, pyqtSlot, QUrl
-from PyQt5.QtWidgets import QDialog, QWidget, QListWidgetItem, QComboBox, QHeaderView, QTableWidgetItem, QAction, QMenu
-from PyQt5 import uic
-
-from traceback import format_exc
-from contextlib import redirect_stdout
 from asyncio import ensure_future
-from async_timeout import timeout
-from sys import exit as sysexit
+from contextlib import redirect_stdout
 from inspect import isawaitable
 from io import StringIO, BytesIO
+from sys import exit as sysexit
+from traceback import format_exc
+
 import discord
+import simpleaudio as sa
+from PyQt5 import uic
+from PyQt5.QtCore import Qt, pyqtSlot, QUrl
+from PyQt5.QtGui import QIcon, QTextCursor, QStandardItem, QColor, QBrush, QTextDocument, QImage
+from PyQt5.QtWidgets import QDialog, QWidget, QListWidgetItem, QComboBox, QHeaderView, QTableWidgetItem, QAction, QMenu
+from async_timeout import timeout
 
 from formatting import *
-
-import simpleaudio as sa
 
 
 class PrivateMessageWidget(QWidget):
@@ -296,7 +295,8 @@ class OptionsWindow(QWidget):
         self.themesComboBox.setInsertPolicy(QComboBox.InsertAlphabetically)
         index = self.themesComboBox.findText(self.app.theme_name)
         self.themesComboBox.setCurrentIndex(index)
-        self.refreshThemeButton.clicked.connect(lambda: self.app.change_theme(self.themesComboBox.currentText(), f=True))
+        self.refreshThemeButton.clicked.connect(
+            lambda: self.app.change_theme(self.themesComboBox.currentText(), f=True))
 
         convo_opt = self.options["conversations"]
         chum_opt = self.options["chum_list"]
@@ -385,9 +385,9 @@ class MemosWindow(QWidget):
         self.parent = parent
         self.setWindowTitle('Memos')
         self.setWindowIcon(QIcon(app.theme["path"] + "/trayicon.png"))
-        #width = self.frameGeometry().width()
-        #height = self.frameGeometry().height()
-        #self.setFixedSize(width, height)
+        # width = self.frameGeometry().width()
+        # height = self.frameGeometry().height()
+        # self.setFixedSize(width, height)
         self.memosTableWidget.setColumnCount(2)
         self.memosTableWidget.setHorizontalHeaderLabels(["Memo", "Users"])
         self.memosTableWidget.doubleClicked.connect(self.openMemo)
@@ -691,7 +691,9 @@ class MemoTabWindow(QWidget):
         return tab
 
     def add_user_items(self):
-        for member in sorted(self.memo.members, key=lambda x: (max([r.position for r in x.roles if r.hoist], default=0), x.display_name), reverse=True):
+        for member in sorted(self.memo.members,
+                             key=lambda x: (max([r.position for r in x.roles if r.hoist], default=0), x.display_name),
+                             reverse=True):
             nam = QListWidgetItem(member.display_name)
             clra = member.color
             clr = QBrush()
@@ -720,7 +722,8 @@ class AuthDialog(QDialog):
         self.acceptButton.setDefault(True)
         self.closeButton.clicked.connect(self.rejected)
         if f:
-            self.errorLabel.setText("""Invalid token! Failed to login. Make sure if you are using a bot to check the bot account check""")
+            self.errorLabel.setText(
+                """Invalid token! Failed to login. Make sure if you are using a bot to check the bot account check""")
         else:
             self.errorLabel.setText("""Discord no longer allows usernames/passwords!
 Check the README for how to find yours!""")

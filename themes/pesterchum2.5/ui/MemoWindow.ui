@@ -96,6 +96,9 @@
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
