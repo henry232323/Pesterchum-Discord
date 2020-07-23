@@ -96,6 +96,19 @@ class PrivateMessageWidget(QWidget):
 
     def display_text(self, msg):
         '''Insert msg into the display box'''
+        msg = msg.replace("\n", "<br />")
+        while msg.count("**") % 2 == 0 and msg.count("**") > 0:
+            msg = msg.replace("**", "<strong>", 1)
+            msg = msg.replace("**", "</strong>", 1)
+
+        while msg.count("*") % 2 == 0 and msg.count("*") > 0:
+            msg = msg.replace("*", "<i>", 1)
+            msg = msg.replace("*", "</i>", 1)
+
+        while msg.count("```") % 2 == 0 and msg.count("```") > 0:
+            msg = msg.replace("```", "<code>", 1)
+            msg = msg.replace("```", "</code>", 1)
+
         cursor = self.userOutput.textCursor()
         cursor.movePosition(QTextCursor.End)
         self.userOutput.setTextCursor(cursor)
@@ -407,7 +420,6 @@ class MemosWindow(QWidget):
             traceback.print_exc()
 
     def display_message(self, channel, message):
-
         win = self.getWindow(channel.guild)
         win.display_message(channel, message)
 
@@ -530,6 +542,19 @@ class MemoMessageWidget(QWidget):
 
     def display_text(self, msg):
         '''Insert msg into the display box'''
+        msg = msg.replace("\n", "<br />")
+        while msg.count("**") % 2 == 0 and msg.count("**") > 0:
+            msg = msg.replace("**", "<strong>", 1)
+            msg = msg.replace("**", "</strong>", 1)
+
+        while msg.count("*") % 2 == 0 and msg.count("*") > 0:
+            msg = msg.replace("*", "<i>", 1)
+            msg = msg.replace("*", "</i>", 1)
+
+        while msg.count("```") % 2 == 0 and msg.count("```") > 0:
+            msg = msg.replace("```", "<code>", 1)
+            msg = msg.replace("```", "</code>", 1)
+
         cursor = self.userOutput.textCursor()
         cursor.movePosition(QTextCursor.End)
         self.userOutput.setTextCursor(cursor)
