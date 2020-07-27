@@ -34,8 +34,13 @@ includes = ["PyQt5", "os", "json", "types", "discord", "aiohttp",
             "asyncio.windows_utils", "idna.idnadata", "quamash", "asyncio.format_helpers",
             "asyncio.sslproto", "idna_ssl", "ssl", "_ssl"]
 
+pcicon = None
+updicon = None
+
 if os.name == "posix":
     includes.append("idna.idnadata")
+    pcicon = "resources/pc_chummy.icns"
+    updicon = "resources/sburb.icns"
 
 build_exe_options = {
     "includes": includes,
@@ -47,7 +52,9 @@ build_exe_options = {
 
 base = None
 if sys.platform == "win32":
-   base = "Win32GUI"
+    base = "Win32GUI"
+    pcicon = "resources/pc_chummy.ico"
+    updicon = "resources/sburb.ico"
 
 if sys.platform == "win32":
     PYTHON_INSTALL_DIR = os.path.dirname(os.path.dirname(os.__file__))
@@ -62,6 +69,7 @@ setup(
     description="Pesterchum Client",
     options={"build_exe": build_exe_options},
     executables=[
-        Executable("pesterchum.py", base=base, icon="resources/pc_chummy.ico"),
-        Executable("updater.py", base=None, icon="resources/sburb.ico")]
+        Executable("pesterchum.py", base=base, icon=pcicon),
+        Executable("updater.py", base=None, icon=updicon)
+    ]
 )

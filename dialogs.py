@@ -96,17 +96,11 @@ class PrivateMessageWidget(QWidget):
     def display_text(self, msg):
         '''Insert msg into the display box'''
         msg = msg.replace("\n", "<br />")
-        while msg.count("**") % 2 == 0 and msg.count("**") > 0:
-            msg = msg.replace("**", "<strong>", 1)
-            msg = msg.replace("**", "</strong>", 1)
-
-        while msg.count("*") % 2 == 0 and msg.count("*") > 0:
-            msg = msg.replace("*", "<i>", 1)
-            msg = msg.replace("*", "</i>", 1)
-
-        while msg.count("```") % 2 == 0 and msg.count("```") > 0:
-            msg = msg.replace("```", "<code>", 1)
-            msg = msg.replace("```", "</code>", 1)
+        msg = re.sub(r'(?<!\\)\*\*(.*?[^\\])\*\*', r"<strong>\1</strong>", msg)
+        msg = re.sub(r'(?<!\\)\*(.*?[^\\])\*', r"<i>\1</i>", msg)
+        msg = re.sub(r'(?<!\\)```(.*?[^\\])```', r"<code>\1</code>", msg)
+        msg = re.sub(r'(?<!\\)`(.*?[^\\])`', r"<code>\1</code>", msg)
+        msg = re.sub(r'(?<!\\)~~(.*?[^\\])`', r"<s>\1</s>", msg)
 
         cursor = self.userOutput.textCursor()
         cursor.movePosition(QTextCursor.End)
@@ -543,17 +537,11 @@ class MemoMessageWidget(QWidget):
     def display_text(self, msg):
         '''Insert msg into the display box'''
         msg = msg.replace("\n", "<br />")
-        while msg.count("**") % 2 == 0 and msg.count("**") > 0:
-            msg = msg.replace("**", "<strong>", 1)
-            msg = msg.replace("**", "</strong>", 1)
-
-        while msg.count("*") % 2 == 0 and msg.count("*") > 0:
-            msg = msg.replace("*", "<i>", 1)
-            msg = msg.replace("*", "</i>", 1)
-
-        while msg.count("```") % 2 == 0 and msg.count("```") > 0:
-            msg = msg.replace("```", "<code>", 1)
-            msg = msg.replace("```", "</code>", 1)
+        msg = re.sub(r'(?<!\\)\*\*(.*?[^\\])\*\*', r"<strong>\1</strong>", msg)
+        msg = re.sub(r'(?<!\\)\*(.*?[^\\])\*', r"<i>\1</i>", msg)
+        msg = re.sub(r'(?<!\\)```(.*?[^\\])```', r"<code>\1</code>", msg)
+        msg = re.sub(r'(?<!\\)`(.*?[^\\])`', r"<code>\1</code>", msg)
+        msg = re.sub(r'(?<!\\)~~(.*?[^\\])`', r"<s>\1</s>", msg)
 
         cursor = self.userOutput.textCursor()
         cursor.movePosition(QTextCursor.End)
