@@ -34,6 +34,7 @@ def getThemes(themes):
     All uis located in the ui folder
     More support for themes to come
     """
+    # print(os.listdir(), os.getcwd())
     themedir = os.listdir("themes")
     for theme in themedir:
         try:
