@@ -1,8 +1,8 @@
 # Pesterchum-Discord
 
-A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client
+A Discord client mimicking the Pesterchum chat client from Homestuck, for the few people who are still interested in that.
 
-If you have any questions either contact me the github or add me at Henry#6174 on Discord.
+If you have any questions either contact me the github or add me at Henry#8808 on Discord.
 
 This app is NOT an all-in-one client! It is meant to enhance RP and anything else you wish to do with it, however
 it is recommended you still use regular Discord for technical functions.
