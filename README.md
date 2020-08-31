@@ -1,6 +1,6 @@
 # Pesterchum-Discord
 
-A Discord client mimicking the Pesterchum chat client from Homestuck, Uses a lot of code from my Pesterchum Client
+A Discord client mimicking the Pesterchum chat client from Homestuck, for the few people who are still interested in that.
 
 If you have any questions either contact me the github or add me at henry232323 on Discord.
 
