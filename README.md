@@ -26,19 +26,10 @@ update, copy and replace the following files and folders into the old installati
 If there are new themes or quirks, copy the relevant files / folders into the `pyquirks` folder and the `themes` folder
 
 # Tokens
-The Discord API no longer allows use of credentials! Once you update to v1.3.0 or later you MUST use a token. All accounts
-have tokens, here's how to find yours:
+The Discord API no longer allows use of login credentials! Once you update to v1.3.0 or later you MUST use a token. All accounts
+have tokens, [here](https://discordhelp.net/discord-token)'s how to find yours.
 
-1. Open Discord
-2. Press Ctrl+Shift+i
-3. Click "Network" tab
-4. Type into filter "/api/v6"
-5. Press Ctrl+R (restarts Discord)
-6. Click the Library tab
-7. Click "Headers"
-8. Select an item, "science" will always work
-9. Scroll to "Request Headers"
-10. Your token is after "authorization: "
+
 
 # Quirks
 Pesterchum-Discord lets you do custom quirks using Regex! (Regular Expression) for help on quirks (they work identically) check out
