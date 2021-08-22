@@ -1,5 +1,7 @@
-# Pesterchum-Discord
+# Looking for Contributors!
+I no longer have the time to maintain this project, if you are interested in contributing let me know!
 
+# Pesterchum-Discord
 A Discord client mimicking the Pesterchum chat client from Homestuck, for the few people who are still interested in that.
 
 If you have any questions either contact me the github or add me at Henry#8808 on Discord.
