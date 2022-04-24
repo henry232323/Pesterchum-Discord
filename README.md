@@ -9,6 +9,8 @@ If you have any questions either contact me the github or add me at Henry#8808 o
 This app is NOT an all-in-one client! It is meant to enhance RP and anything else you wish to do with it, however
 it is recommended you still use regular Discord for technical functions.
 
+**Warning: This is not supported by Discord, if you misuse this client to spam etc, you are likely to get your account banned. Discord does not allow other clients**
+
 ### Donate
 If you like what I've made, consider [buying me a coffee](https://ko-fi.com/A372XXA)
 
@@ -29,7 +31,7 @@ If there are new themes or quirks, copy the relevant files / folders into the `p
 
 # Tokens
 The Discord API no longer allows use of login credentials! Once you update to v1.3.0 or later you MUST use a token. All accounts
-have tokens, [here](https://discordhelp.net/discord-token)'s how to find yours.
+have tokens, [here](https://pcstrike.com/how-to-get-discord-token/)'s how to find yours.
 
 
 
